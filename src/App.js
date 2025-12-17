@@ -10,7 +10,7 @@ export default function App() {
     createRoutesFromElements(
       <Route path="/" element={<AppLayout />}>
         <Route index element={<HomePage />} />
-        <Route path="login" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Route>
     )
   );

@@ -117,8 +117,8 @@ export default function HomePage() {
           </div>
 
           <Link to={"/register"}>
-            <div className="pt-9 hp hp-wrap">
-              <button className="bg-white text-black px-8 py-3 rounded-full font-medium hover:bg-zinc-200 transition-all hover:scale-105 pointer-events-auto">
+            <div className="pt-9 hp">
+              <button className=" bg-white text-black px-8 py-3 rounded-full font-medium hover:bg-zinc-200 transition-all hover:scale-105 pointer-events-auto">
                 Start Managing Now
               </button>
             </div>
