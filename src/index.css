@@ -27,3 +27,7 @@
 .animate-bg-dots {
   animation: moveBackground 5s linear infinite;
 }
+
+.outline-custom {
+  outline: 1.5px solid #424242;
+}

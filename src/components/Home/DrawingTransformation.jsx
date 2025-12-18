@@ -15,8 +15,12 @@ export const DrawingTransformation = ({
   y,
   rotation = 0,
 }) => {
+  // 🔹 state
   const [stage, setStage] = useState(0); // 0: Hidden, 1: Drawing, 2: Alive
 
+  // -------------------------
+  // ✅ card animation Logic
+  // -------------------------
   useEffect(() => {
     const cycle = () => {
       setStage(0);
@@ -37,6 +41,9 @@ export const DrawingTransformation = ({
 
   const container = useRef(null);
 
+  // ---------------------
+  // ✅ GSAP Animation
+  // ---------------------
   useGSAP(
     () => {
       gsap.fromTo(
@@ -66,6 +73,9 @@ export const DrawingTransformation = ({
     { scope: container }
   );
 
+  // ---------------------
+  // ✅ Render
+  // ---------------------
   return (
     <div
       ref={container}

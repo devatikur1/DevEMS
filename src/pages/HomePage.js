@@ -1,18 +1,47 @@
-import React, { useRef } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 import { DrawingTransformation } from "../components/Home/DrawingTransformation";
-import { CalculatorIcon, ChartBarIcon, NewspaperIcon, SparklesIcon, } from "lucide-react";
-import { ClipboardDocumentCheckIcon, CursorArrowRaysIcon, DocumentTextIcon, PuzzlePieceIcon, } from "@heroicons/react/16/solid";
+import {
+  CalculatorIcon,
+  ChartBarIcon,
+  NewspaperIcon,
+  SparklesIcon,
+} from "lucide-react";
+import {
+  ClipboardDocumentCheckIcon,
+  CursorArrowRaysIcon,
+  DocumentTextIcon,
+  PuzzlePieceIcon,
+} from "@heroicons/react/16/solid";
 
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
+import { AppContext } from "../context/AppContext";
 
 gsap.registerPlugin(useGSAP);
 
 export default function HomePage() {
-  const container = useRef(null);
+  // 🔹 useContext context
+  const { authId } = useContext(AppContext);
+  const { isLogged } = authId;
 
+  // 🔹 Ref & Navigate
+  const container = useRef(null);
+  const navigate = useNavigate();
+
+  // ---------------------
+  // ✅ Check isLogged
+  // ---------------------
+  useEffect(() => {
+    if (isLogged) {
+      navigate("/u");
+    }
+  }, [isLogged, navigate]);
+
+  // ---------------------
+  // ✅ GSAP Animation
+  // ---------------------
   useGSAP(
     () => {
       // Text reveal animation: niche theke bhese uthbar effect
@@ -31,12 +60,14 @@ export default function HomePage() {
         onComplete() {
           gsap.set(".hp-wrap", { overflow: "visible" });
         },
-
       });
     },
     { scope: container }
   );
 
+  // ---------------------
+  // ✅ Render
+  // ---------------------
   return (
     <div ref={container} className="relative min-h-screen overflow-hidden">
       {/* Background elements (fixed) */}
@@ -119,7 +150,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <Link to={"/register"}>
+          <Link to={"/login"}>
             <div className="pt-9 hp">
               <button className=" bg-white text-black px-8 py-3 rounded-full font-medium hover:bg-zinc-200 transition-all hover:scale-105 pointer-events-auto">
                 Start Managing Now
