@@ -32,11 +32,11 @@ export default function QuickMenu({
           className="absolute z-[110] top-[60px] md:right-5 md:mx-0 min-w-[95%] md:min-w-[220px] bg-surface/90 backdrop-blur-xl border border-border rounded-xl shadow-2xl p-2"
         >
           <div className="px-3 py-3 border-b border-border mb-2">
-            <p className="text-white text-sm font-semibold line-clamp-1">
+            <p className="text-white text-sm font-semibold line-clamp-1 us">
               <span>{userDt?.name || "User"}</span>
-              <small className="pl-2 text-subtext/80">{`(${userDt.role})`}</small>
+              <small className="pl-2 text-subtext/80 us">{`(${userDt.role})`}</small>
             </p>
-            <p className="text-zinc-500 text-xs truncate">{userDt?.email}</p>
+            <p className="text-zinc-500 text-xs truncate us">{userDt?.email}</p>
           </div>
 
           <div className="flex flex-col gap-1">

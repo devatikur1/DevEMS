@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from "react";
-import Header from "../components/U/Header";
-import { useNavigate } from "react-router-dom";
-import { AppContext } from "../context/AppContext";
+import Header from "../../components/U/Header";
+import { Outlet, useNavigate } from "react-router-dom";
+import { AppContext } from "../../context/AppContext";
 
-export default function UPage() {
+export default function ULayout() {
   // 🔹 useContext context
   const { authId } = useContext(AppContext);
   const { isLogged } = authId;
@@ -26,6 +26,7 @@ export default function UPage() {
   return (
     <main>
       <Header />
+      <Outlet />
     </main>
   );
 }

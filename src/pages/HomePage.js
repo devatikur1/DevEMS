@@ -55,7 +55,15 @@ export default function HomePage() {
   // ✅ Render
   // ---------------------
   return (
-    <div ref={container} className="relative min-h-screen overflow-hidden">
+    <div
+      ref={container}
+      style={{
+        backgroundImage:
+          "radial-gradient(circle, rgba(159, 159, 169, 0.4) 1px, transparent 1px)",
+        backgroundSize: "50px 50px",
+      }}
+      className="relative min-h-screen overflow-hidden"
+    >
       {/* Background elements (fixed) */}
       <div className=" fixed inset-0 overflow-hidden pointer-events-none z-0">
         {/* Top Left: Payroll */}

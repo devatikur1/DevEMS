@@ -1,12 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { AppContext, auth, db } from "../../context/AppContext";
 import { signOut } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { AnimatePresence } from "framer-motion";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import ProfileModalOverlay from "./Header/ProfileModalOverlay";
 import QuickMenu from "./Header/QuickMenu";
+import MainHeader from "./Header/MainHeader";
+import OptionHeader from "./Header/OptionHeader";
 
 export default function Header() {
   // 🔹 useContext context
@@ -105,7 +108,7 @@ export default function Header() {
       };
       await setDoc(doc(db, "users", userDt.uid), updatedData, { merge: true });
 
-      // 🔹 3. State update & cleanup 
+      // 🔹 3. State update & cleanup
       localStorage.setItem("userDt", JSON.stringify(updatedData));
       setUserDt(updatedData);
       setPUrl({});
@@ -125,38 +128,29 @@ export default function Header() {
   // ---------------------
   return (
     <>
-      {/* Main Header */}
-      <header className="relative z-[100] w-full h-[55px] bg-surface border-b border-border flex justify-center items-center select-none *:select-none">
-        <section className="w-full flex items-center justify-between px-5">
-          <article>
-            <Link to={"/"} className="min-w-5 min-h-5">
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 76 65"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M38 0L76 65H0L38 0Z" fill="white" />
-              </svg>
-            </Link>
-          </article>
-          <article>
-            <h1 className="text-xl font-bold tracking-tighter text-white">
-              DevEMS
-            </h1>
-          </article>
-          <article
-            className="cursor-pointer"
-            onClick={() => setShowOpBar(!showOpBar)}
-          >
-            <img
-              src={userDt?.photoURL || "https://cdn.auth0.com/avatars/E.png"}
-              alt="user"
-              className="w-8 h-8 rounded-full border border-accent shadow-[0_0_10px_rgba(var(--accent-rgb),0.3)] object-cover hover:scale-105 transition-transform"
-            />
-          </article>
-        </section>
+      <header className="w-full relative z-[100] bg-bg border-b border-border">
+        {/* Main Header */}
+        <MainHeader
+          setShowOpBar={setShowOpBar}
+          showOpBar={showOpBar}
+          userDt={userDt}
+        />
+        {/* Options Header */}
+        <OptionHeader
+          navItems={
+            userDt.role !== "admin"
+              ? [
+                  { name: "Overview", path: "/u" },
+                  { name: "Activity", path: "/activity" },
+                  { name: "Employees", path: "/employees" },
+                ]
+              : [
+                  { name: "Overview", path: "/u" },
+                  { name: "Activity", path: "/activity" },
+                  { name: "Teams", path: "/Teams" },
+                ]
+          }
+        />
       </header>
 
       {/* User Quick Menu Dropdown */}
@@ -194,7 +188,6 @@ export default function Header() {
           />
         )}
       </AnimatePresence>
-      <Toaster position="top-center" reverseOrder={false} />
     </>
   );
 }

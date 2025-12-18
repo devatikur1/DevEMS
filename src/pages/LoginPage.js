@@ -114,6 +114,11 @@ export default function LoginPage() {
   return (
     <div
       ref={container}
+      style={{
+        backgroundImage:
+          "radial-gradient(circle, rgba(159, 159, 169, 0.4) 1px, transparent 1px)",
+        backgroundSize: "50px 50px",
+      }}
       className="relative min-h-screen overflow-hidden flex justify-center items-center select-none *:select-none"
     >
       <AnimatePresence>
@@ -135,7 +140,7 @@ export default function LoginPage() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0, overflow: "hidden", height: 0 }}
                   transition={{
-                    duration: 0.4,
+                    duration: 0.2,
                   }}
                   className="flex flex-col gap-7"
                 >
@@ -190,7 +195,7 @@ export default function LoginPage() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{
-                    delay: 0.4,
+                    delay: 0.3,
                     duration: 0.2,
                   }}
                   onClick={async () => await CollectGoogleAuthData()}

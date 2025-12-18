@@ -1,9 +1,15 @@
 import React from "react";
-import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
 import AppLayout from "./layouts/app/AppLayout";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
-import UPage from "./pages/UPage";
+import ULayout from "./layouts/u/ULayout";
+import OverviewPage from "./pages/OverviewPage";
 
 export default function App() {
   const router = createBrowserRouter(
@@ -11,7 +17,9 @@ export default function App() {
       <Route path="/" element={<AppLayout />}>
         <Route index element={<HomePage />} />
         <Route path="login" element={<LoginPage />} />
-        <Route path="u" element={<UPage />} />
+        <Route path="u" element={<ULayout />}>
+          <Route index element={<OverviewPage />} />
+        </Route>
       </Route>
     )
   );

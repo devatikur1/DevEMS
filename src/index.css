@@ -31,3 +31,11 @@
 .outline-custom {
   outline: 1.5px solid #424242;
 }
+
+* {
+  user-select: none !important;
+}
+
+.us {
+  user-select: text !important;
+}
