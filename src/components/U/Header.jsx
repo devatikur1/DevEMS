@@ -11,7 +11,7 @@ import QuickMenu from "./Header/QuickMenu";
 import MainHeader from "./Header/MainHeader";
 import OptionHeader from "./Header/OptionHeader";
 
-export default function Header() {
+export default function Header({ adminUrlArr, employeeUrlArr }) {
   // 🔹 useContext context
   const { authId } = useContext(AppContext);
   const { setIsLogged, setUserDt, userDt } = authId;
@@ -128,7 +128,7 @@ export default function Header() {
   // ---------------------
   return (
     <>
-      <header className="w-full relative z-[100] bg-bg border-b border-border">
+      <header className="w-full relative z-[100] bg-surface/60 border-b border-border">
         {/* Main Header */}
         <MainHeader
           setShowOpBar={setShowOpBar}
@@ -137,19 +137,7 @@ export default function Header() {
         />
         {/* Options Header */}
         <OptionHeader
-          navItems={
-            userDt.role !== "admin"
-              ? [
-                  { name: "Overview", path: "/u" },
-                  { name: "Activity", path: "/activity" },
-                  { name: "Employees", path: "/employees" },
-                ]
-              : [
-                  { name: "Overview", path: "/u" },
-                  { name: "Activity", path: "/activity" },
-                  { name: "Teams", path: "/Teams" },
-                ]
-          }
+          navItems={userDt.role === "admin" ? adminUrlArr : employeeUrlArr}
         />
       </header>
 

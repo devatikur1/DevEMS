@@ -7,7 +7,7 @@ export default function OptionHeader({ navItems }) {
   const [hoveredTab, setHoveredTab] = useState(null);
 
   return (
-    <article className="w-full border-b border-white/10 select-none pt-2.5">
+    <article className="sticky top-0 z-[100] w-full border-b border-white/10 select-none pt-2.5">
       <section
         className="relative flex items-center gap-2 mx-3"
         onMouseLeave={() => setHoveredTab(null)}

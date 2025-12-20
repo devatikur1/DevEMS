@@ -13,7 +13,7 @@ import clsx from "clsx";
 export default function LoginPage() {
   // 🔹 useContext context
   const { authId } = useContext(AppContext);
-  const { isLogged, setIsLogged, setUserDt } = authId;
+  const { isLogged, setIsLogged, userDt, setUserDt } = authId;
 
   // 🔹 Ref & Navigate
   const container = useRef(null);
@@ -37,9 +37,9 @@ export default function LoginPage() {
   // ---------------------
   useEffect(() => {
     if (isLogged === true) {
-      navigate("/u");
+      navigate(`/${userDt.username}`);
     }
-  }, [isLogged, navigate]);
+  }, [isLogged, navigate, userDt.username]);
 
   // ---------------------
   // ✅ Google Login
@@ -65,12 +65,22 @@ export default function LoginPage() {
       } else {
         let data = {
           name: user.displayName,
+          username: `@${user.email.split("@")[0].toLocaleLowerCase()}`,
           email: user.email,
           photoURL: user.photoURL,
           uid: user.uid,
           emailVerified: user.emailVerified,
           role: role,
         };
+        await setDoc(
+          doc(
+            db,
+            "username",
+            `@${user.email.split("@")[0].toLocaleLowerCase()}`
+          ),
+          { uid: user.uid },
+          { merge: true }
+        );
         await setDoc(doc(db, "users", user.uid), data, { merge: true });
         localStorage.setItem("isLogged", "true");
         localStorage.setItem("userDt", JSON.stringify(data));
