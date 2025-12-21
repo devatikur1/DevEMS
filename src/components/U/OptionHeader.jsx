@@ -5,7 +5,6 @@ import { motion } from "framer-motion"; // Framer motion install thakle
 
 export default function OptionHeader({ navItems, isScrolled }) {
   const [hoveredTab, setHoveredTab] = useState(null);
-  console.log(isScrolled);
 
   return (
     <article className="sticky top-0 z-[100] w-full bg-surface border-b border-border select-none pt-2.5">

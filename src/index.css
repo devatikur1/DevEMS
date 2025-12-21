@@ -20,7 +20,7 @@
     background-position: 0 0;
   }
   100% {
-    background-position: 50px 50px; 
+    background-position: 50px 50px;
   }
 }
 
@@ -73,10 +73,20 @@
   ::-webkit-scrollbar-corner {
     background: #09090b;
   }
-  
-   .scrollVeiwNone::-webkit-scrollbar {
+
+  .scrollVeiwNone::-webkit-scrollbar {
     display: none;
   }
 }
 
+/* Chrome, Safari, Edge, and Opera*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
+/* Firefox  */
+input[type="number"] {
+  -moz-appearance: textfield;
+}

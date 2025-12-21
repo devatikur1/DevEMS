@@ -1,9 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Toolbar from "../components/Overview/Toolbar";
 import DynamicContent from "../components/Overview/DynamicContent";
+import { AppContext } from "../context/AppContext";
 
 export default function OverviewPage() {
+  // 🔹 useContext context
+  const { overviewdt } = useContext(AppContext);
+  const { workspaces } = overviewdt;
+
+  // 🔹 Router &&  State
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentView, setCurrentView] = useState(
     searchParams.get("view") === "list" ? "list" : "grid"
@@ -40,7 +46,7 @@ export default function OverviewPage() {
         <Toolbar currentView={currentView} updateView={updateView} />
 
         {/* 📑 Dynamic Content Area */}
-        <DynamicContent currentView={currentView} />
+        <DynamicContent currentView={currentView} workspaces={workspaces} />
       </div>
     </main>
   );

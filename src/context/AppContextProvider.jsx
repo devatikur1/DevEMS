@@ -11,6 +11,7 @@ export default function AppContextProvider({ children }) {
   const [userDt, setUserDt] = useState(
     JSON.parse(localStorage.getItem("userDt")) || {}
   );
+  const [workspaces, setWorkspace] = useState([]);
 
   // --------------------------
   // ✅ Get Current USer Data
@@ -48,6 +49,7 @@ export default function AppContextProvider({ children }) {
         setIsLogged(false);
         setUserDt({});
       }
+      
     });
 
     return () => unsubscribe();
@@ -62,6 +64,10 @@ export default function AppContextProvider({ children }) {
       setIsLogged,
       userDt,
       setUserDt,
+    },
+    overviewdt: {
+      workspaces,
+      setWorkspace,
     },
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
