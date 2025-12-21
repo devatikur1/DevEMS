@@ -7,6 +7,9 @@ export default function ProfileModalOverlay({
   closeProfile,
   name,
   setName,
+  username,
+  onUpdateUserName,
+  usernameIsDoText,
   pUrl,
   setPUrl,
   photoURL,
@@ -39,7 +42,7 @@ export default function ProfileModalOverlay({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={() => closeProfile()}
-        className="absolute inset-0 bg-black/60 backdrop-blur-md select-none"
+        className="absolute inset-0 bg-bg/10 backdrop-blur-md select-none"
       />
 
       {/* Modal-Content */}
@@ -64,17 +67,17 @@ export default function ProfileModalOverlay({
           {/* Profile Edit Part && Upload Part */}
           <div className="space-y-4">
             <div className="flex flex-col items-center gap-4 py-4">
-              <p className="rounded-lg border border-warning/40 bg-amber-400/10 px-4 py-2 text-[0.65rem] text-warning backdrop-blur-md">
+              <p className="rounded-lg border border-warning/40 bg-warning/10 px-4 py-2 text-[0.65rem] text-warning backdrop-blur-md">
                 ⚠ Img Must be lower than 32 MB
               </p>
               <img
                 src={photoURL}
                 alt=""
-                className="w-24 h-24 object-cover rounded-full border-2 border-accent p-1 select-none"
+                className="w-24 h-24 object-cover rounded-full border-2 border-text p-1"
               />
               <label
                 htmlFor="file"
-                className="text-xs text-blue-400 hover:underline select-none"
+                className="text-xs text-text hover:underline decoration-accent"
               >
                 Change Photo
               </label>
@@ -92,26 +95,54 @@ export default function ProfileModalOverlay({
                 id="name"
                 onChange={(e) => setName(e.target.value)}
                 value={name}
-                className="bg-accentA/80 backdrop-blur-lg outline-custom py-1.5 px-4"
+                className="bg-boxHover backdrop-blur-lg outline-custom py-1.5 px-4"
                 placeholder={userDt?.name}
                 type="text"
               />
             </div>
+            <div className="px-8 flex flex-col gap-2 pt-3 pb-4">
+              <label htmlFor="name">Username*</label>
+              <input
+                id="name"
+                onChange={async (e) => await onUpdateUserName(e.target.value)}
+                value={username}
+                className="bg-boxHover backdrop-blur-lg outline-custom py-1.5 px-4"
+                placeholder={userDt?.username}
+                type="text"
+              />
+            </div>
+            {usernameIsDoText.status && (
+              <p
+                className={`mx-8 rounded-lg border ${
+                  usernameIsDoText.status === "error"
+                    ? "border-red-500/40  text-red-500 bg-red-500"
+                    : usernameIsDoText.status === "success"
+                    ? "border-success/40 text-success bg-success"
+                    : "border-warning/40 text-warning bg-warning"
+                } bg-opacity-10 px-4 py-2 text-[0.69rem] backdrop-blur-md`}
+              >
+                {usernameIsDoText.status === "warning" && "⚠  "}
+                {usernameIsDoText.status === "error" && "❌  "}
+                {usernameIsDoText.status === "success" && "✅  "}
+                {usernameIsDoText.text || "Something went wrong"}
+              </p>
+            )}
             <div className="flex justify-center items-center pt-5 *:select-none">
               <button
                 disabled={
-                  (name === "" && pUrl === "") ||
-                  updateLod === true ||
-                  name === userDt?.name
+                  (name === "" && pUrl === "" && username === "") ||
+                  updateLod ||
+                  name === userDt?.name ||
+                  (username !== "" && usernameIsDoText.status !== "success")
                 }
                 onClick={async () => await handlePrUpdate()}
                 type="button"
-                className="bg-accent px-14 py-2 rounded-lg active:scale-[1.2] transition-all duration-300 disabled:opacity-30 disabled:pointer-events-none"
+                className="bg-text hover:bg-subtext px-14 py-2 rounded-lg active:scale-[1.2] transition-all duration-300 disabled:opacity-30 disabled:pointer-events-none"
               >
                 {updateLod ? (
                   <Loader2 size={25} className="animate-spin" />
                 ) : (
-                  <span>Update</span>
+                  <span className="text-bg">Update</span>
                 )}
               </button>
             </div>

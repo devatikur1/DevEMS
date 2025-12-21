@@ -5,7 +5,7 @@
 /* 1. Define the font face */
 @font-face {
   font-family: "CustomTriangleFont";
-  src: url("./font/01.woff2") format("woff2");
+  src: url("./font/02.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -38,6 +38,11 @@
 
 .us {
   user-select: text !important;
+}
+
+::selection {
+  color: #000000;
+  background-color: #fafafa;
 }
 
 @layer base {

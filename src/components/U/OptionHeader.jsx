@@ -1,17 +1,38 @@
 import clsx from "clsx";
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { motion } from "framer-motion"; // Framer motion install thakle
 
-export default function OptionHeader({ navItems }) {
+export default function OptionHeader({ navItems, isScrolled }) {
   const [hoveredTab, setHoveredTab] = useState(null);
+  console.log(isScrolled);
 
   return (
     <article className="sticky top-0 z-[100] w-full bg-surface border-b border-border select-none pt-2.5">
       <section
-        className="relative flex items-center gap-2 mx-3"
+        className="relative flex items-center gap-2 mx-4 transition-all duration-300"
         onMouseLeave={() => setHoveredTab(null)}
       >
+        <article
+          className={clsx(
+            "h-full flex justify-center items-center pb-1.5 mr-1 transition-all duration-300",
+            isScrolled && "scale-[1] flex",
+            !isScrolled && "scale-0 hidden"
+          )}
+        >
+          <Link to={"/"} className="min-w-5 min-h-5">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 76 65"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M38 0L76 65H0L38 0Z" fill="white" />
+            </svg>
+          </Link>
+        </article>
+
         {navItems.map((item) => (
           <NavLink
             key={item.path}

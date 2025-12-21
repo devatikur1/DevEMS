@@ -7,18 +7,19 @@ module.exports = {
         // Base Theme Colors
         bg: "#000000", // Deep black base background
         surface: "#0a0a0a", // Surface for cards or section
+        boxHover: "#1f1f1f", // Highlight or accent color
         accent: "#3b82f6", // Highlight or accent color
         accentA: "#27272a", // Highlight or accent color
-        text: "#fafafa", // Main text color
+        text: "#cccccc", // Main text color
         subtext: "#eeeeee", // Muted text color
         smtext: "#9f9fa9", // Muted text color
-        border: "#212123", // Divider color
-        hover: "#27272a", // Hover state
+        border: "#2d2d2d", // Divider color
+        hover: "#181818", // Hover state
 
         // Status subtle variants
-        success: "#4caf50",
+        success: "#10B981",
         warning: "#ffb300",
-        error: "#e53935",
+        error: "#EF4444",
       },
     },
   },
