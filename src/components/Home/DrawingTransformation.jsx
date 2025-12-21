@@ -92,7 +92,7 @@ export const DrawingTransformation = ({
         {/* Label tag that appears in stage 2 */}
         <div
           className={clsx(
-            "absolute -top-3 left-1/2 -translate-x-1/2 bg-zinc-100 text-zinc-900 border border-zinc-200 text-[8px] md:text-[10px] font-mono font-bold px-2 py-0.5 rounded-sm transition-all duration-500",
+            "absolute -top-3 left-1/2 -translate-x-1/2 bg-text text-bg border border-boxHover text-[8px] md:text-[10px] font-mono font-bold px-2 py-0.5 rounded-sm transition-all duration-500",
             stage === 2
               ? "opacity-100 translate-y-0" // apply this when 0, 1
               : "opacity-0 translate-y-2" // apply when 2
@@ -110,13 +110,7 @@ export const DrawingTransformation = ({
               stage === 1 ? "opacity-100" : "opacity-0"
             )}
           >
-            <InitialIcon className="w-8 h-8 md:w-12 md:h-12 text-zinc-500 stroke-1" />
-            {/* Technical corner markers instead of dash drawing */}
-            <div className="absolute -inset-2 border border-zinc-700/30 opacity-50"></div>
-            <div className="absolute top-0 left-0 w-2 h-2 border-l border-t border-zinc-500"></div>
-            <div className="absolute top-0 right-0 w-2 h-2 border-r border-t border-zinc-500"></div>
-            <div className="absolute bottom-0 left-0 w-2 h-2 border-l border-b border-zinc-500"></div>
-            <div className="absolute bottom-0 right-0 w-2 h-2 border-r border-b border-zinc-500"></div>
+            <InitialIcon className="w-8 h-8 md:w-12 md:h-12 text-smtext stroke-1" />
           </div>
 
           {/* Stage 2: Alive/Interactive */}
@@ -129,10 +123,10 @@ export const DrawingTransformation = ({
           >
             <FinalIcon className="w-10 h-10 md:w-14 md:h-14 text-blue-500" />
             {stage === 2 && (
-              <div className="mt-3 flex items-center gap-2 px-2 py-1 bg-zinc-900/80 rounded-full border border-zinc-700/50">
-                <div className="w-1 h-1 bg-green-500 rounded-full"></div>
-                <div className="w-8 h-0.5 bg-zinc-700 rounded-full overflow-hidden">
-                  <div className="h-full bg-blue-500 w-2/3 animate-[pulse_1s_infinite]"></div>
+              <div className="mt-3 flex items-center gap-2 px-2 py-1 bg-boxHover/50 rounded-full border border-boxHover">
+                <div className="w-1 h-1 bg-success rounded-full"></div>
+                <div className="w-8 h-0.5 bg-accentA rounded-full overflow-hidden">
+                  <div className="h-full bg-accent w-2/3 animate-[pulse_1s_infinite]"></div>
                 </div>
               </div>
             )}

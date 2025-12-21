@@ -115,7 +115,7 @@ export default function ProfileModalOverlay({
               <p
                 className={`mx-8 rounded-lg border ${
                   usernameIsDoText.status === "error"
-                    ? "border-red-500/40  text-red-500 bg-red-500"
+                    ? "border-error/40  text-error bg-error"
                     : usernameIsDoText.status === "success"
                     ? "border-success/40 text-success bg-success"
                     : "border-warning/40 text-warning bg-warning"

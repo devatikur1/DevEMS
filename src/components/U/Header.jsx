@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import QuickMenu from "./Header/QuickMenu";
 import ProfileModalOverlay from "./Header/ProfileModalOverlay";
 
-export default function Header() {
+export default function Header({ className= ""}) {
   // 🔹 useContext context
   const { authId } = useContext(AppContext);
   const { setIsLogged, setUserDt, userDt } = authId;
@@ -94,7 +94,7 @@ export default function Header() {
       const docSnap = await getDoc(doc(db, "username", mainValue));
 
       console.log(docSnap.data());
-      
+
       if (docSnap.exists()) {
         setUsernameIsDoText({
           status: "warning",
@@ -192,7 +192,9 @@ export default function Header() {
     <>
       {" "}
       {/* Main Header */}
-      <header className="w-full flex justify-center items-center select-none *:select-none bg-surface">
+      <header
+        className={`w-full flex justify-center items-center select-none *:select-none bg-surface ${className}`}
+      >
         <section className="w-full flex items-center justify-between px-5 pt-4">
           <article>
             <Link to={"/"} className="min-w-5 min-h-5">

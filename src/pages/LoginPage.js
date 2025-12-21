@@ -190,7 +190,7 @@ export default function LoginPage() {
                     >
                       Set Role
                     </button>
-                    <p className="mt-8 rounded-lg border border-warning/40 bg-amber-400/10 px-4 py-2 text-[0.68rem] text-warning backdrop-blur-md">
+                    <p className="mt-8 rounded-lg border border-warning/40 bg-warning/10 px-4 py-2 text-[0.68rem] text-warning backdrop-blur-md">
                       ⚠ Please note: once this is set, it cannot be changed
                       later.
                     </p>
@@ -240,7 +240,7 @@ export default function LoginPage() {
                   duration: 0.4,
                   ease: "easeInOut",
                 }}
-                className="max-w-[300px] mt-2 flex items-start gap-3 border border-red-500/30 bg-red-500/10 backdrop-blur-md rounded-xl px-4 py-3 text-red-400"
+                className="max-w-[300px] mt-2 flex items-start gap-3 border border-error/40 bg-error/20 backdrop-blur-md rounded-xl px-4 py-3 text-error/85"
               >
                 <AlertCircle className="shrink-0 mt-0.5" size={18} />
                 <div className="flex flex-col gap-0.5">

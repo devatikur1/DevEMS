@@ -76,7 +76,7 @@ export default function ULayout() {
             : [
                 { name: "Overview", path: "/u" },
                 { name: "Activity", path: "/u/activity" },
-                { name: "Teams", path: "/u/teams" },
+                { name: "Workspace", path: "/u/workspace" },
                 { name: "Analysis", path: "/u/analysis" },
               ]
         }

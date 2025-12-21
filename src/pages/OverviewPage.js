@@ -34,7 +34,7 @@ export default function OverviewPage() {
   // ✅ Render
   // ---------------------
   return (
-    <main className="w-full flex justify-center text-white min-h-screen bg-transparent">
+    <main className="w-full flex justify-center text-text min-h-screen bg-transparent">
       <div className="w-[95%] xl:w-[90%] 2xl:w-[71%] pt-10">
         {/* 🛠️ Toolbar Section */}
         <Toolbar currentView={currentView} updateView={updateView} />

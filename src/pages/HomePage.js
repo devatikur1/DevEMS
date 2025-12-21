@@ -125,7 +125,7 @@ export default function HomePage() {
           <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-6 leading-[1.1] text-white">
             {/* Line 1 */}
             <div className="hp-wrap">
-              <span className="hp inline-block">Manage your team</span>
+              <span className="hp inline-block">Manage your workspace</span>
             </div>
 
             {/* Line 2 */}
@@ -146,7 +146,7 @@ export default function HomePage() {
 
           <Link to={"/u"}>
             <div className="pt-9 hp">
-              <button className="text-[0.8rem] md:text-[1rem] bg-white text-black px-8 py-2 md:py-3 rounded-full font-medium hover:bg-zinc-200 transition-all hover:scale-105 pointer-events-auto">
+              <button className="text-[0.8rem] md:text-[1rem] bg-subtext text-black px-8 py-2 md:py-3 rounded-full font-medium hover:bg-text transition-all hover:scale-105 pointer-events-auto">
                 Start Managing Now
               </button>
             </div>

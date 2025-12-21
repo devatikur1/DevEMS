@@ -61,7 +61,7 @@
   ::-webkit-scrollbar-thumb {
     background: #212123;
     border-radius: 10px;
-    border: 2px solid #09090b; /* Ete scrollbar-er pashe ektu gap thakbe, dekhte shundor lage */
+    border: 2px solid #2d2d2d; /* Ete scrollbar-er pashe ektu gap thakbe, dekhte shundor lage */
   }
 
   /* Hover korle thumb-er color change - apnar 'hover' color (#27272a) */
@@ -73,4 +73,10 @@
   ::-webkit-scrollbar-corner {
     background: #09090b;
   }
+  
+   .scrollVeiwNone::-webkit-scrollbar {
+    display: none;
+  }
 }
+
+

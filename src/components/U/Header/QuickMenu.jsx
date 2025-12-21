@@ -27,10 +27,10 @@ export default function QuickMenu({
           initial={{ opacity: 0, y: -10, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -10, scale: 0.95 }}
-          className="absolute z-[110] top-[60px] md:right-5 md:mx-0 min-w-[95%] md:min-w-[240px] bg-surface backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl p-2 overflow-hidden"
+          className="absolute z-[110] top-[60px] md:right-5 md:mx-0 min-w-[95%] md:min-w-[240px] bg-surface backdrop-blur-2xl border border-border rounded-2xl shadow-2xl p-2 overflow-hidden"
         >
           {/* Header Section with Notun Data */}
-          <div className="px-4 py-3 border-b border-white/5 mb-2 bg-boxHover/70 rounded-xl">
+          <div className="px-4 py-3 border-b border-border/5 mb-2 bg-boxHover/70 rounded-xl">
             <div className="flex items-center justify-between mb-1">
               <p className="text-white text-[0.9rem] font-bold truncate leading-none">
                 {userDt?.name || "User"}
