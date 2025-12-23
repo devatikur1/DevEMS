@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AppContext, auth, db } from "./AppContext";
 import { onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc } from "firebase/firestore";
 
 export default function AppContextProvider({ children }) {
   // 🔹 authId-State
@@ -49,6 +49,7 @@ export default function AppContextProvider({ children }) {
         setIsLogged(false);
         setUserDt({});
       }
+
       
     });
 

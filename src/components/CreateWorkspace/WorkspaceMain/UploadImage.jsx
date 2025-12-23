@@ -4,7 +4,7 @@ export default function UploadImage({ img }) {
   const { imgData, setImgData } = img;
   return (
     <section className="flex items-center gap-4 mb-10">
-      <div className="relative z-10 group">
+      <div className="relative z-10 group bg-surface rounded-full overflow-hidden">
         <img
           src={
             imgData.url ||

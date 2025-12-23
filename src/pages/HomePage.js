@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useRef } from "react";
+import { Link } from "react-router-dom";
 
 import { DrawingTransformation } from "../components/Home/DrawingTransformation";
 import {
@@ -17,7 +17,6 @@ import {
 
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import { AppContext } from "../context/AppContext";
 
 gsap.registerPlugin(useGSAP);
 

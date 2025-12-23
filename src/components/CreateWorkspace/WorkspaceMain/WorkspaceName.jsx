@@ -12,7 +12,7 @@ export default function WorkspaceName({ tite }) {
             {title.split("").length}/50
           </span>
         </label>
-        <div className="relative flex items-center rounded-lg bg-bg border border-boxHover focus-within:border-accent/50 transition-all">
+        <div className="relative flex items-center rounded-lg bg-surface border border-boxHover focus-within:border-accent/50 transition-all">
           <TypeIcon size={18} className="absolute left-4 text-smtext" />
           <input
             value={title}

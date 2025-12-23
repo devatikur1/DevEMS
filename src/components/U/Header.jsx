@@ -8,6 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
 import QuickMenu from "./Header/QuickMenu";
 import ProfileModalOverlay from "./Header/ProfileModalOverlay";
+import { UploadImage } from "../../function/UploadImage";
 
 export default function Header({ className= ""}) {
   // 🔹 useContext context
@@ -125,25 +126,12 @@ export default function Header({ className= ""}) {
 
       // 🔹 1. ImgBB Upload
       if (pUrl.file) {
-        const formData = new FormData();
-        formData.append("image", pUrl.file);
-
-        const apiKey = "82961e2fd2171ce2e924fc0337aa7124";
-
-        const response = await fetch(
-          `https://api.imgbb.com/1/upload?key=${apiKey}`,
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
-
-        const resData = await response.json();
-
-        if (resData.success) {
-          finalPhotoURL = resData.data.url;
+        const res = UploadImage(pUrl.file);
+        if (!res.isError) {
+          finalPhotoURL = res.url;
         } else {
-          throw new Error("ImgBB upload failed");
+          toast.error(res.msg);
+          return;
         }
       }
 

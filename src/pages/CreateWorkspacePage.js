@@ -1,13 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
 import Header from "../components/U/Header";
-import CreateMain from "../components/CreateWorkspace/CreateMain";
+import WorkspaceMain from "../components/CreateWorkspace/WorkspaceMain";
 import { AppContext, db } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { collection, doc, getCountFromServer, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getCountFromServer,
+  setDoc,
+} from "firebase/firestore";
+import { UploadImage } from "../function/UploadImage";
 
 // ----------------------------
-// ✅ generate Unique Id
+// ✅ Generate Unique Id
 // ----------------------------
 function generateUniqueId() {
   if (crypto?.randomUUID) {
@@ -18,6 +24,9 @@ function generateUniqueId() {
   );
 }
 
+// -------------------
+// ✅ Main Fn
+// -------------------
 export default function CreateWorkspacePage() {
   // 🔹 useContext context
   const { authId, overviewdt } = useContext(AppContext);
@@ -46,34 +55,23 @@ export default function CreateWorkspacePage() {
       let finalPhotoURL;
       // 🔹 1. ImgBB Upload
       if (imgData.file) {
-        const formData = new FormData();
-        formData.append("image", imgData.file);
-
-        const apiKey = "82961e2fd2171ce2e924fc0337aa7124";
-
-        const response = await fetch(
-          `https://api.imgbb.com/1/upload?key=${apiKey}`,
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
-
-        const resData = await response.json();
-
-        if (resData.success) {
-          finalPhotoURL = resData.data.url;
+        const res = UploadImage(imgData.file);
+        if (!res.isError) {
+          finalPhotoURL = res.url;
         } else {
-          throw new Error("ImgBB upload failed");
+          toast.error(res.msg);
+          return;
         }
       }
 
       // Optional Get Count
-      const ssnap = await getCountFromServer(collection(db, `${userDt?.username}-workspace`));
-      const ssnapCount = ssnap.data().count
+      const ssnap = await getCountFromServer(
+        collection(db, `${userDt?.username}-workspace`)
+      );
+      const ssnapCount = ssnap.data().count;
       const msnap = await getCountFromServer(collection(db, "workspace"));
-      const msnapCount = msnap.data().count
-      
+      const msnapCount = msnap.data().count;
+
       // 🔹 2. Firestore Database Update
       const newTeam = {
         id: generateUniqueId(),
@@ -108,14 +106,14 @@ export default function CreateWorkspacePage() {
           merge: true,
         }
       );
-      setWorkspace((p) => [newTeam ,...p]);
+      setWorkspace((p) => [newTeam, ...p]);
       toast.success("Profile Updated Successfully!");
-      navigate("/u")
+      navigate("/u");
     } catch (error) {
       console.error("Update error:", error);
       toast.error("Update failed, please try again.");
     } finally {
-      setIsCreteing(false)
+      setIsCreteing(false);
     }
   }
 
@@ -136,7 +134,7 @@ export default function CreateWorkspacePage() {
   return (
     <aside className="relative w-full h-screen overflow-y-auto">
       <Header className={"border-b border-border pb-4 sticky top-0 z-50"} />
-      <CreateMain
+      <WorkspaceMain
         img={{ imgData, setImgData }}
         tite={{ title, setTitle }}
         des={{ description, setDescription }}

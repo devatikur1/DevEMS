@@ -1,15 +1,15 @@
 import React from "react";
-import UploadImage from "./CreateMain/UploadImage";
-import WorkspaceName from "./CreateMain/WorkspaceName";
-import CatMaxMemLimit from "./CreateMain/CatMaxMemLimit";
-import WorkspaceDes from "./CreateMain/WorkspaceDes";
-import WorkspaceTechStack from "./CreateMain/WorkspaceTechStack";
+import UploadImage from "./WorkspaceMain/UploadImage";
+import WorkspaceName from "./WorkspaceMain/WorkspaceName";
+import CatMaxMemLimit from "./WorkspaceMain/CatMaxMemLimit";
+import WorkspaceDes from "./WorkspaceMain/WorkspaceDes";
+import WorkspaceTechStack from "./WorkspaceMain/WorkspaceTechStack";
 import { Loader2 } from "lucide-react";
 
 export default function CreateMain(props) {
   return (
     <main className="w-full flex justify-center pb-20">
-      <section className="w-[98%] xl:w-[90%] 2xl:w-[65%] mt-10 rounded-xl px-4 md:px-8 py-10 shadow-2xl bg-surface border border-boxHover">
+      <section className="w-[98%] xl:w-[90%] 2xl:w-[65%] mt-10 rounded-xl px-4 md:px-8 py-10">
         <h1 className="text-3xl font-bold text-center text-white mb-2">
           Create New Workspace
         </h1>
