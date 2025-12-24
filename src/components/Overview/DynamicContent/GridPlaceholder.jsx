@@ -1,13 +1,10 @@
 import {
   MoreHorizontal,
   ShieldCheck,
-  Clock,
   Layers,
   Users,
   Briefcase,
 } from "lucide-react";
-import moment from "moment";
-import React from "react";
 import { Link } from "react-router-dom";
 
 export default function GridPlaceholder({ project }) {
