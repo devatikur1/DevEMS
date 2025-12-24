@@ -56,11 +56,9 @@ export default function CreateWorkspacePage() {
         "https://cdn-icons-png.flaticon.com/512/919/919851.png";
       // 🔹 1. ImgBB Upload
       if (imgData.file) {
-        const res = UploadImage(imgData.file);
+        const res = await UploadImage(imgData.file);
         if (res.isError === false) {
           console.log(res.url);
-          console.log(res.url);
-
           finalPhotoURL = res.url;
         } else {
           toast.error(res.msg || "Image Upload Error");
@@ -110,7 +108,7 @@ export default function CreateWorkspacePage() {
       );
       setWorkspace((p) => [newTeam, ...p]);
       toast.success("Profile Updated Successfully!");
-      navigate("/u");
+      
     } catch (error) {
       console.error("Update error:", error);
       toast.error("Update failed, please try again.");

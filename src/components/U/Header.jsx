@@ -126,7 +126,7 @@ export default function Header({ className= ""}) {
 
       // 🔹 1. ImgBB Upload
       if (pUrl.file) {
-        const res = UploadImage(pUrl.file);
+        const res = await UploadImage(pUrl.file);
         if (!res.isError) {
           finalPhotoURL = res.url;
         } else {

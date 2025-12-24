@@ -56,7 +56,6 @@ export default function AppContextProvider({ children }) {
             // 3. Then Check count < 0 tahole Get Data
             if (count > 0) {
               const querySnapshot = await getDocs(collectionRef);
-              console.log(querySnapshot);
               const wdata = querySnapshot.docs.map((doc) => doc.data());
               setWorkspace(wdata);
             } else {

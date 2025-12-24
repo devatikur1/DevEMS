@@ -15,7 +15,11 @@ export async function UploadImage(file) {
 
     const resData = await response.json();
 
-      return { isError: false, url: resData?.data?.display_url };
+    if (resData.data.display_url) {
+      return { isError: false, url: resData.data.display_url };
+    } else {
+      return { isError: true, msg: "ImgBB upload failed" };
+    }
   } catch (error) {
     return { isError: true, msg: error };
   }

@@ -21,10 +21,10 @@ export default function ProfileModalOverlay({
   // ✅ Image Change Fn
   // ---------------------
   function onChangeImage(e) {
-    if (e.target.files[0].size < 32 * 1024 * 1024) {
+    if (e?.target?.files[0].size < 32 * 1024 * 1024) {
       setPUrl({
-        file: e.target.files[0],
-        url: URL.createObjectURL(e.target.files[0]),
+        file: e?.target?.files[0],
+        url: URL.createObjectURL(e?.target?.files[0]),
       });
     } else {
       toast.error("Img Must be lower than 32 MB");

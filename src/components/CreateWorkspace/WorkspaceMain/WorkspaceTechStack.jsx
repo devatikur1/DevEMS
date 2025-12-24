@@ -16,6 +16,10 @@ const availableTags = [
   "HTML5",
   "CSS3",
 
+  // App Dev
+  "Flutter",
+  "React Native",
+
   // UI/UX & Design
   "Figma",
   "Adobe XD",

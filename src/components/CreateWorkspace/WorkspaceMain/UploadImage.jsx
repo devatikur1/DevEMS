@@ -1,7 +1,21 @@
 import React from "react";
+import toast from "react-hot-toast";
 
 export default function UploadImage({ img }) {
   const { imgData, setImgData } = img;
+  // ---------------------
+  // ✅ Image Change Fn
+  // ---------------------
+  function onChangeImage(e) {
+    if (e?.target?.files[0].size < 32 * 1024 * 1024) {
+      setImgData({
+        file: e?.target?.files[0],
+        url: URL.createObjectURL(e?.target?.files[0]),
+      });
+    } else {
+      toast.error("Img Must be lower than 32 MB");
+    }
+  }
   return (
     <section className="flex items-center gap-4 mb-10">
       <div className="relative z-10 group bg-surface rounded-full overflow-hidden">
@@ -21,12 +35,7 @@ export default function UploadImage({ img }) {
         </label>
       </div>
       <input
-        onChange={(e) =>
-          setImgData({
-            url: URL.createObjectURL(e.target.files[0]),
-            file: e.target.files[0],
-          })
-        }
+        onChange={onChangeImage}
         id="file"
         accept="image/*"
         className="hidden"
