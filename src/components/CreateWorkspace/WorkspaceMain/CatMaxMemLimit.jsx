@@ -38,7 +38,9 @@ export default function CatMaxMemLimit({ cat, totalMem }) {
             onChange={(e) => setCategory(e.target.value)}
             className="bg-transparent w-full pl-12 pr-4 py-3 text-sm text-white outline-none appearance-none cursor-pointer"
           >
-            <option disabled className="bg-surface">Select Category</option>
+            <option value="" selected disabled className="bg-surface">
+              Select Category
+            </option>
             {categories.map((cat) => (
               <option key={cat} value={cat} className="bg-surface">
                 {cat}

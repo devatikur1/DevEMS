@@ -7,13 +7,23 @@ import { AppContext } from "../context/AppContext";
 export default function OverviewPage() {
   // 🔹 useContext context
   const { overviewdt } = useContext(AppContext);
-  const { workspaces } = overviewdt;
+  const { workspaces, setWorkspace, workspacesGetting, setWorkspacesGetting } =
+    overviewdt;
 
   // 🔹 Router &&  State
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentView, setCurrentView] = useState(
     searchParams.get("view") === "list" ? "list" : "grid"
   );
+  const [workspaceData, setworkspaceData] = useState([]);
+
+  // --------------------------------------------------
+  // ✅ Change workspaces Data depent of workspaces
+  // -------------------------------------------------
+  useEffect(() => {
+    console.log(workspaces);
+    setworkspaceData(workspaces);
+  }, [workspaces]);
 
   // -------------------------
   // ✅ View Change Function
@@ -46,7 +56,10 @@ export default function OverviewPage() {
         <Toolbar currentView={currentView} updateView={updateView} />
 
         {/* 📑 Dynamic Content Area */}
-        <DynamicContent currentView={currentView} workspaces={workspaces} />
+        <DynamicContent
+          currentView={currentView}
+          workspaceData={workspaceData}
+        />
       </div>
     </main>
   );

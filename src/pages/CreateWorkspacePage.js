@@ -52,14 +52,18 @@ export default function CreateWorkspacePage() {
     e.preventDefault();
     setIsCreteing(true);
     try {
-      let finalPhotoURL;
+      let finalPhotoURL =
+        "https://cdn-icons-png.flaticon.com/512/919/919851.png";
       // 🔹 1. ImgBB Upload
       if (imgData.file) {
         const res = UploadImage(imgData.file);
-        if (!res.isError) {
+        if (res.isError === false) {
+          console.log(res.url);
+          console.log(res.url);
+
           finalPhotoURL = res.url;
         } else {
-          toast.error(res.msg);
+          toast.error(res.msg || "Image Upload Error");
           return;
         }
       }
@@ -76,9 +80,7 @@ export default function CreateWorkspacePage() {
       const newTeam = {
         id: generateUniqueId(),
         name: title,
-        favicon:
-          finalPhotoURL ||
-          "https://cdn-icons-png.flaticon.com/512/919/919851.png",
+        favicon: finalPhotoURL,
         category: category,
         description: description,
         lastUpdate: new Date().toISOString(),

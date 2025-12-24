@@ -36,13 +36,8 @@ export default function ULayout() {
     });
     return () => unsubscribe?.();
   }, [scrollYProgress]);
-
-  useEffect(() => {
-    console.log(isScrolled);
-    
-  }, [isScrolled]);
   
-
+  
   // 🔹 Ref
   const navigate = useNavigate();
 

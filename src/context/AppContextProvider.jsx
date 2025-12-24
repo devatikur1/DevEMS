@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { AppContext, auth, db } from "./AppContext";
 import { onAuthStateChanged } from "firebase/auth";
-import { collection, doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getCountFromServer,
+  getDoc,
+  getDocs,
+} from "firebase/firestore";
 
 export default function AppContextProvider({ children }) {
   // 🔹 authId-State
@@ -11,6 +17,7 @@ export default function AppContextProvider({ children }) {
   const [userDt, setUserDt] = useState(
     JSON.parse(localStorage.getItem("userDt")) || {}
   );
+  const [workspacesGetting, setWorkspacesGetting] = useState(false);
   const [workspaces, setWorkspace] = useState([]);
 
   // --------------------------
@@ -26,7 +33,7 @@ export default function AppContextProvider({ children }) {
         return;
       }
 
-      // 🔹 Get Data 
+      // 🔹 Get Data
       try {
         const docSnap = await getDoc(doc(db, "users", user.uid));
 
@@ -36,6 +43,30 @@ export default function AppContextProvider({ children }) {
           localStorage.setItem("userDt", JSON.stringify(data));
           setIsLogged(true);
           setUserDt(data);
+
+          // 🔹 Get Workspaces Data
+          setWorkspacesGetting(true);
+          try {
+            const collectionRef = collection(db, `${data?.username}-workspace`);
+
+            // 1. Get Collection er Count
+            const countsnap = await getCountFromServer(collectionRef);
+            const count = countsnap.data().count;
+
+            // 3. Then Check count < 0 tahole Get Data
+            if (count > 0) {
+              const querySnapshot = await getDocs(collectionRef);
+              console.log(querySnapshot);
+              const wdata = querySnapshot.docs.map((doc) => doc.data());
+              setWorkspace(wdata);
+            } else {
+              setWorkspace([]);
+            }
+          } catch (error) {
+            console.log(error);
+          } finally {
+            setWorkspacesGetting(false);
+          }
         } else {
           localStorage.removeItem("isLogged");
           localStorage.removeItem("userDt");
@@ -49,8 +80,6 @@ export default function AppContextProvider({ children }) {
         setIsLogged(false);
         setUserDt({});
       }
-
-      
     });
 
     return () => unsubscribe();
@@ -69,6 +98,8 @@ export default function AppContextProvider({ children }) {
     overviewdt: {
       workspaces,
       setWorkspace,
+      workspacesGetting,
+      setWorkspacesGetting,
     },
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
