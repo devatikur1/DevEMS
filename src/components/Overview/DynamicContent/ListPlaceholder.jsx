@@ -105,12 +105,12 @@ export default function ListPlaceholder({ project, isFast, isLast }) {
       </div>
 
       <div className="item-5 flex lg:hidden flex-col justify-start">
-        <p class="text-subtext/70 text-[13px] line-clamp-1 leading-relaxed">
+        <p className="text-subtext/70 text-[13px] line-clamp-1 leading-relaxed">
           Building scalable microservices and robust database architectures.
         </p>
-        <div class="relative z-10 flex items-center justify-start pt-3 text-[11px] text-zinc-500">
-          <div class="flex items-center gap-3">
-            <div class="flex items-center gap-1.5">
+        <div className="relative z-10 flex items-center justify-start pt-3 text-[11px] text-zinc-500">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="12"
@@ -118,10 +118,10 @@ export default function ListPlaceholder({ project, isFast, isLast }) {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-users"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-users"
                 aria-hidden="true"
               >
                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
@@ -131,7 +131,7 @@ export default function ListPlaceholder({ project, isFast, isLast }) {
               </svg>
               <span>1/25</span>
             </div>
-            <div class="flex items-center gap-1.5">
+            <div className="flex items-center gap-1.5">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="12"
@@ -139,10 +139,10 @@ export default function ListPlaceholder({ project, isFast, isLast }) {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-briefcase"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-briefcase"
                 aria-hidden="true"
               >
                 <path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
