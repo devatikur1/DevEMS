@@ -54,7 +54,7 @@ export default function ULayout() {
   // ✅ Render
   // ---------------------
   return (
-    <main ref={containerRef} className="h-screen overflow-y-auto">
+    <main ref={containerRef} className="h-screen overflow-y-auto overflow-x-hidden">
       {/* Main Header */}
       <Header />
       {/* Options Header */}

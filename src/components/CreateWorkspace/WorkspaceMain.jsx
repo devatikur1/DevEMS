@@ -10,10 +10,10 @@ export default function CreateMain(props) {
   return (
     <main className="w-full flex justify-center pb-20">
       <section className="w-[98%] xl:w-[90%] 2xl:w-[65%] mt-10 rounded-xl px-4 md:px-8 py-10">
-        <h1 className="text-3xl font-bold text-center text-white mb-2">
+        <h1 className="text-2xl md:text-3xl font-bold text-center text-white mb-2">
           Create New Workspace
         </h1>
-        <p className="text-smtext text-center text-sm mb-10">
+        <p className="text-smtext text-center text-[12px] md:text-sm mb-10">
           Please provide the details below to set up your team profile.
         </p>
 

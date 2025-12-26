@@ -20,7 +20,7 @@ export default function GridPlaceholder({ project }) {
     }
   };
   return (
-    <div className="group relative flex flex-col gap-5 p-5 bg-surface border border-boxHover rounded-xl hover:border-smtext/40 transition-all duration-300">
+    <li className="group relative flex flex-col gap-5 p-5 bg-surface border border-boxHover rounded-xl hover:border-smtext/40 transition-all duration-300">
       {/* 🔗 Card Overly Link */}
       <Link
         to={`/u/workspaces/${project.id}`}
@@ -127,6 +127,6 @@ export default function GridPlaceholder({ project }) {
           <span>{getMemberLevel(project.maxMembers)}</span>
         </div>
       </div>
-    </div>
+    </li>
   );
 }

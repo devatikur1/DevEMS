@@ -129,7 +129,7 @@ export default function LoginPage() {
           "radial-gradient(circle, rgba(159, 159, 169, 0.4) 1px, transparent 1px)",
         backgroundSize: "50px 50px",
       }}
-      className="relative h-screen overflow-y-auto flex justify-center items-center select-none *:select-none animate-bg-dots"
+      className="relative h-full overflow-x-hidden overflow-y-auto flex justify-center items-center select-none *:select-none animate-bg-dots"
     >
       <AnimatePresence>
         <motion.div
@@ -139,9 +139,9 @@ export default function LoginPage() {
           transition={{
             duration: 0.4,
           }}
-          className="min-w-[95%] md:min-w-[400px] flex flex-col gap-4 items-center justify-center bg-surface border border-border rounded-lg mx-8 px-11 py-9"
+          className="min-w-[100%] h-full md:h-auto md:min-w-[400px] flex flex-col gap-4 items-center justify-center bg-surface md:border border-border rounded-lg mx-8 px-5 md:px-11 py-9"
         >
-          <h2 className="text-[1.7rem] font-bold ">Login</h2>
+          <h2 className="text-[1.8rem] md:text-[1.7rem] font-bold ">Login</h2>
           <div className="flex flex-col items-center justify-center gap-5 select-none *:select-none mt-5">
             <AnimatePresence>
               {showGoogleLoginBtn === false && (

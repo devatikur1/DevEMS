@@ -133,7 +133,7 @@ export default function CreateWorkspacePage() {
   // ---------------------
   return (
     <aside className="relative w-full h-screen overflow-y-auto">
-      <Header className={"border-b border-border pb-4 sticky top-0 z-50"} />
+      <Header className={"border-b border-border pb-3.5 sticky top-0 z-50"} />
       <WorkspaceMain
         img={{ imgData, setImgData }}
         tite={{ title, setTitle }}

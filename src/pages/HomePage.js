@@ -130,21 +130,21 @@ export default function HomePage() {
             {/* Line 2 */}
             <div className="hp-wrap">
               <span className="hp inline-block">with</span>{" "}
-              <span className="hp inline-block underline decoration-4 decoration-blue-500 underline-offset-4 md:underline-offset-8">
+              <span className="hp inline-block underline decoration-4 decoration-blue-500 underline-offset-4 md:underline-offset-8 text-subtext" >
                 intelligence
               </span>
             </div>
           </h2>
 
           <div className="hp-wrap">
-            <p className="hp text-base sm:text-lg text-zinc-400 max-w-2xl mx-auto font-normal">
+            <p className="hp text-[12px] sm:text-lg text-zinc-400 max-w-2xl mx-auto font-normal">
               A unified platform to manage payroll, attendance, and performance.
               Streamline your HR operations with AI-powered insights.
             </p>
           </div>
 
           <Link to={"/u"}>
-            <div className="pt-9 hp">
+            <div className="pt-6 md:pt-9 hp">
               <button className="text-[0.8rem] md:text-[1rem] bg-subtext text-black px-8 py-2 md:py-3 rounded-full font-medium hover:bg-text transition-all hover:scale-105 pointer-events-auto">
                 Start Managing Now
               </button>

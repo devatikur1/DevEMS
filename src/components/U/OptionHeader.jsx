@@ -7,7 +7,7 @@ export default function OptionHeader({ navItems, isScrolled }) {
   const [hoveredTab, setHoveredTab] = useState(null);
 
   return (
-    <article className="sticky top-0 z-[100] w-full bg-surface border-b border-border select-none pt-2.5">
+    <article className="sticky top-0 z-[100] w-full bg-surface border-b border-border select-none pt-2.5 overflow-x-auto scrollVeiwNone touch-pan-x">
       <section
         className="relative flex items-center gap-2 mx-4 transition-all duration-300"
         onMouseLeave={() => setHoveredTab(null)}

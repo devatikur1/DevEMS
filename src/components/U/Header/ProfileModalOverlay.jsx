@@ -1,5 +1,5 @@
 import React from "react";
-import { Loader2, X } from "lucide-react";
+import { Loader2, Pen, X } from "lucide-react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 
@@ -35,7 +35,7 @@ export default function ProfileModalOverlay({
   // ✅ Render
   // ---------------------
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[200] flex items-center justify-center sm:p-4 overflow-x-hidden overflow-y-auto">
       {/* Backdrop-BG */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -50,11 +50,11 @@ export default function ProfileModalOverlay({
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-        className="relative w-full max-w-lg bg-surface border border-border rounded-2xl shadow-2xl overflow-hidden"
+        className="relative w-full max-w-full h-full sm:h-auto sm:max-w-lg bg-surface border border-border sm:rounded-2xl shadow-2xl overflow-hidden"
       >
-        <div className="p-6 pb-8">
+        <div className="px-0 py-4 sm:p-6 pb-8">
           {/* Header-Part */}
-          <div className="flex justify-between items-center mb-6 *:select-none">
+          <div className="px-5 pt-4 sm:px-0 flex justify-between items-center mb-6 *:select-none">
             <h2 className="text-xl font-bold text-white">Profile Settings</h2>
             <button
               onClick={() => closeProfile()}
@@ -70,17 +70,20 @@ export default function ProfileModalOverlay({
               <p className="rounded-lg border border-warning/40 bg-warning/10 px-4 py-2 text-[0.65rem] text-warning backdrop-blur-md">
                 ⚠ Img Must be lower than 32 MB
               </p>
-              <img
-                src={photoURL}
-                alt=""
-                className="w-24 h-24 object-cover rounded-full border-2 border-text p-1"
-              />
-              <label
-                htmlFor="file"
-                className="text-xs text-text hover:underline decoration-accent"
-              >
-                Change Photo
-              </label>
+              <div className="group relative">
+                <img
+                  src={photoURL}
+                  alt=""
+                  className="w-24 h-24 object-cover rounded-full border-2 border-text p-1"
+                />
+                <label
+                  htmlFor="file"
+                  className="absolute -bottom-1 -right-1 flex justify-center items-center gap-1 rounded-[8px] px-1.5 py-0.5 bg-surface border border-boxHover text-[0.75rem] text-smtext"
+                >
+                  <Pen size={13} />
+                  <span>Edit</span>
+                </label>
+              </div>
               <input
                 id="file"
                 accept="image/*"

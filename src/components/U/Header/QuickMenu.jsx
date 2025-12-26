@@ -58,7 +58,7 @@ export default function QuickMenu({
               onClick={() => {
                 navigate(`/${userDt?.username}`);
               }}
-              className="w-full text-left text-[0.85rem] text-zinc-300 hover:text-white hover:bg-hover transition-all flex items-center gap-3 px-3 py-2.5 rounded-xl group"
+              className="w-full text-left text-[0.8rem] md:text-[0.85rem] text-zinc-300 hover:text-white hover:bg-hover transition-all flex items-center gap-3 px-3 py-2.5 rounded-xl group"
             >
               <User
                 size={16}
@@ -71,7 +71,7 @@ export default function QuickMenu({
                 openProfile();
                 setShowOpBar(false);
               }}
-              className="w-full text-left text-[0.85rem] text-zinc-300 hover:text-white hover:bg-hover/50 transition-all flex items-center gap-3 px-3 py-2.5 rounded-xl group"
+              className="w-full text-left text-[0.8rem] md:text-[0.85rem] text-zinc-300 hover:text-white hover:bg-hover/50 transition-all flex items-center gap-3 px-3 py-2.5 rounded-xl group"
             >
               <Settings
                 size={16}
@@ -82,7 +82,7 @@ export default function QuickMenu({
             <div className="h-[1px] bg-border/50 my-1 mx-2" /> {/* Divider */}
             <button
               onClick={handleLogout}
-              className="w-full text-left text-[0.85rem] text-red-400 hover:text-red-500 hover:bg-red-500/5 transition-all flex items-center gap-3 px-3 py-2.5 rounded-xl group"
+              className="w-full text-left text-[0.8rem] md:text-[0.85rem] text-red-400 hover:text-red-500 hover:bg-red-500/5 transition-all flex items-center gap-3 px-3 py-2.5 rounded-xl group"
             >
               <LogOut
                 size={16}

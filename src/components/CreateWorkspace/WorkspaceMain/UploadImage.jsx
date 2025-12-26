@@ -1,3 +1,4 @@
+import { Pen, UploadCloud } from "lucide-react";
 import React from "react";
 import toast from "react-hot-toast";
 
@@ -18,20 +19,27 @@ export default function UploadImage({ img }) {
   }
   return (
     <section className="flex items-center gap-4 mb-10">
-      <div className="relative z-10 group bg-surface rounded-full overflow-hidden">
-        <img
-          src={
-            imgData.url ||
-            "https://cdn-icons-png.flaticon.com/512/2450/2450254.png"
-          }
-          alt="Avatar"
-          className="w-28 h-28 object-cover rounded-full border-2 border-accent p-1 group-hover:scale-105 transition-all"
-        />
+      <div className="relative z-10 group bg-surface rounded-full">
+        {imgData.url ? (
+          <img
+            src={imgData.url}
+            alt="Avatar"
+            className="w-28 h-28 object-cover rounded-full border-2 border-accent p-1 group-hover:scale-105 transition-all"
+          />
+        ) : (
+          <div className="w-28 h-28 rounded-full border-2 border-dashed border-border bg-boxHover/10 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-zinc-800 transition-all">
+            <UploadCloud size={24} className="text-zinc-500" />
+            <span className="text-[10px] text-zinc-500 font-medium">
+              Upload
+            </span>
+          </div>
+        )}
         <label
           htmlFor="file"
-          className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity text-[10px] text-text font-bold"
+          className="absolute -bottom-1 -right-1 flex justify-center items-center gap-1 rounded-[8px] px-1.5 py-0.5 bg-surface border border-boxHover text-[0.75rem] text-smtext"
         >
-          Change Image
+          <Pen size={13} />
+          <span>Edit</span>
         </label>
       </div>
       <input

@@ -185,7 +185,7 @@ export default function Header({ className= ""}) {
       >
         <section className="w-full flex items-center justify-between px-5 pt-4">
           <article>
-            <Link to={"/"} className="min-w-5 min-h-5">
+            <Link to={"/"} className="min-w-4 min-h-4 md:min-w-5 md:min-h-5">
               <svg
                 width="20"
                 height="20"
@@ -198,7 +198,7 @@ export default function Header({ className= ""}) {
             </Link>
           </article>
           <article>
-            <h1 className="text-[1.15rem] font-bold tracking-tighter text-white">
+            <h1 className="text-[1.1rem] md:text-[1.15rem] font-bold tracking-tighter text-white">
               DevEMS
             </h1>
           </article>
@@ -209,7 +209,7 @@ export default function Header({ className= ""}) {
             <img
               src={userDt?.photoURL || "https://cdn.auth0.com/avatars/E.png"}
               alt="user"
-              className="w-[30px] h-[30px] rounded-full border border-accent object-cover hover:scale-105 transition-transform"
+              className="size-[25px] md:size-[30px]  rounded-full border border-accent object-cover hover:scale-105 transition-transform"
             />
           </article>
         </section>

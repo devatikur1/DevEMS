@@ -21,7 +21,7 @@ export default function Toolbar({ currentView, updateView }) {
   return (
     <>
       {/* Toolbar Main Part */}
-      <section className="w-full h-[42px] flex flex-row items-center gap-3">
+      <section className="w-full h-[42px] flex flex-row items-center gap-1 md:gap-2 lg:gap-3">
         {/* 🔍 Search Input Area */}
         <article className="flex-1 h-full relative rounded-md bg-surface border border-boxHover focus-within:border-border transition-all group">
           <div className="absolute left-3 h-full flex items-center pointer-events-none">

@@ -52,10 +52,10 @@ export default function OverviewPage() {
   return (
     <main className="w-full flex justify-center text-text min-h-screen bg-transparent">
       <div className="w-[95%] xl:w-[90%] 2xl:w-[71%] pt-10">
-        {/* 🛠️ Toolbar Section */}
+        {/* Toolbar Section */}
         <Toolbar currentView={currentView} updateView={updateView} />
 
-        {/* 📑 Dynamic Content Area */}
+        {/* Dynamic Content Area */}
         <DynamicContent
           currentView={currentView}
           workspaceData={workspaceData}
