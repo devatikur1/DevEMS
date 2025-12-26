@@ -58,6 +58,7 @@ export default function OverviewPage() {
         {/* Dynamic Content Area */}
         <DynamicContent
           currentView={currentView}
+          workspacesGetting={workspacesGetting}
           workspaceData={workspaceData}
         />
       </div>

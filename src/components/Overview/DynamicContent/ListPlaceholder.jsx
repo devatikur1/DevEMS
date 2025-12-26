@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Layers, MoreHorizontal, Users } from "lucide-react";
+import { Briefcase, Layers, MoreHorizontal, Users } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 import PerformanceGauge from "./PerformanceGauge";
@@ -35,7 +35,7 @@ export default function ListPlaceholder({ project, isFast, isLast }) {
           </h3>
           <div className="flex items-center gap-2">
             <span className="text-[10.2px] lg:text-[11px] text-zinc-500">
-              By {project.leadName}
+              By {project.lead}
             </span>
             <span
               className={`h-1 w-1 rounded-full ${
@@ -111,43 +111,11 @@ export default function ListPlaceholder({ project, isFast, isLast }) {
         <div className="relative z-10 flex items-center justify-start pt-3 text-[11px] text-zinc-500">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="lucide lucide-users"
-                aria-hidden="true"
-              >
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                <path d="M16 3.128a4 4 0 0 1 0 7.744"></path>
-                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-              </svg>
+              <Users size={12} />
               <span>1/25</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="lucide lucide-briefcase"
-                aria-hidden="true"
-              >
-                <path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-                <rect width="20" height="14" x="2" y="6" rx="2"></rect>
-              </svg>
+              <Briefcase size={12} />
               <span>0 Projects</span>
             </div>
           </div>

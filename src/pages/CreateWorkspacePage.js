@@ -85,12 +85,13 @@ export default function CreateWorkspacePage() {
         status: "Active",
         members: 1,
         maxMembers: totalMembers >= 10 ? Number(totalMembers) : "Unlimited",
-        leadName: userDt?.name || "",
+        lead: userDt?.name || "",
         leadUserName: userDt?.username || "",
-        leadUid: userDt?.uid || "",
+        leadId: userDt?.uid || "",
         tags: activeTags,
         performance: "0%",
         projectsCount: 0,
+        activeTasks: 0,
         mid: msnapCount,
         sid: ssnapCount,
       };
@@ -108,7 +109,7 @@ export default function CreateWorkspacePage() {
       );
       setWorkspace((p) => [newTeam, ...p]);
       toast.success("Profile Updated Successfully!");
-      
+      navigate("/u");
     } catch (error) {
       console.error("Update error:", error);
       toast.error("Update failed, please try again.");

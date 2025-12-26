@@ -27,12 +27,15 @@ export default function UploadImage({ img }) {
             className="w-28 h-28 object-cover rounded-full border-2 border-accent p-1 group-hover:scale-105 transition-all"
           />
         ) : (
-          <div className="w-28 h-28 rounded-full border-2 border-dashed border-border bg-boxHover/10 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-zinc-800 transition-all">
+          <label
+            htmlFor="file"
+            className="w-28 h-28 rounded-full border-2 border-dashed border-border bg-boxHover/10 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-zinc-800 transition-all"
+          >
             <UploadCloud size={24} className="text-zinc-500" />
             <span className="text-[10px] text-zinc-500 font-medium">
               Upload
             </span>
-          </div>
+          </label>
         )}
         <label
           htmlFor="file"

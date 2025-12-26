@@ -44,7 +44,7 @@ export default function GridPlaceholder({ project }) {
             </h3>
             <div className="flex items-center gap-2 mt-1">
               <span className="text-[11px] text-zinc-500 font-medium">
-                By <span className="text-zinc-300">{project.leadName}</span>
+                By <span className="text-zinc-300">{project.lead}</span>
               </span>
               <span className="text-zinc-700 text-[10px]">•</span>
               <div className="flex items-center gap-1">
