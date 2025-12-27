@@ -1,14 +1,36 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useSearchParams } from "react-router-dom";
 import Toolbar from "../components/Overview/Toolbar";
 import DynamicContent from "../components/Overview/DynamicContent";
-import { AppContext } from "../context/AppContext";
+import { AppContext, db } from "../context/AppContext";
+import { useScroll } from "framer-motion";
+import {
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  startAfter,
+} from "firebase/firestore";
 
 export default function OverviewPage() {
   // 🔹 useContext context
-  const { overviewdt } = useContext(AppContext);
-  const { workspaces, setWorkspace, workspacesGetting, setWorkspacesGetting } =
-    overviewdt;
+  const { overviewdt, authId, containerRef } = useContext(AppContext);
+  const { userDt } = authId;
+  const {
+    workspaces,
+    setWorkspace,
+    workspacesGetting,
+    setWorkspacesGetting,
+    lastWorkspaces,
+    setLastWorkspace,
+  } = overviewdt;
 
   // 🔹 Router &&  State
   const [searchParams, setSearchParams] = useSearchParams();
@@ -16,6 +38,9 @@ export default function OverviewPage() {
     searchParams.get("view") === "list" ? "list" : "grid"
   );
   const [workspaceData, setworkspaceData] = useState([]);
+
+  // 🔹 Ref
+  const scrollTriggeredRef = useRef(null);
 
   // --------------------------------------------------
   // ✅ Change workspaces Data depent of workspaces
@@ -45,6 +70,52 @@ export default function OverviewPage() {
       setCurrentView("grid");
     }
   }, [searchParams]);
+
+  // --------------------------------------
+  // ✅ INFINITE SCROLL FOR SUBSCRIPTIONS
+  // --------------------------------------
+  const { scrollYProgress } = useScroll({ container: containerRef });
+
+  const handleScrollChange = useCallback(async (value) => {
+    console.log(value);
+
+    if (
+      value > 0.85 &&
+      Array.from(lastWorkspaces).length === 0 &&
+      !scrollTriggeredRef.current
+    ) {
+      scrollTriggeredRef.current = true;
+      setWorkspacesGetting(true);
+
+      try {
+        const collectionRef = collection(db, `${userDt?.username}-workspace`);
+
+        const Limit = 2;
+        const q = query(
+          collectionRef,
+          startAfter(lastWorkspaces),
+          orderBy("serialid", "asc"),
+          limit(Limit)
+        );
+        const querySnapshot = await getDocs(q);
+        const wdata = querySnapshot.docs.map((doc) => doc.data());
+        if (wdata.length === Limit) {
+          setLastWorkspace(querySnapshot.docs[querySnapshot.docs.length - 1]);
+        }
+        setWorkspace((p) => [...p, ...wdata]);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setWorkspacesGetting(false);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!scrollYProgress) return;
+    const unsubscribe = scrollYProgress.on("change", handleScrollChange);
+    return () => unsubscribe?.();
+  }, [scrollYProgress, handleScrollChange]);
 
   // ---------------------
   // ✅ Render

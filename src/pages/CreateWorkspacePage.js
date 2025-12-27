@@ -67,12 +67,8 @@ export default function CreateWorkspacePage() {
       }
 
       // Optional Get Count
-      const ssnap = await getCountFromServer(
-        collection(db, `${userDt?.username}-workspace`)
-      );
-      const ssnapCount = ssnap.data().count;
-      const msnap = await getCountFromServer(collection(db, "workspace"));
-      const msnapCount = msnap.data().count;
+      const snap = await getCountFromServer(collection(db, "workspace"));
+      const serialsnapCount = snap.data().count;
 
       // 🔹 2. Firestore Database Update
       const newTeam = {
@@ -92,8 +88,7 @@ export default function CreateWorkspacePage() {
         performance: "0%",
         projectsCount: 0,
         activeTasks: 0,
-        mid: msnapCount,
-        sid: ssnapCount,
+        serialid: serialsnapCount,
       };
       console.log(newTeam);
 

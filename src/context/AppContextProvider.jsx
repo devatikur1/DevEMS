@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AppContext, auth, db } from "./AppContext";
 import { onAuthStateChanged } from "firebase/auth";
 import {
@@ -7,6 +7,9 @@ import {
   getCountFromServer,
   getDoc,
   getDocs,
+  limit,
+  orderBy,
+  query,
 } from "firebase/firestore";
 
 export default function AppContextProvider({ children }) {
@@ -17,8 +20,12 @@ export default function AppContextProvider({ children }) {
   const [userDt, setUserDt] = useState(
     JSON.parse(localStorage.getItem("userDt")) || {}
   );
+
+  // 🔹 overviewdt-State && Ref
   const [workspacesGetting, setWorkspacesGetting] = useState(false);
+  const [lastWorkspaces, setLastWorkspace] = useState({});
   const [workspaces, setWorkspace] = useState([]);
+  const containerRef = useRef(null);
 
   // --------------------------
   // ✅ Get Current USer Data
@@ -55,14 +62,28 @@ export default function AppContextProvider({ children }) {
 
             // 3. Then Check count < 0 tahole Get Data
             if (count > 0) {
-              const querySnapshot = await getDocs(collectionRef);
+              const Limit = 2;
+              const q = query(
+                collectionRef,
+                orderBy("serialid", "asc"),
+                limit(Limit)
+              );
+              const querySnapshot = await getDocs(q);
               const wdata = querySnapshot.docs.map((doc) => doc.data());
+              if (wdata.length === Limit) {
+                setLastWorkspace(
+                  querySnapshot.docs[querySnapshot.docs.length - 1]
+                );
+              }
               setWorkspace(wdata);
             } else {
               setWorkspace([]);
+              setLastWorkspace({});
             }
           } catch (error) {
             console.log(error);
+            setWorkspace([]);
+            setLastWorkspace({});
           } finally {
             setWorkspacesGetting(false);
           }
@@ -99,7 +120,10 @@ export default function AppContextProvider({ children }) {
       setWorkspace,
       workspacesGetting,
       setWorkspacesGetting,
+      lastWorkspaces,
+      setLastWorkspace,
     },
+    containerRef,
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }

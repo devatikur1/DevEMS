@@ -55,7 +55,7 @@ export default function DynamicContent({
         </ul>
       )}
 
-      {!workspacesGetting && workspaceData.length === 0 && (
+      {workspaceData.length === 0 && (
         <div className="text-center py-20 border border-dashed border-border rounded-xl">
           <p className="text-zinc-500 text-sm">No workspaces found.</p>
         </div>

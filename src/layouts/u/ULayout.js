@@ -13,11 +13,10 @@ import { useScroll } from "framer-motion";
 
 export default function ULayout() {
   // 🔹 useContext context
-  const { authId } = useContext(AppContext);
+  const { authId, containerRef } = useContext(AppContext);
   const { isLogged, userDt } = authId;
 
   // 🔹 Motion, Ref & State
-  const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({ container: containerRef });
   const [isScrolled, setIsScrolled] = useState(false);
 
