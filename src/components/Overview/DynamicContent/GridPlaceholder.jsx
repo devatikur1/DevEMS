@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
-export default function GridPlaceholder({ project }) {
+export default function GridPlaceholder({ project, role }) {
   if (!project) return null;
   const getMemberLevel = (count) => {
     if (count === "Unlimited") {
@@ -24,7 +24,7 @@ export default function GridPlaceholder({ project }) {
       {/* 🔗 Card Overly Link */}
       <Link
         to={`/u/workspaces/${project.id}`}
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-30 w-full h-full"
       />
 
       {/* 1. Header Section */}
@@ -43,10 +43,15 @@ export default function GridPlaceholder({ project }) {
               {project.name}
             </h3>
             <div className="flex items-center gap-2 mt-1">
-              <span className="text-[11px] text-zinc-500 font-medium">
-                By <span className="text-zinc-300">{project.lead}</span>
-              </span>
-              <span className="text-zinc-700 text-[10px]">•</span>
+              {role === "employee" && (
+                <>
+                  <span className="text-[11px] text-zinc-500 font-medium">
+                    By <span className="text-zinc-300">{project.lead}</span>
+                  </span>
+                  <span className="text-zinc-700 text-[10px]">•</span>
+                </>
+              )}
+
               <div className="flex items-center gap-1">
                 <span
                   className={`h-1.5 w-1.5 rounded-full ${
@@ -66,7 +71,7 @@ export default function GridPlaceholder({ project }) {
             e.preventDefault();
             e.stopPropagation();
           }}
-          className="relative z-20 text-zinc-600 hover:text-white p-1.5"
+          className="relative z-50 text-zinc-600 hover:text-white p-1.5"
         >
           <MoreHorizontal size={18} />
         </button>

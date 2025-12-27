@@ -4,7 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PerformanceGauge from "./PerformanceGauge";
 
-export default function ListPlaceholder({ project, isFast, isLast }) {
+export default function ListPlaceholder({ project, isFast, isLast, role }) {
   if (!project) return null;
   return (
     <li
@@ -34,9 +34,12 @@ export default function ListPlaceholder({ project, isFast, isLast }) {
             {project.name}
           </h3>
           <div className="flex items-center gap-2">
-            <span className="text-[10.2px] lg:text-[11px] text-zinc-500">
-              By {project.lead}
-            </span>
+            {role === "employee" && (
+              <span className="text-[10.2px] lg:text-[11px] text-zinc-500">
+                By {project.lead}
+              </span>
+            )}
+
             <span
               className={`h-1 w-1 rounded-full ${
                 project.status === "Active" ? "bg-success" : "bg-warning"

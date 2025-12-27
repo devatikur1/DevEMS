@@ -32,6 +32,13 @@ export default function LoginPage() {
     text: "",
   });
 
+  // -----------------------------
+  // ✅ Chage Tilte base on Load
+  // ----------------------------
+  useEffect(() => {
+    document.title = "DevEMS - Login";
+  }, []);
+
   // ---------------------
   // ✅ Check isLogged
   // ---------------------

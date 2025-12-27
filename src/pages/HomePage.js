@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import { DrawingTransformation } from "../components/Home/DrawingTransformation";
@@ -23,6 +23,14 @@ gsap.registerPlugin(useGSAP);
 export default function HomePage() {
   // 🔹 Ref & Navigate
   const container = useRef(null);
+
+  // -----------------------------
+  // ✅ Chage Tilte base on Load 
+  // ----------------------------
+  useEffect(() => {
+    document.title = "DevEMS";
+  }, [])
+  
 
   // ---------------------
   // ✅ GSAP Animation
@@ -130,7 +138,7 @@ export default function HomePage() {
             {/* Line 2 */}
             <div className="hp-wrap">
               <span className="hp inline-block">with</span>{" "}
-              <span className="hp inline-block underline decoration-4 decoration-blue-500 underline-offset-4 md:underline-offset-8 text-subtext" >
+              <span className="hp inline-block underline decoration-4 decoration-blue-500 underline-offset-4 md:underline-offset-8 text-subtext">
                 intelligence
               </span>
             </div>

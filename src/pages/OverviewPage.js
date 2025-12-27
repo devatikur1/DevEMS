@@ -12,6 +12,7 @@ import { AppContext, db } from "../context/AppContext";
 import { useScroll } from "framer-motion";
 import {
   collection,
+  getCountFromServer,
   getDocs,
   limit,
   orderBy,
@@ -42,6 +43,13 @@ export default function OverviewPage() {
 
   // 🔹 Ref
   const scrollTriggeredRef = useRef(null);
+
+  // -----------------------------
+  // ✅ Chage Tilte base on Load
+  // ----------------------------
+  useEffect(() => {
+    document.title = "DevEMS - Workspaces";
+  }, []);
 
   // --------------------------------------------------
   // ✅ Change workspaces Data depent of workspaces
@@ -77,41 +85,66 @@ export default function OverviewPage() {
   // --------------------------------------
   const { scrollYProgress } = useScroll({ container: containerRef });
 
-  const handleScrollChange = useCallback(async (value) => {
-    console.log(value);
+  const handleScrollChange = useCallback(
+    async (value) => {
+      if (
+        value > 0.85 &&
+        lastWorkspaces !== null &&
+        !scrollTriggeredRef.current
+      ) {
+        scrollTriggeredRef.current = true;
+        setWorkspacesGetting(true);
 
-    if (
-      value > 0.85 &&
-      Array.from(lastWorkspaces).length === 0 &&
-      !scrollTriggeredRef.current
-    ) {
-      scrollTriggeredRef.current = true;
-      setWorkspacesGetting(true);
+        try {
+          const collectionRef = collection(db, `${userDt?.username}-workspace`);
+          // 1. Get Collection er Count
+          const countsnap = await getCountFromServer(collectionRef);
+          const count = countsnap.data().count;
 
-      try {
-        const collectionRef = collection(db, `${userDt?.username}-workspace`);
-        console.log(lastWorkspaces);
-
-        const Limit = 2;
-        const q = query(
-          collectionRef,
-          startAfter(lastWorkspaces),
-          orderBy("serialid", "asc"),
-          limit(Limit)
-        );
-        const querySnapshot = await getDocs(q);
-        const wdata = querySnapshot.docs.map((doc) => doc.data());
-        if (wdata.length === Limit) {
-          setLastWorkspace(querySnapshot.docs[querySnapshot.docs.length - 1]);
+          // 3. Then Check count < 0 tahole Get Data
+          if (count - workspaceData?.length > 0) {
+            const Limit = 11;
+            const q = query(
+              collectionRef,
+              orderBy("serialid", "asc"),
+              limit(Limit),
+              startAfter(lastWorkspaces)
+            );
+            const querySnapshot = await getDocs(q);
+            const wdata = querySnapshot.docs.map((doc) => doc.data());
+            if (wdata.length === Limit) {
+              setLastWorkspace(
+                querySnapshot.docs[querySnapshot.docs.length - 1]
+              );
+            } else {
+              setLastWorkspace(null);
+            }
+            setWorkspace((p) => [...p, ...wdata]);
+          } else {
+            setWorkspace([]);
+            setLastWorkspace(null);
+          }
+        } catch (error) {
+          console.log(error);
+          setWorkspace([]);
+          setLastWorkspace(null);
+        } finally {
+          setWorkspacesGetting(false);
+          setTimeout(() => {
+            scrollTriggeredRef.current = false;
+          }, 1000);
         }
-        setWorkspace((p) => [...p, ...wdata]);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setWorkspacesGetting(false);
       }
-    }
-  }, []);
+    },
+    [
+      lastWorkspaces,
+      setLastWorkspace,
+      setWorkspace,
+      setWorkspacesGetting,
+      userDt?.username,
+      workspaceData.length,
+    ]
+  );
 
   useEffect(() => {
     if (!scrollYProgress) return;
@@ -134,6 +167,7 @@ export default function OverviewPage() {
           workspacesGetting={workspacesGetting}
           workspaceData={workspaceData}
           noWorkspaces={noWorkspaces}
+          role={userDt?.role}
         />
       </div>
     </main>

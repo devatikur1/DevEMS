@@ -10,6 +10,7 @@ export default function DynamicContent({
   workspacesGetting,
   workspaceData,
   noWorkspaces,
+  role,
 }) {
   const skeletonCount = 6;
 
@@ -21,7 +22,11 @@ export default function DynamicContent({
       {currentView === "grid" && (
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {workspaceData.map((project, i) => (
-            <GridPlaceholder key={project.id || i} project={project} />
+            <GridPlaceholder
+              key={project.id || i}
+              project={project}
+              role={role}
+            />
           ))}
           {workspacesGetting &&
             [...Array(skeletonCount)].map((_, i) => <GridPgLoading key={i} />)}
@@ -42,6 +47,7 @@ export default function DynamicContent({
               project={project}
               isFast={i === 0}
               isLast={i === workspaceData.length - 1}
+              role={role}
             />
           ))}
 

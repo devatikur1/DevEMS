@@ -24,7 +24,7 @@ export default function AppContextProvider({ children }) {
   // 🔹 overviewdt-State && Ref
   const [noWorkspaces, setNoWorkspace] = useState(true);
   const [workspacesGetting, setWorkspacesGetting] = useState(false);
-  const [lastWorkspaces, setLastWorkspace] = useState({});
+  const [lastWorkspaces, setLastWorkspace] = useState(null);
   const [workspaces, setWorkspace] = useState([]);
   const containerRef = useRef(null);
 
@@ -64,7 +64,7 @@ export default function AppContextProvider({ children }) {
 
             // 3. Then Check count < 0 tahole Get Data
             if (count > 0) {
-              const Limit = 2;
+              const Limit = 10;
               const q = query(
                 collectionRef,
                 orderBy("serialid", "asc"),
@@ -72,24 +72,24 @@ export default function AppContextProvider({ children }) {
               );
               const querySnapshot = await getDocs(q);
               const wdata = querySnapshot.docs.map((doc) => doc.data());
-             
-              if (wdata.length === Limit) {
-                setLastWorkspace(
-                  querySnapshot.docs[querySnapshot.docs.length - 1]
-                );
+
+              if (wdata.length === Limit && wdata.length !== count) {
+                setLastWorkspace(querySnapshot.docs[querySnapshot.docs.length - 1]);
+              } else {
+                setLastWorkspace(null);
               }
               setWorkspace(wdata);
               setNoWorkspace(false);
             } else {
               setWorkspace([]);
-              setLastWorkspace({});
+              setLastWorkspace(null);
               setNoWorkspace(true);
             }
           } catch (error) {
             console.log(error);
             setWorkspace([]);
-            setLastWorkspace({});
-             setNoWorkspace(true);
+            setLastWorkspace(null);
+            setNoWorkspace(true);
           } finally {
             setWorkspacesGetting(false);
           }

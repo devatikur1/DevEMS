@@ -44,6 +44,13 @@ export default function CreateWorkspacePage() {
   const [isDisabled, setIsDisabled] = useState(false);
   const [isCreteing, setIsCreteing] = useState(false);
 
+  // -----------------------------
+  // ✅ Chage Tilte base on Load
+  // ----------------------------
+  useEffect(() => {
+    document.title = "DevEMS - Create Workspace";
+  }, []);
+
   // ----------------------------
   // ✅ When Craete Workspace
   // ----------------------------
