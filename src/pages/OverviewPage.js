@@ -28,6 +28,7 @@ export default function OverviewPage() {
     workspaces,
     setWorkspace,
     noWorkspaces,
+    setNoWorkspace,
     workspacesGetting,
     setWorkspacesGetting,
     lastWorkspaces,
@@ -36,13 +37,14 @@ export default function OverviewPage() {
 
   // 🔹 Router &&  State
   const [searchParams, setSearchParams] = useSearchParams();
-  const [currentView, setCurrentView] = useState(
-    searchParams.get("view") === "list" ? "list" : "grid"
-  );
+  const [currentView, setCurrentView] = useState("grid");
+  const [currentSort, setCurrentSort] = useState("date");
+  const [currentDirection, setCurrentDirection] = useState("asc");
   const [workspaceData, setworkspaceData] = useState([]);
+  const [showSortMenuBar, setShowSortMenuBar] = useState(false);
 
   // 🔹 Ref
-  const scrollTriggeredRef = useRef(null);
+  const scrollTriggeredRef = useRef(false);
 
   // -----------------------------
   // ✅ Chage Tilte base on Load
@@ -51,34 +53,94 @@ export default function OverviewPage() {
     document.title = "DevEMS - Workspaces";
   }, []);
 
-  // --------------------------------------------------
-  // ✅ Change workspaces Data depent of workspaces
-  // -------------------------------------------------
-  useEffect(() => {
-    console.log(workspaces);
-    setworkspaceData(workspaces);
-  }, [workspaces]);
+  // -------------------------
+  // ✅ Toolbar Handlers
+  // -------------------------
 
-  // -------------------------
-  // ✅ View Change Function
-  // -------------------------
+  /* 🔹 View Change Function */
   const updateView = (newView) => {
     const params = new URLSearchParams(searchParams);
     params.set("view", newView);
     setSearchParams(params);
+    setShowSortMenuBar(false);
   };
 
-  // -------------------------
-  // ✅ Sync URL with State
-  // -------------------------
-  useEffect(() => {
-    const view = searchParams.get("view");
-    if (view === "list") {
-      setCurrentView("list");
+  /* 🔹 Sort Change Function */
+  const updateSort = (newSort) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("sort", newSort);
+    setSearchParams(params);
+    setShowSortMenuBar(false);
+  };
+
+  /* 🔹 Direction Change Function */
+  const updateDirection = (newDri) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("direction", newDri);
+    setSearchParams(params);
+    setShowSortMenuBar(false);
+  };
+
+  /* 🔹 Direction Change Function */
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    const params = new URLSearchParams(searchParams);
+    if (value !== "") {
+      params.set("q", value);
     } else {
-      setCurrentView("grid");
+      params.delete("q");
     }
-  }, [searchParams]);
+    setSearchParams(params);
+  };
+
+  // ----------------------------------------------------
+  // ✅ Sync URL with State & Handle Sorting (Logic Fix)
+  // ----------------------------------------------------
+  useEffect(() => {
+    // 1. Sync States from URL
+    const view = searchParams.get("view") === "list" ? "list" : "grid";
+    const sort =
+      searchParams.get("sort") === "name"
+        ? "name"
+        : searchParams.get("sort") === "score"
+        ? "score"
+        : "date";
+    const direction = searchParams.get("direction") === "desc" ? "desc" : "asc";
+    const queryTerm = searchParams.get("q") || "";
+
+    setCurrentView(view);
+    setCurrentSort(sort);
+    setCurrentDirection(direction);
+
+    let sortedData = [...workspaces];
+
+    
+      sortedData = workspaces.filter((item) =>
+        item.name.toLowerCase().includes(queryTerm.toLowerCase())
+      );
+    
+
+    // 2. Sorting Logic
+    if (sort === "name") {
+      sortedData.sort((a, b) =>
+        direction === "asc"
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name)
+      );
+    } else if (sort === "score") {
+      sortedData.sort((a, b) => {
+        const scoreA = parseFloat(a.performance);
+        const scoreB = parseFloat(b.performance);
+        return direction === "asc" ? scoreA - scoreB : scoreB - scoreA;
+      });
+    } else {
+      sortedData.sort((a, b) =>
+        direction === "asc" ? a.serialid - b.serialid : b.serialid - a.serialid
+      );
+    }
+    setworkspaceData(sortedData);
+    setNoWorkspace(sortedData.length === 0);
+  }, [searchParams, workspaces, currentDirection, setNoWorkspace]);
 
   // --------------------------------------
   // ✅ INFINITE SCROLL FOR SUBSCRIPTIONS
@@ -159,7 +221,18 @@ export default function OverviewPage() {
     <main className="w-full flex justify-center text-text min-h-screen bg-transparent">
       <div className="w-[95%] xl:w-[90%] 2xl:w-[71%] pt-10">
         {/* Toolbar Section */}
-        <Toolbar currentView={currentView} updateView={updateView} />
+        <Toolbar
+          currentView={currentView}
+          currentSort={currentSort}
+          currentDirection={currentDirection}
+          updateView={updateView}
+          updateSort={updateSort}
+          updateDirection={updateDirection}
+          showSortMenuBar={showSortMenuBar}
+          setShowSortMenuBar={setShowSortMenuBar}
+          searchParams={searchParams}
+          handleSearchChange={handleSearchChange}
+        />
 
         {/* Dynamic Content Area */}
         <DynamicContent
@@ -168,6 +241,7 @@ export default function OverviewPage() {
           workspaceData={workspaceData}
           noWorkspaces={noWorkspaces}
           role={userDt?.role}
+          searchParams={searchParams}
         />
       </div>
     </main>

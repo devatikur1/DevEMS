@@ -6,9 +6,11 @@ import {
   Briefcase,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import HighlightText from "./HighlightText";
 
-export default function GridPlaceholder({ project, role }) {
+export default function GridPlaceholder({ project, role, searchParams }) {
   if (!project) return null;
+  
   const getMemberLevel = (count) => {
     if (count === "Unlimited") {
       return "High";
@@ -39,14 +41,18 @@ export default function GridPlaceholder({ project, role }) {
           </div>
 
           <div className="flex flex-col min-w-0">
-            <h3 className="text-text font-semibold text-[15px] leading-tight truncate">
-              {project.name}
-            </h3>
+            <HighlightText
+              text={project.name}
+              highlight={searchParams.get("q") || ""}
+            />
             <div className="flex items-center gap-2 mt-1">
-              {role === "employee" && (
+              {role !== "employee" && (
                 <>
-                  <span className="text-[11px] text-zinc-500 font-medium">
-                    By <span className="text-zinc-300">{project.lead}</span>
+                  <span className="text-[11px] text-smtext font-medium">
+                    By{" "}
+                    <Link to={`/${project.leadUserName}`} className="text-subtext">
+                      {project.lead}
+                    </Link>
                   </span>
                   <span className="text-zinc-700 text-[10px]">•</span>
                 </>

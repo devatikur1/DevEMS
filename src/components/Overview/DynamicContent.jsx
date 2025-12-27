@@ -11,6 +11,7 @@ export default function DynamicContent({
   workspaceData,
   noWorkspaces,
   role,
+  searchParams,
 }) {
   const skeletonCount = 6;
 
@@ -26,6 +27,7 @@ export default function DynamicContent({
               key={project.id || i}
               project={project}
               role={role}
+              searchParams={searchParams}
             />
           ))}
           {workspacesGetting &&
@@ -48,6 +50,7 @@ export default function DynamicContent({
               isFast={i === 0}
               isLast={i === workspaceData.length - 1}
               role={role}
+              searchParams={searchParams}
             />
           ))}
 

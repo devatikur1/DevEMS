@@ -49,7 +49,7 @@ export default function PerformanceGauge({ score = 0, size = 32 }) {
         />
       </svg>
 
-      <span className="absolute text-[8px] font-bold text-zinc-300">
+      <span className="absolute text-[8px] font-bold text-subtext/85">
         {percentage}{"%"}
       </span>
     </div>

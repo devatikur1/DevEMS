@@ -3,8 +3,15 @@ import { Briefcase, Layers, MoreHorizontal, Users } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 import PerformanceGauge from "./PerformanceGauge";
+import HighlightText from "./HighlightText";
 
-export default function ListPlaceholder({ project, isFast, isLast, role }) {
+export default function ListPlaceholder({
+  project,
+  isFast,
+  isLast,
+  role,
+  searchParams,
+}) {
   if (!project) return null;
   return (
     <li
@@ -30,14 +37,18 @@ export default function ListPlaceholder({ project, isFast, isLast, role }) {
           />
         </div>
         <div className="flex flex-col min-w-0">
-          <h3 className="text-text font-semibold text-[13px] lg:text-[15px] truncate">
-            {project.name}
-          </h3>
+          <HighlightText
+            text={project.name}
+            highlight={searchParams.get("q") || ""}
+          />
           <div className="flex items-center gap-2">
-            {role === "employee" && (
-              <span className="text-[10.2px] lg:text-[11px] text-zinc-500">
-                By {project.lead}
-              </span>
+            {role !== "employee" && (
+              <Link
+                to={`/${project.leadUserName}`}
+                className="text-[10px] lg:text-[11px] text-smtext"
+              >
+                By <span className="text-subtext/70">{project.lead}</span>
+              </Link>
             )}
 
             <span

@@ -1,19 +1,29 @@
 import clsx from "clsx";
 import { LayoutGrid, LayoutList, ListFilter, Plus, Search } from "lucide-react";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 import { AnimatePresence } from "framer-motion";
-import FilterQuickMenu from "./Toolbar/FilterQuickMenu";
+import SortQuickMenu from "./Toolbar/SortQuickMenu";
 import { useNavigate } from "react-router-dom";
 
-export default function Toolbar({ currentView, updateView }) {
+export default function Toolbar({
+  currentView,
+  currentSort,
+  updateView,
+  updateSort,
+  currentDirection,
+  updateDirection,
+  showSortMenuBar,
+  setShowSortMenuBar,
+  searchParams,
+  handleSearchChange,
+}) {
   // 🔹 useContext context
   const { authId } = useContext(AppContext);
   const { userDt } = authId;
 
-  // 🔹 State && useNavigate
+  // 🔹 useNavigate
   const navigate = useNavigate();
-  const [showFilterMenuBar, setShowFilterMenuBar] = useState(false);
 
   // ---------------------
   // ✅ Render
@@ -33,14 +43,16 @@ export default function Toolbar({ currentView, updateView }) {
           <input
             id="Search"
             type="text"
+            value={searchParams.get("q") || ""}
+            onChange={handleSearchChange}
             placeholder="Search Workspaces..."
             className="bg-transparent w-full h-full pl-10 pr-4 text-sm text-white placeholder:text-zinc-500 outline-none"
           />
         </article>
 
-        {/* ⏳ Filter Button */}
+        {/* ⏳ Sort Button */}
         <button
-          onClick={() => setShowFilterMenuBar(!showFilterMenuBar)}
+          onClick={() => setShowSortMenuBar(!showSortMenuBar)}
           className="h-full px-3 rounded-md bg-surface border border-boxHover hover:bg-white/[0.08] transition-all flex items-center justify-center group active:scale-95"
         >
           <ListFilter
@@ -95,8 +107,16 @@ export default function Toolbar({ currentView, updateView }) {
       </section>
 
       <AnimatePresence>
-        {showFilterMenuBar && (
-          <FilterQuickMenu setShowFilterMenuBar={setShowFilterMenuBar} />
+        {showSortMenuBar && (
+          <SortQuickMenu
+            setShowSortMenuBar={setShowSortMenuBar}
+            currentView={currentView}
+            updateView={updateView}
+            currentSort={currentSort}
+            updateSort={updateSort}
+            currentDirection={currentDirection}
+            updateDirection={updateDirection}
+          />
         )}
       </AnimatePresence>
     </>

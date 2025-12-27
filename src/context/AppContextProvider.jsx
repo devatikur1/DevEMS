@@ -125,6 +125,7 @@ export default function AppContextProvider({ children }) {
       workspaces,
       setWorkspace,
       noWorkspaces,
+      setNoWorkspace,
       workspacesGetting,
       setWorkspacesGetting,
       lastWorkspaces,
