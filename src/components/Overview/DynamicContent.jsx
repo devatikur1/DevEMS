@@ -4,7 +4,6 @@ import GridPlaceholder from "./DynamicContent/GridPlaceholder";
 import GridPgLoading from "./DynamicContent/GridPgLoading";
 import ListPgLoading from "./DynamicContent/ListPgLoading";
 import clsx from "clsx";
-import { useNavigate } from "react-router-dom";
 
 export default function DynamicContent({
   role,
@@ -16,7 +15,6 @@ export default function DynamicContent({
   deleteWorksplace,
 }) {
   const skeletonCount = 6;
-  const navigte = useNavigate();
   return (
     <section className="mt-8 mb-20 overflow-hidden">
       <h1 className="pb-5 text-text font-semibold text-xl">Workspaces</h1>

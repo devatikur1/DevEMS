@@ -9,7 +9,7 @@ import HighlightText from "./HighlightText";
 import OptionBar from "./OptionBar";
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getMemberLevel } from "../../../others/getMemberLevel";
 
 export default function GridPlaceholder({
@@ -20,52 +20,52 @@ export default function GridPlaceholder({
 }) {
   const [showOptionBar, setShowOptionBar] = useState(false);
   const [optionBarDt, setOptionBarDt] = useState([]);
+  const navigate = useNavigate();
   if (!project) return null;
-
 
   return (
     <li className="sm:relative">
-      <div className="group relative flex flex-col gap-5 p-5 bg-surface border border-boxHover rounded-xl hover:border-smtext/40 transition-all duration-300 overflow-hidden">
+      <div
+        onClick={() => navigate(`/u/workspaces/${project.id}`)}
+        className="group relative flex flex-col gap-5 p-5 bg-surface border border-boxHover rounded-xl hover:border-smtext/40 transition-all duration-300 overflow-hidden"
+      >
         {/* 1. Header Section */}
         <div className="relative z-10 flex items-start justify-between">
           <div className="flex gap-4 min-w-0">
-            <Link
-              to={`/u/workspaces/${project.id}`}
-              className="h-10 w-10 rounded-lg border border-zinc-800 bg-zinc-900 flex items-center justify-center overflow-hidden shrink-0"
-            >
+            <div className="h-10 w-10 rounded-lg border border-zinc-800 bg-zinc-900 flex items-center justify-center overflow-hidden shrink-0">
               <img
                 src={project.favicon}
                 alt="logo"
                 className="w-7 h-7 object-cover opacity-90 group-hover:scale-110 transition-transform duration-300"
               />
-            </Link>
+            </div>
 
             <div className="flex flex-col min-w-0">
               <HighlightText
                 text={project.name}
                 highlight={searchParams.get("q") || ""}
-                to={`/u/workspaces/${project.id}`}
               />
+
               <div className="flex items-center gap-2 mt-1">
                 {role === "employee" && (
                   <>
                     <span className="text-[11px] text-smtext font-medium">
                       By{" "}
-                      <Link
-                        to={`/${project.leadUserName}`}
+                      <span
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/${project.leadUserName}`);
+                        }}
                         className="text-subtext"
                       >
                         {project.lead}
-                      </Link>
+                      </span>
                     </span>
                     <span className="text-zinc-700 text-[10px]">•</span>
                   </>
                 )}
 
-                <Link
-                  to={`/u/workspaces/${project.id}`}
-                  className="flex items-center gap-1"
-                >
+                <div className="flex items-center gap-1">
                   <span
                     className={`h-1.5 w-1.5 rounded-full ${
                       project.status === "Active" ? "bg-success" : "bg-warning"
@@ -74,13 +74,14 @@ export default function GridPlaceholder({
                   <span className="text-[10px] text-zinc-500 uppercase tracking-tighter">
                     {project.status}
                   </span>
-                </Link>
+                </div>
               </div>
             </div>
           </div>
 
           <button
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               setShowOptionBar(!showOptionBar);
               setOptionBarDt({
                 link: `/u/workspaces/${project.id}/`,
@@ -94,10 +95,7 @@ export default function GridPlaceholder({
         </div>
 
         {/* 2. Category & Performance */}
-        <Link
-          to={`/u/workspaces/${project.id}`}
-          className="relative z-10 flex items-center justify-between gap-2"
-        >
+        <div className="relative z-10 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 bg-boxHover/50 border border-border px-3 py-1 rounded-md text-[11px] text-text/80">
             <Layers size={12} className="text-smtext" />
             <span className="truncate">{project.category}</span>
@@ -105,14 +103,14 @@ export default function GridPlaceholder({
           <div className="text-[11px] font-medium text-success/80">
             Score: {project.performance}
           </div>
-        </Link>
+        </div>
 
         {/* 3. Description */}
-        <Link to={`/u/workspaces/${project.id}`} className="relative z-10">
+        <div className="relative z-10">
           <p className="text-subtext/70 text-[13px] line-clamp-2 leading-relaxed">
             {project.description}
           </p>
-        </Link>
+        </div>
 
         {/* 4. Tags Section */}
         <div className="relative z-10 flex flex-wrap gap-1.5">
@@ -132,10 +130,7 @@ export default function GridPlaceholder({
         </div>
 
         {/* 5. Footer Stats */}
-        <Link
-          to={`/u/workspaces/${project.id}`}
-          className="relative z-10 flex items-center justify-between border-t border-boxHover pt-3 text-[11px] text-zinc-500"
-        >
+        <div className="relative z-10 flex items-center justify-between border-t border-boxHover pt-3 text-[11px] text-zinc-500">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
               <Users size={12} />
@@ -149,14 +144,11 @@ export default function GridPlaceholder({
             </div>
           </div>
 
-          <Link
-            to={`/u/workspaces/${project.id}`}
-            className="flex items-center gap-1 px-2 py-0.5 rounded bg-boxHover/80 text-zinc-400 border border-zinc-800"
-          >
+          <div className="flex items-center gap-1 px-2 py-0.5 rounded bg-boxHover/80 text-zinc-400 border border-zinc-800">
             <ShieldCheck size={12} className="text-blue-500" />
             <span>{getMemberLevel(project.maxMembers)}</span>
-          </Link>
-        </Link>
+          </div>
+        </div>
       </div>
       <AnimatePresence>
         {showOptionBar && (

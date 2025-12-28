@@ -31,10 +31,9 @@ export default function OptionBar({
         initial={{ height: 0 }}
         animate={{ height: "auto" }}
         exit={{ height: 0 }}
-        transition={{ duration: 0.3 }}
         drag={"y"}
         dragConstraints={{ top: 0, bottom: -20 }}
-        dragElastic={{ top: 0, bottom: 0.8 }}
+        dragElastic={{ top: 0, bottom: 0.4 }}
         onDragEnd={(e, info) => {
           if (info.offset.y > 10) {
             setShowOptionBar(false);

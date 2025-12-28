@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { Briefcase, Layers, MoreHorizontal, Users } from "lucide-react";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PerformanceGauge from "./PerformanceGauge";
 import HighlightText from "./HighlightText";
 import { AnimatePresence } from "framer-motion";
@@ -17,10 +17,12 @@ export default function ListPlaceholder({
 }) {
   const [showOptionBar, setShowOptionBar] = useState(false);
   const [optionBarDt, setOptionBarDt] = useState([]);
+  const navigate = useNavigate();
   if (!project) return null;
   return (
     <li className="static sm:relative">
       <div
+        onClick={() => navigate(`/u/workspaces/${project.id}`)}
         className={clsx(
           "group relative parent-grid gap-2 lg:gap-4 p-4 bg-surface border border-boxHover hover:border-smtext/40 transition-all duration-300 w-full",
           isFast === true && "rounded-t-lg",
@@ -28,10 +30,7 @@ export default function ListPlaceholder({
         )}
       >
         {/* 1. Logo & Name */}
-        <Link
-          to={`/u/workspaces/${project.id}`}
-          className="item-1 relative z-10 flex items-center gap-4 flex-1 min-w-0"
-        >
+        <div className="item-1 relative z-10 flex items-center gap-4 flex-1 min-w-0">
           <div className="h-10 w-10 rounded-lg border border-zinc-800 bg-zinc-900 flex items-center justify-center overflow-hidden shrink-0">
             <img
               src={project.favicon}
@@ -43,15 +42,22 @@ export default function ListPlaceholder({
             <HighlightText
               text={project.name}
               highlight={searchParams.get("q") || ""}
+              
             />
             <div className="flex items-center gap-2">
               {role === "employee" && (
-                <Link
-                  to={`/${project.leadUserName}`}
-                  className="text-[10px] lg:text-[11px] text-smtext"
-                >
-                  By <span className="text-subtext/70">{project.lead}</span>
-                </Link>
+                <span className="text-[11px] text-smtext font-medium">
+                  By{" "}
+                  <span
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/${project.leadUserName}`);
+                    }}
+                    className="text-subtext"
+                  >
+                    {project.lead}
+                  </span>
+                </span>
               )}
 
               <span
@@ -64,13 +70,10 @@ export default function ListPlaceholder({
               </span>
             </div>
           </div>
-        </Link>
+        </div>
 
         {/* 2. Stats (Hidden on mobile) */}
-        <Link
-          to={`/u/workspaces/${project.id}`}
-          className="item-2 relative z-10 flex items-center justify-start lg:justify-center gap-8 flex-1"
-        >
+        <section className="item-2 relative z-10 flex items-center justify-start lg:justify-center gap-8 flex-1">
           <div className="flex items-center lg:items-start gap-2 lg:gap-1 bg-boxHover/50 lg:bg-transparent  border border-border lg:border-none px-3 py-1 rounded-md text-[11px] text-text/80 lg:flex lg:flex-col ">
             <span className="hidden lg:inline text-[10px] text-zinc-600 uppercase tracking-wider">
               Category
@@ -80,14 +83,11 @@ export default function ListPlaceholder({
               <span className="truncate max-w-[120px]">{project.category}</span>
             </div>
           </div>
-        </Link>
+        </section>
 
         {/* 3. Performance & Actions */}
         <div className="item-3 relative z-10 flex justify-end gap-6">
-          <Link
-            to={`/u/workspaces/${project.id}`}
-            className="hidden lg:flex flex-col justify-center items-start gap-1"
-          >
+          <section className="hidden lg:flex flex-col justify-center items-start gap-1">
             <span className="text-[10px] text-zinc-600 uppercase tracking-wider">
               Team Size
             </span>
@@ -97,18 +97,16 @@ export default function ListPlaceholder({
                 {project.members}/{project.maxMembers}
               </span>
             </div>
-          </Link>
+          </section>
 
-          <Link
-            to={`/u/workspaces/${project.id}`}
-            className="flex flex-col justify-center  gap-1 text-[11px]"
-          >
+          <section className="flex flex-col justify-center  gap-1 text-[11px]">
             <PerformanceGauge score={project.performance} size={30} />
-          </Link>
+          </section>
 
           <div className="flex justify-center items-center">
             <button
               onClick={(e) => {
+                e.stopPropagation();
                 setShowOptionBar(!showOptionBar);
                 setOptionBarDt({
                   link: `/u/workspaces/${project.id}/`,
@@ -123,10 +121,7 @@ export default function ListPlaceholder({
         </div>
 
         {/* 4. Optional Section: Team Size */}
-        <Link
-          to={`/u/workspaces/${project.id}`}
-          className="item-4 relative flex lg:hidden flex-col justify-center items-end gap-1"
-        >
+        <div className="item-4 relative flex lg:hidden flex-col justify-center items-end gap-1">
           <span className="text-[10px] text-zinc-600 uppercase tracking-wider">
             Team Size
           </span>
@@ -136,15 +131,12 @@ export default function ListPlaceholder({
               {project.members}/{project.maxMembers}
             </span>
           </div>
-        </Link>
+        </div>
 
         <div className="item-5 flex lg:hidden flex-col justify-start">
-          <Link
-            to={`/u/workspaces/${project.id}`}
-            className="text-subtext/70 text-[13px] line-clamp-1 leading-relaxed"
-          >
+          <section className="text-subtext/70 text-[13px] line-clamp-1 leading-relaxed">
             {project.description}
-          </Link>
+          </section>
           <div className="relative z-10 flex items-center justify-start pt-3 text-[11px] text-zinc-500">
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1.5">
