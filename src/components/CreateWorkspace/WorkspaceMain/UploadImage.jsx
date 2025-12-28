@@ -18,7 +18,7 @@ export default function UploadImage({ img }) {
     }
   }
   return (
-    <section className="flex items-center gap-4 mb-10">
+    <section className="flex flex-col items-center gap-7 mb-10">
       <div className="relative z-10 group bg-surface rounded-full">
         {imgData.url ? (
           <img
@@ -45,6 +45,9 @@ export default function UploadImage({ img }) {
           <span>Edit</span>
         </label>
       </div>
+      <p className="rounded-lg border border-warning/40 bg-warning/10 px-4 py-2 text-[0.65rem] text-warning backdrop-blur-md">
+        ⚠ Img Must be lower than 32 MB
+      </p>
       <input
         onChange={onChangeImage}
         id="file"
