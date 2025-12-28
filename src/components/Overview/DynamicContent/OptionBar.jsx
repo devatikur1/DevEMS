@@ -23,7 +23,7 @@ export default function OptionBar({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={() => setShowOptionBar(false)}
-        className="absolute inset-0 bg-transparent sm:bg-bg/5 backdrop-blur-sm"
+        className="absolute inset-0 bg-transparent sm:bg-surface/5"
       />
 
       {/* Modal-Content */}
@@ -31,6 +31,7 @@ export default function OptionBar({
         initial={{ height: 0 }}
         animate={{ height: "auto" }}
         exit={{ height: 0 }}
+        transition={{ duration: 0.3 }}
         drag={"y"}
         dragConstraints={{ top: 0, bottom: -20 }}
         dragElastic={{ top: 0, bottom: 0.4 }}
