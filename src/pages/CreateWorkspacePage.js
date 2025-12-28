@@ -39,7 +39,7 @@ export default function CreateWorkspacePage() {
   const [description, setDescription] = useState("");
   const [imgData, setImgData] = useState({});
   const [activeTags, setActiveTags] = useState([]);
-  const [category, setCategory] = useState([]);
+  const [category, setCategory] = useState("");
   const [totalMembers, setTotalMembers] = useState(0);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isCreteing, setIsCreteing] = useState(false);
@@ -65,7 +65,6 @@ export default function CreateWorkspacePage() {
       if (imgData.file) {
         const res = await UploadImage(imgData.file);
         if (res.isError === false) {
-          console.log(res.url);
           finalPhotoURL = res.url;
         } else {
           toast.error(res.msg || "Image Upload Error");
@@ -97,21 +96,27 @@ export default function CreateWorkspacePage() {
         activeTasks: 0,
         serialid: serialsnapCount,
       };
-      console.log(newTeam);
-
-      await setDoc(doc(db, "workspace", newTeam.id), newTeam, {
-        merge: true,
-      });
-      await setDoc(
-        doc(db, `${userDt?.username}-workspace`, newTeam.id),
-        newTeam,
+      toast.promise(
+        async () => {
+          await setDoc(doc(db, "workspace", newTeam.id), newTeam, {
+            merge: true,
+          });
+          await setDoc(
+            doc(db, `${userDt?.username}-workspace`, newTeam.id),
+            newTeam,
+            {
+              merge: true,
+            }
+          );
+          setWorkspace((p) => [newTeam, ...p]);
+        },
         {
-          merge: true,
+          loading: "Worksplace Createing...",
+          success: <span>Worksplace Created!</span>,
+          error: <span>Could not Created Worksplace.</span>,
         }
       );
-      setWorkspace((p) => [newTeam, ...p]);
-      toast.success("Profile Updated Successfully!");
-      navigate("/u");
+      await navigate("/u");
     } catch (error) {
       console.error("Update error:", error);
       toast.error("Update failed, please try again.");
@@ -129,6 +134,7 @@ export default function CreateWorkspacePage() {
       !imgData.url;
 
     setIsDisabled(checkDisabled);
+    console.log(category);
   }, [title, description, activeTags, imgData, category]);
 
   // ---------------------

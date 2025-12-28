@@ -12,6 +12,8 @@ import { AppContext, db } from "../context/AppContext";
 import { useScroll } from "framer-motion";
 import {
   collection,
+  deleteDoc,
+  doc,
   getCountFromServer,
   getDocs,
   limit,
@@ -19,6 +21,7 @@ import {
   query,
   startAfter,
 } from "firebase/firestore";
+import toast from "react-hot-toast";
 
 export default function OverviewPage() {
   // 🔹 useContext context
@@ -114,11 +117,9 @@ export default function OverviewPage() {
 
     let sortedData = [...workspaces];
 
-    
-      sortedData = workspaces.filter((item) =>
-        item.name.toLowerCase().includes(queryTerm.toLowerCase())
-      );
-    
+    sortedData = workspaces.filter((item) =>
+      item.name.toLowerCase().includes(queryTerm.toLowerCase())
+    );
 
     // 2. Sorting Logic
     if (sort === "name") {
@@ -140,7 +141,30 @@ export default function OverviewPage() {
     }
     setworkspaceData(sortedData);
     setNoWorkspace(sortedData.length === 0);
-  }, [searchParams, workspaces, currentDirection, setNoWorkspace]);
+  }, [searchParams, workspaces]);
+
+  // -------------------------
+  // ✅ Delete Worksplace Fn
+  // -------------------------
+
+  const deleteWorksplace = async (id) => {
+    try {
+      toast.promise(
+        async () => {
+          await deleteDoc(doc(db, `${userDt?.username}-workspace`, id));
+          await deleteDoc(doc(db, "workspace", id));
+          setWorkspace((prev) => prev.filter((wp) => wp.id !== id));
+        },
+        {
+          loading: "Worksplace Deleteing...",
+          success: <span>Worksplace Successfully!</span>,
+          error: <span>Could not Deleted Worksplace .</span>,
+        }
+      );
+    } catch (error) {
+      toast.error(error);
+    }
+  };
 
   // --------------------------------------
   // ✅ INFINITE SCROLL FOR SUBSCRIPTIONS
@@ -242,6 +266,7 @@ export default function OverviewPage() {
           noWorkspaces={noWorkspaces}
           role={userDt?.role}
           searchParams={searchParams}
+          deleteWorksplace={deleteWorksplace}
         />
       </div>
     </main>

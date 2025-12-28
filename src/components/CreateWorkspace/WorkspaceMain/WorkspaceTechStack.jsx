@@ -1,76 +1,126 @@
-import { Plus, Timer, X } from 'lucide-react';
-import React from 'react'
+import { Plus, Timer, X } from "lucide-react";
+import React from "react";
 
 export default function WorkspaceTechStack({ actTags }) {
   const { activeTags, setActiveTags } = actTags;
-const availableTags = [
-  // Frontend
-  "React",
-  "Next.js",
-  "Tailwind",
-  "TypeScript",
-  "Vue.js",
-  "Angular",
-  "Redux",
-  "Sass",
-  "HTML5",
-  "CSS3",
+  const availableTags = [
+    // --- Frontend (More Modern) ---
+    "React",
+    "Next.js",
+    "Tailwind",
+    "TypeScript",
+    "Vue.js",
+    "Angular",
+    "Redux",
+    "Sass",
+    "HTML5",
+    "CSS3",
+    "Vite",
+    "Zustand",
+    "Radix UI",
+    "Shadcn UI",
+    "Astro",
 
-  // App Dev
-  "Flutter",
-  "React Native",
+    // --- App Dev & Cross-Platform ---
+    "Flutter",
+    "React Native",
+    "Swift",
+    "Kotlin",
+    "Ionic",
+    "Dart",
 
-  // UI/UX & Design
-  "Figma",
-  "Adobe XD",
-  "Photoshop",
-  "Illustrator",
-  "Canva",
-  "Sketch",
-  "After Effects",
+    // --- UI/UX & Creative ---
+    "Figma",
+    "Adobe XD",
+    "Photoshop",
+    "Illustrator",
+    "Canva",
+    "Sketch",
+    "After Effects",
+    "Spline (3D)",
+    "Blender",
+    "InVision",
+    "Framer",
 
-  // Backend & Database
-  "Node.js",
-  "Express.js",
-  "Python",
-  "Django",
-  "PostgreSQL",
-  "MongoDB",
-  "Firebase",
-  "MySQL",
-  "Prisma",
-  "GraphQL",
+    // --- Backend & Database ---
+    "Node.js",
+    "Express.js",
+    "Python",
+    "Django",
+    "PostgreSQL",
+    "MongoDB",
+    "Firebase",
+    "MySQL",
+    "Prisma",
+    "GraphQL",
+    "FastAPI",
+    "Go",
+    "Redis",
+    "Supabase",
+    "Appwrite",
+    "NestJS",
 
-  // Marketing & Growth
-  "SEO",
-  "Analytics",
-  "Google Ads",
-  "Content Writing",
-  "Social Media",
-  "Email Marketing",
-  "Growth Hacking",
+    // --- Marketing, SEO & Business ---
+    "SEO",
+    "Analytics",
+    "Google Ads",
+    "Content Writing",
+    "Social Media",
+    "Email Marketing",
+    "Growth Hacking",
+    "Facebook Ads",
+    "Copywriting",
+    "Market Research",
+    "CRM Management",
+    "B2B Sales",
 
-  // Management & Tools
-  "Jira",
-  "Trello",
-  "Slack",
-  "Agile",
-  "Scrum",
-  "Git",
-  "GitHub",
-  "Vercel",
-  "Docker",
-  "AWS",
-  "Google Cloud",
+    // --- Management, DevOps & Tools ---
+    "Jira",
+    "Trello",
+    "Slack",
+    "Agile",
+    "Scrum",
+    "Git",
+    "GitHub",
+    "Vercel",
+    "Docker",
+    "AWS",
+    "Google Cloud",
+    "Netlify",
+    "Kubernetes",
+    "CI/CD",
+    "Terraform",
+    "Linux",
+    "Bitbucket",
 
-  // Others
-  "Quality Assurance",
-  "Unit Testing",
-  "API Development",
-  "Blockchain",
-  "Machine Learning",
-  "Cyber Security",
-];
+    // --- AI & Data Science (Trending) ---
+    "Machine Learning",
+    "Deep Learning",
+    "Data Analysis",
+    "NLP",
+    "OpenAI API",
+    "PyTorch",
+    "Pandas",
+    "NumPy",
+    "TensorFlow",
+    "Prompt Engineering",
+
+    // --- Special & Others ---
+    "Quality Assurance",
+    "Unit Testing",
+    "API Development",
+    "Blockchain",
+    "Cyber Security",
+    "Penetration Testing",
+    "Web3",
+    "Solidity",
+    "E-commerce",
+    "WordPress",
+    "Shopify",
+    "FinTech",
+    "HealthTech",
+    "Charts",
+  ];
 
   const toggleTag = (tag) => {
     if (activeTags.includes(tag)) {
@@ -122,7 +172,12 @@ const availableTags = [
             }`}
           >
             <span>{tag}</span>
-            <Plus size={16} className={`${activeTags.includes(tag) && "rotate-45"} transition-all duration-300`} />
+            <Plus
+              size={16}
+              className={`${
+                activeTags.includes(tag) && "rotate-45"
+              } transition-all duration-300`}
+            />
           </button>
         ))}
       </div>

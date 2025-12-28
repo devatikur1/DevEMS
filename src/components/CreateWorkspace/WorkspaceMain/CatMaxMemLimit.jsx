@@ -7,24 +7,32 @@ export default function CatMaxMemLimit({ cat, totalMem }) {
 
   // 🔹 categories list
   const categories = [
-    "UI/UX Design",
     "Frontend Development",
     "Backend Development",
     "Full Stack Development",
+    "UI/UX Design",
+    "Graphic Design",
+    "Product Management",
+    "Project Management",
     "Mobile App Development",
     "DevOps & Cloud",
-    "Software Architecture",
-    "Quality Assurance (QA)",
-    "Data Science & AI",
-    "Cyber Security",
     "Digital Marketing",
-    "Content Strategy",
-    "Project Management",
+    "Social Media Management",
+    "Content Writing",
+    "Cyber Security",
+    "Data Science & AI",
+    "Quality Assurance (QA)",
     "Human Resources (HR)",
-    "Product Management",
-    "Sales & Business",
-    "Customer Support",
     "Finance & Accounts",
+    "Customer Support",
+    "Sales & Business Development",
+    "Legal & Compliance",
+    "Public Relations (PR)",
+    "R&D (Research & Development)",
+    "Game Development",
+    "Video Production",
+    "Blockchain",
+    "Others",
   ];
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mb-6">
@@ -61,6 +69,7 @@ export default function CatMaxMemLimit({ cat, totalMem }) {
           <input
             value={totalMembers}
             onChange={(e) => setTotalMembers(e.target.value)}
+            min={10}
             type="number"
             placeholder="e.g. 10"
             className="bg-transparent w-full pl-12 pr-4 py-3 text-sm text-white outline-none overflow-hidden"

@@ -4,30 +4,33 @@ import GridPlaceholder from "./DynamicContent/GridPlaceholder";
 import GridPgLoading from "./DynamicContent/GridPgLoading";
 import ListPgLoading from "./DynamicContent/ListPgLoading";
 import clsx from "clsx";
+import { useNavigate } from "react-router-dom";
 
 export default function DynamicContent({
-  currentView,
-  workspacesGetting,
-  workspaceData,
-  noWorkspaces,
   role,
   searchParams,
+  currentView,
+  workspacesGetting,
+  noWorkspaces,
+  workspaceData,
+  deleteWorksplace,
 }) {
   const skeletonCount = 6;
-
+  const navigte = useNavigate();
   return (
-    <section className="mt-8 mb-20">
+    <section className="mt-8 mb-20 overflow-hidden">
       <h1 className="pb-5 text-text font-semibold text-xl">Workspaces</h1>
 
       {/* --- GRID VIEW --- */}
       {currentView === "grid" && (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 overflow-hidden">
           {workspaceData.map((project, i) => (
             <GridPlaceholder
               key={project.id || i}
               project={project}
               role={role}
               searchParams={searchParams}
+              deleteWorksplace={deleteWorksplace}
             />
           ))}
           {workspacesGetting &&
@@ -51,6 +54,7 @@ export default function DynamicContent({
               isLast={i === workspaceData.length - 1}
               role={role}
               searchParams={searchParams}
+              deleteWorksplace={deleteWorksplace}
             />
           ))}
 

@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import {
+  ArrowUpAZ,
+  ArrowUpZA,
   CalendarFold,
   Check,
   LayoutGrid,
@@ -57,7 +59,7 @@ export default function SortQuickMenu({
               className="w-full text-left text-[0.8rem] md:text-[0.85rem]text-subtext/85 hover:text-white hover:bg-hover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
             >
               <div className="flex items-center gap-3">
-                <CalendarFold size={16.5} />
+                <ArrowUpAZ size={16.5} />
                 <span>
                   Ascending {"  "}{" "}
                   <small className="text-smtext">{"(A-Z)"}</small>
@@ -75,7 +77,7 @@ export default function SortQuickMenu({
               className="w-full text-left text-[0.8rem] md:text-[0.85rem]text-subtext/85 hover:text-white hover:bg-hover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
             >
               <div className="flex items-center gap-3">
-                <User size={16.5} />
+                <ArrowUpZA size={16.5} />
                 <span>
                   Descending {"  "}{" "}
                   <small className="text-smtext">{"(Z-A)"}</small>
