@@ -46,7 +46,7 @@ export default function SortQuickMenu({
               setShowSortMenuBar(false);
             }
           }}
-          className="absolute z-[110] -bottom-20 sm:bottom-auto sm:top-[185px] sm:right-[370px] sm:mx-0 w-[99.9%] sm:w-[240px] bg-bg/80 backdrop-blur-2xl border border-white/10 rounded-xl sm:rounded-2xl shadow-2xl p-2 overflow-hidden pb-20 sm:pb-0"
+          className="absolute z-[110] -bottom-20 sm:bottom-auto sm:top-[185px] sm:right-[370px] sm:mx-0 w-[99.9%] sm:w-[240px] bg-bg/80 backdrop-blur-2xl border border-white/10 rounded-xl sm:rounded-2xl shadow-2xl p-2 overflow-hidden pb-24 sm:pb-0"
         >
           <div className="w-full flex sm:hidden justify-center">
             <div className="rounded-full bg-smtext h-1 w-10"></div>
@@ -59,7 +59,10 @@ export default function SortQuickMenu({
               className="w-full text-left text-[0.8rem] md:text-[0.85rem]text-subtext/85 hover:text-white hover:bg-hover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
             >
               <div className="flex items-center gap-3">
-                <ArrowUpAZ size={16.5} />
+                <ArrowUpAZ
+                  size={16.5}
+                  className="sm:group-hover:rotate-180 transition-transform duration-300"
+                />
                 <span>
                   Ascending {"  "}{" "}
                   <small className="text-smtext">{"(A-Z)"}</small>
@@ -77,7 +80,10 @@ export default function SortQuickMenu({
               className="w-full text-left text-[0.8rem] md:text-[0.85rem]text-subtext/85 hover:text-white hover:bg-hover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
             >
               <div className="flex items-center gap-3">
-                <ArrowUpZA size={16.5} />
+                <ArrowUpZA
+                  size={16.5}
+                  className="sm:group-hover:rotate-180 transition-transform duration-300"
+                />
                 <span>
                   Descending {"  "}{" "}
                   <small className="text-smtext">{"(Z-A)"}</small>
@@ -99,7 +105,10 @@ export default function SortQuickMenu({
               className="w-full text-left text-[0.8rem] md:text-[0.85rem]text-subtext/85 hover:text-white hover:bg-hover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
             >
               <div className="flex items-center gap-3">
-                <CalendarFold size={16.5} />
+                <CalendarFold
+                  size={16.5}
+                  className="sm:group-hover:scale-110 transition-transform"
+                />
                 <span>Date</span>
               </div>
               <div>
@@ -114,7 +123,10 @@ export default function SortQuickMenu({
               className="w-full text-left text-[0.8rem] md:text-[0.85rem]text-subtext/85 hover:text-white hover:bg-hover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
             >
               <div className="flex items-center gap-3">
-                <User size={16.5} />
+                <User
+                  size={16.5}
+                  className="sm:group-hover:scale-110 transition-transform"
+                />
                 <span>Name</span>
               </div>
               <div>
@@ -129,7 +141,10 @@ export default function SortQuickMenu({
               className="w-full text-left text-[0.8rem] md:text-[0.85rem]text-subtext/85 hover:text-white hover:bg-hover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
             >
               <div className="flex items-center gap-3">
-                <Medal size={16.5} />
+                <Medal
+                  size={16.5}
+                  className="sm:group-hover:scale-110 transition-transform"
+                />
                 <span>Score</span>
               </div>
               <div>
@@ -149,7 +164,10 @@ export default function SortQuickMenu({
               className="w-full text-left text-[0.8rem] md:text-[0.85rem]text-subtext/85 hover:text-white hover:bg-hover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
             >
               <div className="flex items-center gap-3">
-                <LayoutGrid size={16.5} />
+                <LayoutGrid
+                  size={16.5}
+                  className="sm:group-hover:scale-110 transition-transform"
+                />
                 <span>Grid View</span>
               </div>
               <div>
@@ -164,7 +182,10 @@ export default function SortQuickMenu({
               className="w-full text-left text-[0.8rem] md:text-[0.85rem]text-subtext/85 hover:text-white hover:bg-hover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
             >
               <div className="flex items-center gap-3">
-                <LayoutList size={16.5} />
+                <LayoutList
+                  size={16.5}
+                  className="sm:group-hover:scale-110 transition-transform"
+                />
                 <span>List View</span>
               </div>
               <div>

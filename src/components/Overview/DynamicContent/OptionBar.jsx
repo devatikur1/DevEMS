@@ -16,22 +16,47 @@ export default function OptionBar({
   deleteWorksplace,
 }) {
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-surface/35 sm:bg-transparent">
+    <div className="fixed inset-0 z-[200]">
       {/* Backdrop-BG */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
         onClick={() => setShowOptionBar(false)}
-        className="absolute inset-0 bg-transparent sm:bg-surface/5"
+        className="absolute inset-0 bg-surface/35 sm:bg-transparent"
       />
 
       {/* Modal-Content */}
       <motion.div
-        initial={{ height: 0 }}
-        animate={{ height: "auto" }}
-        exit={{ height: 0 }}
-        transition={{ duration: 0.3 }}
+        initial={{
+          opacity: 0,
+          scale: 0.95,
+          height: 0,
+          ...(optionBarDt.isMobile
+            ? {}
+            : { top: optionBarDt.x, left: optionBarDt.y }),
+        }}
+        animate={{
+          opacity: 1,
+          scale: 1,
+          height: "auto",
+          ...(optionBarDt.isMobile
+            ? {}
+            : { top: optionBarDt.x, left: optionBarDt.y }),
+        }}
+        exit={{
+          opacity: 0,
+          scale: 0.95,
+          height: 0,
+          ...(optionBarDt.isMobile
+            ? {}
+            : { top: optionBarDt.x, left: optionBarDt.y }),
+        }}
+        transition={{
+          duration: 0.25,
+          ease: [0.4, 0, 0.2, 1],
+        }}
         drag={"y"}
         dragConstraints={{ top: 0, bottom: -20 }}
         dragElastic={{ top: 0, bottom: 0.4 }}
@@ -40,45 +65,55 @@ export default function OptionBar({
             setShowOptionBar(false);
           }
         }}
-        className="absolute z-[110] -bottom-20 sm:bottom-auto sm:mx-0 w-[99.9%] sm:w-[240px] bg-bg/80 backdrop-blur-2xl border border-white/10 rounded-xl sm:rounded-2xl shadow-2xl p-2 overflow-hidden pb-32 sm:pb-2"
+        className="fixed bottom-0 sm:bottom-auto left-0 sm:left-auto right-0 sm:right-auto z-[110] sm:mx-0 w-[99%] sm:w-[240px] bg-bg/80 backdrop-blur-2xl border-t sm:border border-white/10 rounded-t-xl sm:rounded-2xl shadow-2xl shadow-black/40 p-2 overflow-hidden pb-32 sm:pb-2"
       >
-        <div className="w-full flex sm:hidden justify-center">
-          <div className="rounded-full bg-smtext h-1 w-10"></div>
+        {/* Drag Handle for mobile */}
+        <div className="w-full flex sm:hidden justify-center py-2">
+          <div className="rounded-full bg-smtext/50 h-1 w-10"></div>
         </div>
-        <div className="flex flex-col gap-3 pt-5 sm:pt-0 sm:gap-0.5">
+        <div className="flex flex-col gap-3 pt-3 sm:pt-0 sm:gap-0.5">
           <button
             onClick={() => {
               navigator.clipboard
                 .writeText(optionBarDt.link)
                 .then(() => {
-                  toast.success("Copied !");
-                  console.log("Copied !");
+                  toast.success("Copied!");
+                  console.log("Copied!");
                 })
                 .catch((err) => {
                   console.log("Could not copy text: ", err);
-                  toast.error("Could not copy text: ", err);
+                  toast.error("Could not copy text!");
                 });
               setTimeout(() => {
                 setShowOptionBar(false);
-              }, 300);
+              }, 200);
             }}
-            className="w-full text-left px-3 py-2.5 sm:py-2 text-[13px] text-subtext/65 hover:text-white hover:bg-white/5 rounded-md transition-colors flex items-center gap-3 "
+            className="group w-full text-left px-3 py-2.5 sm:py-2 text-[13px] text-subtext/65 hover:text-white hover:bg-white/5 rounded-md transition-all duration-200 flex items-center gap-3"
           >
-            <Unlink size={15} />
+            <Unlink
+              size={15}
+              className="sm:group-hover:scale-110 transition-transform"
+            />
             <span>Copy URL</span>
           </button>
           <Link
             to={optionBarDt.settings}
-            className="w-full text-left px-3 py-2.5 sm:py-2 text-[13px] text-subtext/65 hover:text-white hover:bg-white/5 rounded-md transition-colors flex items-center gap-3 "
+            className="group w-full text-left px-3 py-2.5 sm:py-2 text-[13px] text-subtext/65 hover:text-white hover:bg-white/5 rounded-md transition-all duration-200 flex items-center gap-3"
           >
-            <Settings size={15} />
+            <Settings
+              size={15}
+              className="sm:group-hover:rotate-90 transition-transform duration-300"
+            />
             <span>Settings</span>
           </Link>
           <Link
             to={optionBarDt.link}
-            className="w-full text-left px-3 py-2.5 sm:py-2 text-[13px] text-subtext/65 hover:text-white hover:bg-white/5 rounded-md transition-colors flex items-center gap-3 "
+            className="group w-full text-left px-3 py-2.5 sm:py-2 text-[13px] text-subtext/65 hover:text-white hover:bg-white/5 rounded-md transition-all duration-200 flex items-center gap-3"
           >
-            <SquareArrowOutUpRight size={15} />
+            <SquareArrowOutUpRight
+              size={15}
+              className="sm:group-hover:translate-x-0.5 sm:group-hover:-translate-y-0.5 transition-transform"
+            />
             <span>Visit</span>
           </Link>
           <div className="h-[1px] bg-white/5 my-1" /> {/* Divider */}
@@ -86,21 +121,29 @@ export default function OptionBar({
             onClick={async () => {
               if (role === "admin") {
                 await deleteWorksplace(optionBarDt.link.split("/")[3]);
+                setShowOptionBar(false);
               } else {
-                console.log("hhh");
+                console.log("Exit workspace");
+                setShowOptionBar(false);
               }
             }}
-            className="w-full text-left px-3 py-2.5 sm:py-2 text-[13px] text-error/90 hover:text-error hover:bg-error/5 rounded-md transition-colors flex items-center gap-3"
+            className="group w-full text-left px-3 py-2.5 sm:py-2 text-[13px] text-error/90 hover:text-error hover:bg-error/10 rounded-md transition-all duration-200 flex items-center gap-3"
           >
             {role === "admin" ? (
               <>
-                <Trash2 size={15} />
-                <span>Delete Worksplace</span>
+                <Trash2
+                  size={15}
+                  className="sm:group-hover:scale-110 transition-transform"
+                />
+                <span>Delete Workspace</span>
               </>
             ) : (
               <>
-                <LogOut size={15} />
-                <span>Exit Worksplace</span>
+                <LogOut
+                  size={15}
+                  className="sm:group-hover:translate-x-0.5 transition-transform"
+                />
+                <span>Exit Workspace</span>
               </>
             )}
           </button>

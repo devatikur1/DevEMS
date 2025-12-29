@@ -42,7 +42,6 @@ export default function ListPlaceholder({
             <HighlightText
               text={project.name}
               highlight={searchParams.get("q") || ""}
-              
             />
             <div className="flex items-center gap-2">
               {role === "employee" && (
@@ -107,10 +106,16 @@ export default function ListPlaceholder({
             <button
               onClick={(e) => {
                 e.stopPropagation();
+                const rect = e.currentTarget.getBoundingClientRect();
+                const isMobile = window.innerWidth < 640;
+
                 setShowOptionBar(!showOptionBar);
                 setOptionBarDt({
                   link: `/u/workspaces/${project.id}/`,
                   settings: `/u/workspaces/${project.id}/settings`,
+                  isMobile,
+                  x: isMobile ? undefined : rect.top + rect.height + 4,
+                  y: isMobile ? undefined : Math.max(8, rect.right - 240),
                 });
               }}
               className="relative z-50 text-smtext hover:text-white bg-transparent hover:bg-hover px-1.5 py-0.5 rounded-md"

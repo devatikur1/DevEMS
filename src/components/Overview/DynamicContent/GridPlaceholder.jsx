@@ -24,7 +24,7 @@ export default function GridPlaceholder({
   if (!project) return null;
 
   return (
-    <li className="sm:relative">
+    <li className="static sm:relative">
       <div
         onClick={() => navigate(`/u/workspaces/${project.id}`)}
         className="group relative flex flex-col gap-5 p-5 bg-surface border border-boxHover rounded-xl hover:border-smtext/40 transition-all duration-300 overflow-hidden"
@@ -82,10 +82,15 @@ export default function GridPlaceholder({
           <button
             onClick={(e) => {
               e.stopPropagation();
+              const rect = e.currentTarget.getBoundingClientRect();
+              const isMobile = window.innerWidth < 640; // sm breakpoint
+
               setShowOptionBar(!showOptionBar);
               setOptionBarDt({
                 link: `/u/workspaces/${project.id}/`,
                 settings: `/u/workspaces/${project.id}/settings`,
+                x: isMobile ? undefined : rect.top + rect.height + 4,
+                y: isMobile ? undefined : Math.max(8, rect.right - 240),
               });
             }}
             className="relative z-50 text-smtext hover:text-white bg-transparent hover:bg-hover px-1.5 py-0.5 rounded-md"
