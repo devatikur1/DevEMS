@@ -4,6 +4,7 @@ import GridPlaceholder from "./DynamicContent/GridPlaceholder";
 import GridPgLoading from "./DynamicContent/GridPgLoading";
 import ListPgLoading from "./DynamicContent/ListPgLoading";
 import clsx from "clsx";
+import Placeholder from "./DynamicContent/Placeholder";
 
 export default function DynamicContent({
   role,
@@ -18,9 +19,34 @@ export default function DynamicContent({
   return (
     <section className="mt-8 mb-20 overflow-hidden">
       <h1 className="pb-5 text-text font-semibold text-xl">Workspaces</h1>
+      {/* VIEW */}
+      <ul
+        className={clsx(
+          "overflow-hidden",
+          currentView === "grid" &&
+            "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5",
+          currentView === "list" &&
+            "flex flex-col bg-surface border border-border rounded-lg"
+        )}
+      >
+        {workspaceData.map((project, i) => (
+          <Placeholder
+            key={project.id || i}
+            project={project}
+            isFast={i === 0}
+            isLast={i === workspaceData.length - 1}
+            role={role}
+            searchParams={searchParams}
+            deleteWorksplace={deleteWorksplace}
+            isGrid={currentView === "grid" ? true : false}
+          />
+        ))}
+        {workspacesGetting &&
+          [...Array(skeletonCount)].map((_, i) => <GridPgLoading key={i} />)}
+      </ul>
 
       {/* --- GRID VIEW --- */}
-      {currentView === "grid" && (
+      {/* {currentView === "grid" && (
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 overflow-hidden">
           {workspaceData.map((project, i) => (
             <GridPlaceholder
@@ -35,10 +61,10 @@ export default function DynamicContent({
           {workspacesGetting &&
             [...Array(skeletonCount)].map((_, i) => <GridPgLoading key={i} />)}
         </ul>
-      )}
+      )} */}
 
       {/* --- LIST VIEW --- */}
-      {currentView === "list" && (
+      {/* {currentView === "list" && (
         <ul
           className={clsx(
             "flex flex-col bg-surface border border-border rounded-lg overflow-hidden",
@@ -66,7 +92,7 @@ export default function DynamicContent({
               />
             ))}
         </ul>
-      )}
+      )} */}
 
       {noWorkspaces && workspaceData.length === 0 && (
         <div className="text-center py-20 border border-dashed border-border rounded-xl">
