@@ -12,35 +12,58 @@ import {
 import React from "react";
 
 export default function SortQuickMenu({
+  sortQuickDt,
   setShowSortMenuBar,
-  currentView,
-  updateView,
-  currentSort,
-  updateSort,
   currentDirection,
   updateDirection,
+  currentSort,
+  updateSort,
+  currentView,
+  updateView,
 }) {
   return (
     <>
-      <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-surface/35 sm:bg-transparent">
+      <div className="fixed inset-0 z-[200]">
         {/* Backdrop-BG */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
           onClick={() => setShowSortMenuBar(false)}
-          className="absolute inset-0 bg-transparent"
+          className="absolute inset-0 bg-surface/35 sm:bg-transparent"
         />
 
         {/* Modal-Content */}
         <motion.div
-          initial={{ height: 0 }}
-          animate={{ height: "auto" }}
-          exit={{ height: 0 }}
-          transition={{ duration: 0.3 }}
+          initial={{
+            opacity: 0,
+            scale: 0.95,
+            height: 0,
+            ...(sortQuickDt.isMobile
+              ? {}
+              : { top: sortQuickDt.x, left: sortQuickDt.y }),
+          }}
+          animate={{
+            opacity: 1,
+            scale: 1,
+            height: "auto",
+            ...(sortQuickDt.isMobile
+              ? {}
+              : { top: sortQuickDt.x, left: sortQuickDt.y }),
+          }}
+          exit={{
+            opacity: 0,
+            scale: 0.95,
+            height: 0,
+            ...(sortQuickDt.isMobile
+              ? {}
+              : { top: sortQuickDt.x, left: sortQuickDt.y }),
+          }}
+          transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
           drag={"y"}
           dragConstraints={{ top: 0, bottom: -20 }}
-          dragElastic={{ top: 0, bottom: 0.8 }}
+          dragElastic={{ top: 0, bottom: 0.4 }}
           onDragEnd={(e, info) => {
             if (info.offset.y > 10) {
               setShowSortMenuBar(false);

@@ -16,7 +16,7 @@ export default function ListPlaceholder({
   deleteWorksplace,
 }) {
   const [showOptionBar, setShowOptionBar] = useState(false);
-  const [optionBarDt, setOptionBarDt] = useState([]);
+  const [optionBarDt, setOptionBarDt] = useState({});
   const navigate = useNavigate();
   if (!project) return null;
   return (

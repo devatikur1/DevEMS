@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { LayoutGrid, LayoutList, ListFilter, Plus, Search } from "lucide-react";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import { AnimatePresence } from "framer-motion";
 import SortQuickMenu from "./Toolbar/SortQuickMenu";
@@ -22,8 +22,9 @@ export default function Toolbar({
   const { authId } = useContext(AppContext);
   const { userDt } = authId;
 
-  // 🔹 useNavigate
+  // 🔹 useNavigate && State
   const navigate = useNavigate();
+  const [sortQuickDt, setSortQuickDt] = useState({});
 
   // ---------------------
   // ✅ Render
@@ -52,7 +53,18 @@ export default function Toolbar({
 
         {/* ⏳ Sort Button */}
         <button
-          onClick={() => setShowSortMenuBar(!showSortMenuBar)}
+          onClick={(e) => {
+            e.stopPropagation();
+            const rect = e.currentTarget.getBoundingClientRect();
+            const isMobile = window.innerWidth < 640;
+
+            setShowSortMenuBar(!showSortMenuBar);
+            setSortQuickDt({
+              isMobile,
+              x: isMobile ? undefined : rect.top + rect.height + 4,
+              y: isMobile ? undefined : Math.max(8, rect.right - 240),
+            });
+          }}
           className="h-full px-3 rounded-md bg-surface border border-boxHover hover:bg-white/[0.08] transition-all flex items-center justify-center group active:scale-95"
         >
           <ListFilter
@@ -109,13 +121,14 @@ export default function Toolbar({
       <AnimatePresence>
         {showSortMenuBar && (
           <SortQuickMenu
+            sortQuickDt={sortQuickDt}
             setShowSortMenuBar={setShowSortMenuBar}
-            currentView={currentView}
-            updateView={updateView}
-            currentSort={currentSort}
-            updateSort={updateSort}
             currentDirection={currentDirection}
             updateDirection={updateDirection}
+            currentSort={currentSort}
+            updateSort={updateSort}
+            currentView={currentView}
+            updateView={updateView}
           />
         )}
       </AnimatePresence>

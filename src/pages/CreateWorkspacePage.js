@@ -86,7 +86,7 @@ export default function CreateWorkspacePage() {
         lastUpdate: new Date().toISOString(),
         status: "Active",
         members: 1,
-        maxMembers: totalMembers >= 10 ? Number(totalMembers) : "Unlimited",
+        maxMembers: totalMembers > 10 ? Number(totalMembers) : "Unlimited",
         lead: userDt?.name || "",
         leadUserName: userDt?.username || "",
         leadId: userDt?.uid || "",
@@ -134,7 +134,6 @@ export default function CreateWorkspacePage() {
       !imgData.url;
 
     setIsDisabled(checkDisabled);
-    console.log(category);
   }, [title, description, activeTags, imgData, category]);
 
   // ---------------------

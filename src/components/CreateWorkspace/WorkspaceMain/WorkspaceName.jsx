@@ -6,14 +6,17 @@ export default function WorkspaceName({ tite }) {
   return (
     <div className="w-full mb-6">
       <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium text-text ml-1 flex items-center justify-between">
+        <label className="text-[13px] font-medium text-text/80 mx-1 flex justify-between items-center">
           <span>Workspace Name</span>
           <span className="text-sm text-smtext">
             {title.split("").length}/50
           </span>
         </label>
-        <div className="relative flex items-center rounded-lg bg-surface border border-boxHover focus-within:border-accent/50 transition-all">
-          <TypeIcon size={18} className="absolute left-4 text-smtext" />
+        <div className="group relative flex items-center rounded-lg bg-surface border border-boxHover focus-within:border-accent/50 transition-all">
+          <TypeIcon
+            size={18}
+            className="absolute left-4 text-smtext group-focus-within:text-accent transition-colors"
+          />
           <input
             value={title}
             onChange={(e) =>

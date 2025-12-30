@@ -8,13 +8,25 @@ export default function HighlightText({ text, highlight }) {
       </h3>
     );
   }
-  const regex = new RegExp(`${highlight}`, "gi");
-  const part = text.split(regex);
+
+  // Regex special characters escape kora
+  const escapedHighlight = highlight.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const regex = new RegExp(`(${escapedHighlight})`, "gi");
+  const parts = text.split(regex);
+  console.log(regex);
+  
+
   return (
     <h3 className="text-text font-semibold text-[13px] lg:text-[15px] truncate">
-      <span>{part[0]}</span>
-      <mark className="bg-warning/20 text-warning">{highlight}</mark>
-      <span>{part[1]}</span>
+      {parts.map((part, index) =>
+        regex.test(part) ? (
+          <mark key={index} className="bg-warning/20 text-warning">
+            {part}
+          </mark>
+        ) : (
+          <span key={index}>{part}</span>
+        )
+      )}
     </h3>
   );
 }

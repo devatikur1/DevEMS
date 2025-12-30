@@ -29,6 +29,7 @@ export default function DynamicContent({
               role={role}
               searchParams={searchParams}
               deleteWorksplace={deleteWorksplace}
+              currentView={currentView}
             />
           ))}
           {workspacesGetting &&

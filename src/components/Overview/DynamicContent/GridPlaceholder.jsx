@@ -10,13 +10,14 @@ import OptionBar from "./OptionBar";
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { getMemberLevel } from "../../../others/getMemberLevel";
+import { getMemberLevel } from "../../../function/getMemberLevel";
 
 export default function GridPlaceholder({
   project,
   role,
   searchParams,
   deleteWorksplace,
+  currentView,
 }) {
   const [showOptionBar, setShowOptionBar] = useState(false);
   const [optionBarDt, setOptionBarDt] = useState([]);
