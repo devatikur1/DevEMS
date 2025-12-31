@@ -1,6 +1,4 @@
 import React from "react";
-import ListPlaceholder from "./DynamicContent/ListPlaceholder";
-import GridPlaceholder from "./DynamicContent/GridPlaceholder";
 import GridPgLoading from "./DynamicContent/GridPgLoading";
 import ListPgLoading from "./DynamicContent/ListPgLoading";
 import clsx from "clsx";
@@ -41,58 +39,12 @@ export default function DynamicContent({
             isGrid={currentView === "grid" ? true : false}
           />
         ))}
-        {workspacesGetting &&
-          [...Array(skeletonCount)].map((_, i) => <GridPgLoading key={i} />)}
+        {workspacesGetting && currentView === "grid" ? (
+          <GridPgLoading />
+        ) : (
+          <ListPgLoading />
+        )}
       </ul>
-
-      {/* --- GRID VIEW --- */}
-      {/* {currentView === "grid" && (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 overflow-hidden">
-          {workspaceData.map((project, i) => (
-            <GridPlaceholder
-              key={project.id || i}
-              project={project}
-              role={role}
-              searchParams={searchParams}
-              deleteWorksplace={deleteWorksplace}
-              currentView={currentView}
-            />
-          ))}
-          {workspacesGetting &&
-            [...Array(skeletonCount)].map((_, i) => <GridPgLoading key={i} />)}
-        </ul>
-      )} */}
-
-      {/* --- LIST VIEW --- */}
-      {/* {currentView === "list" && (
-        <ul
-          className={clsx(
-            "flex flex-col bg-surface border border-border rounded-lg overflow-hidden",
-            workspaceData.length === 0 && "border-none"
-          )}
-        >
-          {workspaceData.map((project, i) => (
-            <ListPlaceholder
-              key={project.id || i}
-              project={project}
-              isFast={i === 0}
-              isLast={i === workspaceData.length - 1}
-              role={role}
-              searchParams={searchParams}
-              deleteWorksplace={deleteWorksplace}
-            />
-          ))}
-
-          {workspacesGetting &&
-            [...Array(skeletonCount)].map((_, i) => (
-              <ListPgLoading
-                key={i}
-                isFast={i === 0}
-                isLast={i === skeletonCount - 1}
-              />
-            ))}
-        </ul>
-      )} */}
 
       {noWorkspaces && workspaceData.length === 0 && (
         <div className="text-center py-20 border border-dashed border-border rounded-xl">
