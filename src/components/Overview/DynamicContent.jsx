@@ -1,8 +1,8 @@
 import React from "react";
-import GridPgLoading from "./DynamicContent/GridPgLoading";
-import ListPgLoading from "./DynamicContent/ListPgLoading";
 import clsx from "clsx";
 import Placeholder from "./DynamicContent/Placeholder";
+import GridPgLoading from "./DynamicContent/GridPgLoading";
+import ListPgLoading from "./DynamicContent/ListPgLoading";
 
 export default function DynamicContent({
   role,
@@ -13,7 +13,6 @@ export default function DynamicContent({
   workspaceData,
   deleteWorksplace,
 }) {
-  const skeletonCount = 6;
   return (
     <section className="mt-8 mb-20 overflow-hidden">
       <h1 className="pb-5 text-text font-semibold text-xl">Workspaces</h1>
@@ -27,23 +26,31 @@ export default function DynamicContent({
             "flex flex-col bg-surface border border-border rounded-lg"
         )}
       >
-        {workspaceData.map((project, i) => (
+        {workspaceData.length > 0 && workspaceData.map((project, i) => (
           <Placeholder
             key={project.id || i}
             project={project}
             isFast={i === 0}
-            isLast={i === workspaceData.length - 1}
+            isLast={i === workspaceData.length + Number(workspacesGetting) - 1}
             role={role}
             searchParams={searchParams}
             deleteWorksplace={deleteWorksplace}
             isGrid={currentView === "grid" ? true : false}
           />
         ))}
-        {workspacesGetting && currentView === "grid" ? (
-          <GridPgLoading />
-        ) : (
-          <ListPgLoading />
-        )}
+        {currentView === "grid" &&
+          workspacesGetting &&
+          [...Array(10)].map((_, i) => <GridPgLoading key={i} />)}
+
+        {currentView === "list" &&
+          workspacesGetting &&
+          [...Array(10)].map((_, i) => (
+            <ListPgLoading
+              key={i}
+              isFast={workspaceData.length === 0 && i === 0}
+              isLast={i === 9}
+            />
+          ))}
       </ul>
 
       {noWorkspaces && workspaceData.length === 0 && (

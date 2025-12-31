@@ -24,7 +24,7 @@ export default function OptionBar({
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2 }}
         onClick={() => setShowOptionBar(false)}
-        className="absolute inset-0 bg-surface/35 sm:bg-transparent"
+        className="absolute inset-0 bg-surface/35 sm:bg-transparent h-[100vh] overflow-y-auto"
       />
 
       {/* Modal-Content */}

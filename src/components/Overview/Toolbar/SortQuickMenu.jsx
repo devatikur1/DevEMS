@@ -23,7 +23,7 @@ export default function SortQuickMenu({
 }) {
   return (
     <>
-      <div className="fixed inset-0 z-[200]">
+      <div className="fixed inset-0 z-[40] h-[100vh] overflow-y-auto">
         {/* Backdrop-BG */}
         <motion.div
           initial={{ opacity: 0 }}
