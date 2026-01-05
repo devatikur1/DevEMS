@@ -87,22 +87,28 @@ export default function LoginProviders({
                 })();
               }
             }}
-            className="min-w-full flex justify-center items-center gap-3 bg-bg/70 duration-300 transition-all hover:bg-hover border border-border rounded-full px-6 p-2"
+            className="group w-full flex justify-center items-center gap-3 bg-white/5 hover:bg-white/10 active:scale-[0.98] transition-all duration-200 border border-white/10 hover:border-white/20 rounded-xl px-4 py-3"
           >
             {lodingitem === id ? (
-              <Loader2 className="animate-spin" size={21.5} />
+              <Loader2 className="animate-spin text-white/70" size={20} />
             ) : (
               <>
-                <Icon fontSize="medium" />
-                <span className="font-light text-subtext text-[0.94rem]">
+                <div className="text-white/80 group-hover:text-white transition-colors">
+                  <Icon fontSize="small" className="w-5 h-5" />
+                </div>
+                <span className="font-medium text-sm text-zinc-300 group-hover:text-white transition-colors">
                   {label}
                 </span>
               </>
             )}
           </motion.button>
           {id === "email" && (
-            <div className="w-full max-w-[90%] px-7 py-1">
-              <hr className="h-[1px] bg-border/80 border-none w-full" />
+            <div className="w-full flex items-center gap-4 px-2 py-1">
+              <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+              <span className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
+                Or continue with
+              </span>
+              <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
             </div>
           )}
         </>

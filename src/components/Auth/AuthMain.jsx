@@ -19,7 +19,7 @@ export default function AuthMain({ providerSign, IsSignIn, setAuthError }) {
         initial={{ opacity: 0, height: 0 }}
         animate={{ opacity: 1, height: "auto" }}
         exit={{ opacity: 0, height: 0 }}
-        className="w-[80%] sm:w-[55%] md:w-[71%] lg:w-[80%] flex flex-col items-center justify-center gap-5 select-none *:select-none mt-5"
+        className="w-full flex flex-col items-center justify-center gap-5 select-none *:select-none"
       >
         <AnimatePresence>
           {role === "" ? (

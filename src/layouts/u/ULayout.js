@@ -38,7 +38,7 @@ export default function ULayout() {
   // ---------------------
   useEffect(() => {
     if (!isLogged) {
-      navigate("/login");
+      navigate("/sign-in");
     }
   }, [isLogged, navigate]);
 

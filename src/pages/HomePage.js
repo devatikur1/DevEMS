@@ -16,10 +16,6 @@ import {
 
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import FireflyEffect from "../components/Home/Bg";
-import NoiseField from "../components/Home/Bg";
-import PlasmaWave from "../components/Home/Bg";
-import SnowflakesAnimation from "../components/Home/Bg";
 
 gsap.registerPlugin(useGSAP);
 
@@ -65,24 +61,9 @@ export default function HomePage() {
   // ---------------------
   return (
     <div>
-      <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          zIndex: 10,
-        }}
-      >
-        <SnowflakesAnimation
-          maxSnowflakes={100}
-          snowflakeColor={"#fff"}
-          backgroundColor={"#000"}
-          minSize={7}
-          maxSize={12}
-          minSpeed={0.02}
-          maxSpeed={0.1}
-        />
+      <div className="absolute inset-0 z-10 overflow-hidden">
+        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue/20 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-purple/20 rounded-full blur-[120px]" />
       </div>
 
       <div
@@ -147,7 +128,7 @@ export default function HomePage() {
         {/* 🔹 Hero Content */}
         <article className="relative z-30 max-w-6xl mx-auto px-4 h-screen flex justify-center items-center select-none">
           <div className="text-center">
-            <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-6 leading-[1.05] text-white">
+            <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-6 leading-[1.05] text-textPrimary">
               <div className="hp-wrap overflow-hidden">
                 <span className="hp inline-block">Manage your workspace</span>
               </div>
@@ -160,7 +141,7 @@ export default function HomePage() {
             </h2>
 
             <div className="hp-wrap overflow-hidden">
-              <p className="hp text-sm sm:text-lg text-smtext max-w-2xl mx-auto font-normal leading-relaxed">
+              <p className="hp sm:w-[80%] text-sm sm:text-[0.9rem] text-textMuted max-w-2xl mx-auto font-normal leading-relaxed">
                 A unified platform to manage payroll, attendance, and
                 performance. Streamline your HR operations with AI-powered
                 insights.
@@ -168,7 +149,7 @@ export default function HomePage() {
             </div>
 
             <Link to="/u" className="inline-block pt-8 hp pointer-events-auto">
-              <button className="relative group overflow-hidden bg-subtext text-black px-10 py-3.5 rounded-full font-bold transition-all hover:scale-105 active:scale-95">
+              <button className="relative group overflow-hidden bg-bgSoft text-[0.8rem] md:text-[1rem] text-bg px-8 py-2 lg:px-10 lg:py-3 rounded-full font-bold transition-all hover:scale-105 active:scale-95">
                 <span className="relative z-10">Start Managing Now</span>
                 <div className="absolute inset-0 bg-accent translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
               </button>

@@ -4,22 +4,44 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Base Theme Colors
-        bg: "#000000", // Deep black base background
-        surface: "#0a0a0a", // Surface for cards or section
-        boxHover: "#1f1f1f", // Highlight or accent color
-        accent: "#3b82f6", // Highlight or accent color
-        accentA: "#27272a", // Highlight or accent color
-        text: "#cccccc", // Main text color
-        subtext: "#eeeeee", // Muted text color
-        smtext: "#9f9fa9", // Muted text color
-        border: "#2d2d2d", // Divider color
-        hover: "#181818", // Hover state
+        // ===== Base Backgrounds =====
+        bg: "#000000",
+        bgSoft: "#f9f9f9",
+        surface: "#151515",
+        surfaceSoft: "#1f1f1f",
+        surfaceHard: "#2b2b2b",
 
-        // Status subtle variants
-        success: "#10B981",
+        // ===== Text =====
+        textPrimary: "#f9f9f9",
+        textMuted: "#7e7e7e",
+        textDark: "#000000",
+
+        // ===== Accent / Brand =====
+        accent: "#3b82f6",
+        accentSoft: "#60a5fa",
+        accentHover: "#2563eb",
+        accentA: "#2b2b2b",
+
+        // ===== UI States =====
+        hover: "#181818",
+        border: "#2d2d2d",
+        boxHover: "#1f1f1f",
+
+        // ===== Status Colors =====
+        success: "#10b981",
+        successSoft: "#14532d",
         warning: "#ffb300",
-        error: "#EF4444",
+        warningSoft: "#78350f",
+        error: "#ef4444",
+        errorSoft: "#881337",
+
+        // ===== Extra / Legacy =====
+        text: "#f9f9f9",
+        subtext: "#7e7e7e",
+        smtext: "#525252",
+        info: "#0ea5e9",
+        blue: "oklch(54.6% 0.245 262.881)",
+        purple: "oklch(55.8% 0.288 302.321)",
       },
     },
   },
