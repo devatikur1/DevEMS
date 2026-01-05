@@ -122,7 +122,7 @@ export const DrawingTransformation = ({
                 : "opacity-0 scale-75 blur-sm"
             }`}
           >
-            <FinalIcon className="w-10 h-10 md:w-14 md:h-14 text-blue-500" />
+            <FinalIcon className="w-10 h-10 md:w-14 md:h-14 text-accent" />
             {stage === 2 && (
               <div className="mt-3 flex items-center gap-2 px-2 py-1 bg-boxHover/50 rounded-full border border-boxHover">
                 <div className="w-1 h-1 bg-success rounded-full"></div>
