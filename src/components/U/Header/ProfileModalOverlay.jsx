@@ -140,7 +140,7 @@ export default function ProfileModalOverlay({
                 }
                 onClick={async () => await handlePrUpdate()}
                 type="button"
-                className="bg-accent  hover:bg-accent px-14 py-2 rounded-lg active:scale-[1.2] transition-all duration-300 disabled:opacity-30 disabled:pointer-events-none"
+                className="bg-accent hover:bg-accent px-14 py-2 rounded-lg active:scale-[1.2] transition-all duration-300 disabled:opacity-30 disabled:pointer-events-none"
               >
                 {updateLod ? (
                   <Loader2 size={25} className="animate-spin" />

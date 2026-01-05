@@ -56,7 +56,7 @@ export default function ULayout() {
       <OptionHeader
         isScrolled={isScrolled}
         navItems={
-          userDt.role === "admin"
+          userDt?.role === "admin"
             ? [
                 { name: "Overview", path: "/u" },
                 { name: "Activity", path: "/u/activity" },

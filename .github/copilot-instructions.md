@@ -18,7 +18,7 @@ DevEMS is a React-based Employee Management System using Firebase for authentica
 - **Animations**: GSAP for complex sequences (e.g., `HomePage.jsx` hero reveal), Framer Motion for UI transitions (e.g., modals in `Header.jsx`).
 - **Forms**: Controlled components with validation; image uploads via `FormData` to ImgBB API (key in `CreateWorkspacePage.js`).
 - **Error Handling**: Toast notifications via `react-hot-toast`; custom error messages for Firebase ops.
-- **Role-Based UI**: Check `userDt.role` for conditional rendering (e.g., admin nav in `ULayout.js`).
+- **Role-Based UI**: Check `userDt?.role` for conditional rendering (e.g., admin nav in `ULayout.js`).
 - **URL State**: Use `useSearchParams` for view toggles (grid/list in `OverviewPage.js`) and modals (profile settings in `Header.jsx`).
 - **Component Organization**: Sub-components in folders (e.g., `CreateWorkspace/WorkspaceMain/`); props passed as objects (e.g., `tite={{ title, setTitle }}`).
 - **Firebase Ops**: Use `doc()`, `setDoc()`, `getDoc()` from Firestore; auth listeners in `AppContextProvider.jsx`.
