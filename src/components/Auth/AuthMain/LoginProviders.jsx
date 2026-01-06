@@ -4,12 +4,13 @@ import { Facebook, Loader2, Mail } from "lucide-react";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { AppContext } from "../../../context/AppContext";
+import { useSearchParams } from "react-router-dom";
+import setParamsOnUrl from "../../../function/setParamsOnUrl";
 
 export default function LoginProviders({
   providerSign,
   IsSignIn,
   setAuthError,
-  setSearchParams,
 }) {
   // 🔹 useContext context
   const { authId } = useContext(AppContext);
@@ -17,6 +18,9 @@ export default function LoginProviders({
 
   // 🔹 Cutom Hook
   const [lodingitem, setLodingItem, signIn] = providerSign;
+
+  // 🔹 React-Router-Dom
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // ---------------------
   // ✅ Login Providers
@@ -61,7 +65,12 @@ export default function LoginProviders({
             }}
             onClick={() => {
               if (id === "email") {
-                setSearchParams({ method: "email" });
+                setParamsOnUrl({
+                  get: searchParams,
+                  set: setSearchParams,
+                  key: "method",
+                  value: "email",
+                });
               } else {
                 (async () => {
                   setLodingItem(id);
@@ -87,16 +96,18 @@ export default function LoginProviders({
                 })();
               }
             }}
-            className="group w-full flex justify-center items-center gap-3 bg-white/5 hover:bg-white/10 active:scale-[0.98] transition-all duration-200 border border-white/10 hover:border-white/20 rounded-xl px-4 py-3"
+            className={`group w-full flex justify-center items-center gap-3 bg-surfaceSoft/60 hover:bg-surfaceHard/70 active:scale-[0.98] transition-all duration-200 border border-border/85 hover:border-border rounded-xl px-4 py-3 ${
+              id === "email"
+             && "mt-9"}`}
           >
             {lodingitem === id ? (
-              <Loader2 className="animate-spin text-white/70" size={20} />
+              <Loader2 className="animate-spin text-textPrimary" size={20} />
             ) : (
               <>
-                <div className="text-white/80 group-hover:text-white transition-colors">
+                <div className="text-textPrimary group-hover:text-textPrimary transition-colors">
                   <Icon fontSize="small" className="w-5 h-5" />
                 </div>
-                <span className="font-medium text-sm text-zinc-300 group-hover:text-white transition-colors">
+                <span className="font-medium text-sm text-textPrimary/85 group-hover:text-textPrimary transition-colors">
                   {label}
                 </span>
               </>
@@ -104,11 +115,11 @@ export default function LoginProviders({
           </motion.button>
           {id === "email" && (
             <div className="w-full flex items-center gap-4 px-2 py-1">
-              <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-              <span className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
+              <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent  via-border to-transparent" />
+              <span className="text-xs font-medium text-textMuted/95 uppercase tracking-wider">
                 Or continue with
               </span>
-              <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+              <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
             </div>
           )}
         </>
