@@ -16,202 +16,152 @@ function useAuthProvider() {
   const { authId } = useContext(AppContext);
   const { setIsLogged, setUserDt } = authId;
 
-  // 🔹 Sate && Cutom Hook
+  // 🔹 State & Custom Hook
   const [lodingitem, setLodingItem] = useState(null);
   const [setData, getData] = useFirestore();
 
-  // 🔹 Login Fn
+  // 🔹 Login / Signup Function
   const authSign = useCallback(
     async ({ id, IsSignIn, role, formData, setAuthError }) => {
       try {
         setLodingItem(id);
         setAuthError({ status: false, text: "" });
 
+        let userResult;
+        let finalUserData;
 
+        // ------------------------
         // 🔹 EMAIL AUTH
+        // ------------------------
         if (id === "email_auth") {
-          if (IsSignIn) {
-             await signInWithEmailAndPassword(
-              auth,
-              formData.email,
-              formData.password
-            );
-            const userDoc = await getData({
-              collId: "users",
-              docId: formData.email,
-            });
-            if (userDoc.status && userDoc.data.role === role) {
-              localStorage.setItem("isLogged", "true");
-              localStorage.setItem("userDt", JSON.stringify(userDoc.data));
-              setIsLogged(true);
-              setUserDt(userDoc.data);
-              setAuthError({
-                status: false,
-                text: "",
-              });
-            } else {
-              setAuthError({
-                status: true,
-                text: "No account found. Please sign up before logging in.",
-              });
-            }
-          } else {
-            const result = await createUserWithEmailAndPassword(
-              auth,
-              formData.email,
-              formData.password
-            );
-            const newUserData = {
-              role: role,
-              username: formData.username,
-              email: formData.email,
-              name: formData.name,
-              photoURL: formData.photoURL,
-              emailVerified: result.user.emailVerified,
-              createdAt: Date.now(),
-            };
-            await setData({
-              collId: "users",
-              docId: formData.email,
-              data: newUserData,
-            });
-            await setData({
-              collId: "username",
-              docId: formData.username,
-              data: {
-                email: formData.email,
-              },
-            });
-            localStorage.setItem("isLogged", "true");
-            localStorage.setItem("userDt", JSON.stringify(newUserData));
+          if (!formData?.email || (!IsSignIn && !formData?.password)) {
+            throw { code: "custom/invalid-input" };
+          }
 
-            setIsLogged(true);
-            setUserDt(newUserData);
-            setAuthError({
-              status: false,
-              text: "",
-            });
+          if (IsSignIn) {
+            userResult = await signInWithEmailAndPassword(
+              auth,
+              formData.email,
+              formData.password
+            );
+          } else {
+            userResult = await createUserWithEmailAndPassword(
+              auth,
+              formData.email,
+              formData.password
+            );
           }
         } else {
-          
+          // ------------------------
           // 🔹 SOCIAL PROVIDERS
+          // ------------------------
           let provider;
           switch (id) {
             case "google":
               provider = new GoogleAuthProvider();
               break;
-
             case "github":
               provider = new GithubAuthProvider();
               break;
-
             case "facebook":
               provider = new FacebookAuthProvider();
               break;
-
             default:
-              setAuthError({
-                status: true,
-                text: "Unknown provider",
-              });
-              return;
+              throw { code: "custom/unknown-provider" };
           }
 
-          // 🔹 Login Base on Provider
-          const result = await signInWithPopup(auth, provider);
-          const user = result.user;
-          console.log(user);
-
-          if (IsSignIn) {
-            const docSnap = await getData({
-              collId: "users",
-              docId: user.email,
-            });
-
-            if (docSnap.status && docSnap.data.role === role) {
-              const data = docSnap.data;
-              localStorage.setItem("isLogged", "true");
-              localStorage.setItem("userDt", JSON.stringify(data));
-              setIsLogged(true);
-              setUserDt(data);
-              setAuthError({
-                status: false,
-                text: "",
-              });
-            } else {
-              setAuthError({
-                status: true,
-                text: "No account found. Please sign up before logging in.",
-              });
-            }
-          } else {
-            const username = await genUniqueUsername(
-              `@${user.email.split("@")[0].toLocaleLowerCase()}`
-            );
-            const newUserData = {
-              role: role,
-              username,
-              email: user.email,
-              name: user.displayName || "",
-              photoURL: user.photoURL || "",
-              emailVerified: user.emailVerified,
-              createdAt: Date.now(),
-            };
-
-            await setData({
-              collId: "users",
-              docId: user.email,
-              data: newUserData,
-            });
-
-            await setData({
-              collId: "username",
-              docId: username,
-              data: {
-                email: user.email,
-              },
-            });
-
-            localStorage.setItem("isLogged", "true");
-            localStorage.setItem("userDt", JSON.stringify(newUserData));
-
-            setIsLogged(true);
-            setUserDt(newUserData);
-            setAuthError({
-              status: false,
-              text: "",
-            });
-          }
+          userResult = await signInWithPopup(auth, provider);
         }
-      } catch (error) {
-        const errorCode = error.code;
-        let customMessage = "";
 
-        switch (errorCode) {
+        const user = userResult.user;
+
+        // ------------------------
+        // 🔹 Check Firestore user
+        // ------------------------
+        const userDoc = await getData({ collId: "users", docId: user.email });
+
+        if (IsSignIn) {
+          if (userDoc.status && userDoc.data.role === role) {
+            finalUserData = userDoc.data;
+          } else if (userDoc.status) {
+            throw { code: "custom/role-mismatch" };
+          } else {
+            throw { code: "auth/user-not-found" };
+          }
+        } else {
+          if (userDoc.status) throw { code: "auth/email-already-in-use" };
+
+          const username =
+            id === "email_auth"
+              ? formData.username
+              : await genUniqueUsername(
+                  `@${user.email.split("@")[0].toLowerCase()}`
+                );
+
+          finalUserData = {
+            role,
+            username,
+            email: user.email,
+            name: formData?.name || user.displayName || "User",
+            photoURL: formData?.photoURL || user.photoURL || "",
+            emailVerified: user.emailVerified,
+            createdAt: Date.now(),
+          };
+
+          await setData({
+            collId: "users",
+            docId: user.email,
+            data: finalUserData,
+          });
+          await setData({
+            collId: "username",
+            docId: username,
+            data: { email: user.email },
+          });
+        }
+
+        // ------------------------
+        // 🔹 Set localStorage & Context
+        // ------------------------
+        localStorage.setItem("isLogged", "true");
+        localStorage.setItem("userDt", JSON.stringify(finalUserData));
+        setIsLogged(true);
+        setUserDt(finalUserData);
+      } catch (error) {
+        console.error("Auth Error:", error);
+
+        let customMessage = "Something went wrong. Please try again.";
+
+        switch (error.code) {
+          case "custom/role-mismatch":
+            customMessage = `Account found, but not as a ${role}.`;
+            break;
+          case "custom/unknown-provider":
+            customMessage = "Unknown login provider.";
+            break;
+          case "custom/invalid-input":
+            customMessage = "Invalid email or password.";
+            break;
+          case "auth/user-not-found":
+          case "auth/wrong-password":
+            customMessage = "Invalid email or password.";
+            break;
+          case "auth/email-already-in-use":
+            customMessage = "Email already in use. Try logging in.";
+            break;
           case "auth/popup-closed-by-user":
-            customMessage = "Login window closed. Please try again.";
+            customMessage = "Login window closed.";
             break;
           case "auth/network-request-failed":
-            customMessage = "Network error. Check your internet connection.";
-            break;
-          case "auth/cancelled-popup-request":
-            customMessage = "Multiple popups opened. Please wait.";
-            break;
-          case "auth/popup-blocked":
-            customMessage = "Popup blocked! Please allow popups for this site.";
+            customMessage = "Network error. Check your connection.";
             break;
           default:
-            customMessage = "Login failed. Something went wrong.";
+            customMessage = error.message || customMessage;
         }
 
-        setAuthError({
-          status: true,
-          text: customMessage,
-        });
+        setAuthError({ status: true, text: customMessage });
       } finally {
-        setTimeout(() => {
-          setLodingItem(null);
-        }, 300);
+        setTimeout(() => setLodingItem(null), 300);
       }
     },
     [getData, setData, setIsLogged, setUserDt]
