@@ -6,7 +6,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../context/AppContext";
 
-export async function generateUniqueUsername(baseName) {
+export async function genUniqueUsername(baseName) {
   const usersRef = collection(db, "username");
 
   // Start with baseName

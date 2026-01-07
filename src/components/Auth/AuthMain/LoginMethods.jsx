@@ -1,9 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { Facebook, Loader2, Mail } from "lucide-react";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import { AppContext } from "../../../context/AppContext";
 import { useSearchParams } from "react-router-dom";
 import setParamsOnUrl from "../../../function/setParamsOnUrl";
 
@@ -13,12 +12,8 @@ export default function LoginMethods({
   setAuthError,
   role,
 }) {
-  // 🔹 useContext context
-  const { authId } = useContext(AppContext);
-  const { setIsLogged, setUserDt } = authId;
-
   // 🔹 Cutom Hook
-  const [lodingitem, setLodingItem, authSign] = providerSign;
+  const [lodingitem, authSign] = providerSign;
 
   // 🔹 React-Router-Dom
   const [searchParams, setSearchParams] = useSearchParams();
@@ -28,7 +23,7 @@ export default function LoginMethods({
   // ---------------------
   const LOGIN_PROVIDERS = [
     {
-      id: "email",
+      id: "email_auth",
       label: `${IsSignIn ? "Login" : "Continue"}  with email`,
       icon: Mail,
     },
@@ -65,7 +60,7 @@ export default function LoginMethods({
               duration: 0.2,
             }}
             onClick={() => {
-              if (id === "email") {
+              if (id === "email_auth") {
                 setParamsOnUrl({
                   get: searchParams,
                   set: setSearchParams,
@@ -74,30 +69,13 @@ export default function LoginMethods({
                 });
               } else {
                 (async () => {
-                  setLodingItem(id);
-                  const { status, data, text } = await authSign(
+                  await authSign({
                     id,
                     IsSignIn,
-                    role
-                  );
-                  if (status) {
-                    setUserDt(data);
-                    setIsLogged(true);
-                    setAuthError({
-                      status: false,
-                      text,
-                    });
-                  } else {
-                    setUserDt(null);
-                    setIsLogged(false);
-                    setAuthError({
-                      status: true,
-                      text,
-                    });
-                  }
-                  setTimeout(() => {
-                    setLodingItem(null);
-                  }, 300);
+                    role,
+
+                    setAuthError,
+                  });
                 })();
               }
             }}

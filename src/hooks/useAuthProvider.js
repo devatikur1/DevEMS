@@ -6,155 +6,154 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import { useCallback, useState } from "react";
-import { auth } from "../context/AppContext";
-import { generateUniqueUsername } from "../function/generateUniqueUsername";
+import { useCallback, useContext, useState } from "react";
+import { AppContext, auth } from "../context/AppContext";
+import { genUniqueUsername } from "../function/genUniqueUsername";
 import useFirestore from "./useFirestore";
 
 function useAuthProvider() {
+  // 🔹 useContext context
+  const { authId } = useContext(AppContext);
+  const { setIsLogged, setUserDt } = authId;
+
   // 🔹 Sate && Cutom Hook
   const [lodingitem, setLodingItem] = useState(null);
   const [setData, getData] = useFirestore();
 
   // 🔹 Login Fn
   const authSign = useCallback(
-    async (id, IsSignIn, role, formData, pass) => {
+    async ({ id, IsSignIn, role, formData, setAuthError }) => {
       try {
-        // 🔹 Provider
-        const googleProvider = new GoogleAuthProvider();
-        const githubProvider = new GithubAuthProvider();
-        githubProvider.addScope("user:email");
-        const facebookAuthProvider = new FacebookAuthProvider();
+        setLodingItem(id);
+        setAuthError({ status: false, text: "" });
 
-        let provider;
-        switch (id) {
-          case "google":
-            provider = googleProvider;
-            break;
 
-          case "github":
-            provider = githubProvider;
-            break;
-
-          case "facebook":
-            provider = facebookAuthProvider;
-            break;
-
-          case "email_auth":
-            (async () => {
-              try {
-                if (IsSignIn) {
-                  await signInWithEmailAndPassword(
-                    auth,
-                    formData.email,
-                    formData.password
-                  );
-                  const userDoc = await getData({
-                    collId: "users",
-                    docId: formData.email,
-                  });
-                  if (!userDoc.status) {
-                    return {
-                      status: false,
-                      data: null,
-                      text: "User data not found",
-                    };
-                  }
-
-                  return {
-                    status: true,
-                    data: userDoc.data,
-                    text: "",
-                  };
-                } else {
-                  const result = await createUserWithEmailAndPassword(
-                    auth,
-                    formData.email,
-                    formData.password
-                  );
-                  const newUserData = {
-                    role: role,
-                    username: formData.username,
-                    email: formData.email,
-                    name: formData.name,
-                    photoURL: formData.photoURL,
-                    emailVerified: result.user.emailVerified,
-                    createdAt: Date.now(),
-                  };
-                  await setData({
-                    collId: "users",
-                    docId: formData.email,
-                    data: newUserData,
-                  });
-                  await setData({
-                    collId: "username",
-                    docId: formData.username,
-                    data: {
-                      email: formData.email,
-                    },
-                  });
-
-                  return {
-                    status: true,
-                    data: newUserData,
-                    text: "",
-                  };
-                }
-              } catch (error) {
-                return {
-                  status: false,
-                  data: null,
-                  text: "Failed to save user data",
-                };
-              }
-            })();
-            break;
-
-          default:
-            return { status: false, data: null, text: "Unknown provider" };
-        }
-
-        console.log("cccc");
-
-        // 🔹 Login Base on Provider
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
-        console.log(user);
-
-        // 🔹 eta jodi SignIn hoy true
-        if (IsSignIn) {
-          const docSnap = await getData({
-            collId: "users",
-            docId: user.email,
-          });
-
-          if (docSnap.status && docSnap.data?.role === role) {
-            const data = docSnap?.data;
-            localStorage.setItem("isLogged", "true");
-            localStorage.setItem("userDt", JSON.stringify(data));
-            return {
-              status: true,
-              data: data,
-              text: "",
-            };
+        // 🔹 EMAIL AUTH
+        if (id === "email_auth") {
+          if (IsSignIn) {
+             await signInWithEmailAndPassword(
+              auth,
+              formData.email,
+              formData.password
+            );
+            const userDoc = await getData({
+              collId: "users",
+              docId: formData.email,
+            });
+            if (userDoc.status && userDoc.data.role === role) {
+              localStorage.setItem("isLogged", "true");
+              localStorage.setItem("userDt", JSON.stringify(userDoc.data));
+              setIsLogged(true);
+              setUserDt(userDoc.data);
+              setAuthError({
+                status: false,
+                text: "",
+              });
+            } else {
+              setAuthError({
+                status: true,
+                text: "No account found. Please sign up before logging in.",
+              });
+            }
           } else {
-            return {
-              status: false,
-              data: null,
-              text: "No account found. Please sign up before logging in.",
+            const result = await createUserWithEmailAndPassword(
+              auth,
+              formData.email,
+              formData.password
+            );
+            const newUserData = {
+              role: role,
+              username: formData.username,
+              email: formData.email,
+              name: formData.name,
+              photoURL: formData.photoURL,
+              emailVerified: result.user.emailVerified,
+              createdAt: Date.now(),
             };
+            await setData({
+              collId: "users",
+              docId: formData.email,
+              data: newUserData,
+            });
+            await setData({
+              collId: "username",
+              docId: formData.username,
+              data: {
+                email: formData.email,
+              },
+            });
+            localStorage.setItem("isLogged", "true");
+            localStorage.setItem("userDt", JSON.stringify(newUserData));
+
+            setIsLogged(true);
+            setUserDt(newUserData);
+            setAuthError({
+              status: false,
+              text: "",
+            });
           }
         } else {
-          (async () => {
-            const username = await generateUniqueUsername(
-              `@${user.email.split("@")[0]}`
+          
+          // 🔹 SOCIAL PROVIDERS
+          let provider;
+          switch (id) {
+            case "google":
+              provider = new GoogleAuthProvider();
+              break;
+
+            case "github":
+              provider = new GithubAuthProvider();
+              break;
+
+            case "facebook":
+              provider = new FacebookAuthProvider();
+              break;
+
+            default:
+              setAuthError({
+                status: true,
+                text: "Unknown provider",
+              });
+              return;
+          }
+
+          // 🔹 Login Base on Provider
+          const result = await signInWithPopup(auth, provider);
+          const user = result.user;
+          console.log(user);
+
+          if (IsSignIn) {
+            const docSnap = await getData({
+              collId: "users",
+              docId: user.email,
+            });
+
+            if (docSnap.status && docSnap.data.role === role) {
+              const data = docSnap.data;
+              localStorage.setItem("isLogged", "true");
+              localStorage.setItem("userDt", JSON.stringify(data));
+              setIsLogged(true);
+              setUserDt(data);
+              setAuthError({
+                status: false,
+                text: "",
+              });
+            } else {
+              setAuthError({
+                status: true,
+                text: "No account found. Please sign up before logging in.",
+              });
+            }
+          } else {
+            const username = await genUniqueUsername(
+              `@${user.email.split("@")[0].toLocaleLowerCase()}`
             );
             const newUserData = {
               role: role,
               username,
               email: user.email,
-              name: user.displayName,
-              photoURL: user.photoURL,
+              name: user.displayName || "",
+              photoURL: user.photoURL || "",
               emailVerified: user.emailVerified,
               createdAt: Date.now(),
             };
@@ -173,12 +172,16 @@ function useAuthProvider() {
               },
             });
 
-            return {
-              status: true,
-              data: newUserData,
+            localStorage.setItem("isLogged", "true");
+            localStorage.setItem("userDt", JSON.stringify(newUserData));
+
+            setIsLogged(true);
+            setUserDt(newUserData);
+            setAuthError({
+              status: false,
               text: "",
-            };
-          })();
+            });
+          }
         }
       } catch (error) {
         const errorCode = error.code;
@@ -201,17 +204,20 @@ function useAuthProvider() {
             customMessage = "Login failed. Something went wrong.";
         }
 
-        return {
-          status: false,
-          data: null,
+        setAuthError({
+          status: true,
           text: customMessage,
-        };
+        });
+      } finally {
+        setTimeout(() => {
+          setLodingItem(null);
+        }, 300);
       }
     },
-    [getData, setData]
+    [getData, setData, setIsLogged, setUserDt]
   );
 
-  return [lodingitem, setLodingItem, authSign];
+  return [lodingitem, authSign];
 }
 
 export default useAuthProvider;

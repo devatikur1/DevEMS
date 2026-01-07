@@ -30,7 +30,7 @@ function useFirestore() {
         const snap = await getDoc(doc(db, collId, docId));
 
         if (!snap.exists()) {
-          return { isError: true, data: null };
+          return { status: false, data: null };
         }
 
         return {

@@ -23,12 +23,8 @@ export default function EmailMethod({
   setAuthError,
   providerSign,
 }) {
-  // 🔹 useContext context
-  const { authId } = useContext(AppContext);
-  const { setIsLogged, setUserDt } = authId;
-
   // 🔹 Cutom Hook
-  const [lodingitem, setLodingItem, authSign] = providerSign;
+  const [lodingitem, authSign] = providerSign;
 
   // 🔹 React-Router-Dom && State
   const [searchParams, setSearchParams] = useSearchParams();
@@ -72,45 +68,18 @@ export default function EmailMethod({
   // ------------------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLodingItem("email_auth");
     if (isFormInvalid) {
       setAuthError({ status: true, text: "Please fill up form" });
       setImgUploading(false);
       return;
     }
-    const res = await authSign("email_auth", IsSignIn, role, formData);
-
-    if (!res) {
-      setUserDt(null);
-      setIsLogged(false);
-      setAuthError({
-        status: true,
-        text: "Something went wrong. Please try again.",
-      });
-      setLodingItem(null);
-      return;
-    }
-
-    const { status, data, text } = res;
-
-    if (status) {
-      setUserDt(data);
-      setIsLogged(true);
-      setAuthError({
-        status: false,
-        text,
-      });
-    } else {
-      setUserDt(null);
-      setIsLogged(false);
-      setAuthError({
-        status: true,
-        text,
-      });
-    }
-    setTimeout(() => {
-      setLodingItem(null);
-    }, 300);
+    await authSign({
+      id: "email_auth",
+      IsSignIn,
+      role,
+      formData,
+      setAuthError,
+    });
   };
 
   // ------------------------------
@@ -221,7 +190,7 @@ export default function EmailMethod({
         }}
         className="flex flex-col gap-4"
       >
-        {(IsSignIn || formData.photoURL !== "") && (
+        {
           <>
             {Forms_Inputs.map((input) => {
               const Icon = input?.icon;
@@ -286,7 +255,7 @@ export default function EmailMethod({
               </div>
             )}
           </>
-        )}
+        }
         {!IsSignIn && formData.photoURL === "" && (
           <UploadImg img={{ imgData, setImgData }} />
         )}
