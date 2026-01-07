@@ -43,21 +43,44 @@ function useAuthProvider() {
           case "email_auth":
             (async () => {
               try {
-                const newUserData = {
-                  role,
-                  ...formData,
-                  createdAt: Date.now(),
-                  emailVerified: false,
-                };
                 if (IsSignIn) {
-                  await signInWithEmailAndPassword(auth, formData?.email, pass);
-                 
-                } else {
-                  await createUserWithEmailAndPassword(
+                  await signInWithEmailAndPassword(
                     auth,
-                    formData?.email,
-                    pass
+                    formData.email,
+                    formData.password
                   );
+                  const userDoc = await getData({
+                    collId: "users",
+                    docId: formData.email,
+                  });
+                  if (!userDoc.status) {
+                    return {
+                      status: false,
+                      data: null,
+                      text: "User data not found",
+                    };
+                  }
+
+                  return {
+                    status: true,
+                    data: userDoc.data,
+                    text: "",
+                  };
+                } else {
+                  const result = await createUserWithEmailAndPassword(
+                    auth,
+                    formData.email,
+                    formData.password
+                  );
+                  const newUserData = {
+                    role: role,
+                    username: formData.username,
+                    email: formData.email,
+                    name: formData.name,
+                    photoURL: formData.photoURL,
+                    emailVerified: result.user.emailVerified,
+                    createdAt: Date.now(),
+                  };
                   await setData({
                     collId: "users",
                     docId: formData.email,
@@ -112,13 +135,13 @@ function useAuthProvider() {
             return {
               status: true,
               data: data,
-              errText: "",
+              text: "",
             };
           } else {
             return {
               status: false,
               data: null,
-              errText: "No account found. Please sign up before logging in.",
+              text: "No account found. Please sign up before logging in.",
             };
           }
         } else {
@@ -136,13 +159,13 @@ function useAuthProvider() {
               createdAt: Date.now(),
             };
 
-            const newUserCreated = await setData({
+            await setData({
               collId: "users",
               docId: user.email,
               data: newUserData,
             });
 
-            const newUsernameCreated = await setData({
+            await setData({
               collId: "username",
               docId: username,
               data: {
@@ -150,19 +173,11 @@ function useAuthProvider() {
               },
             });
 
-            if (newUserCreated.status && newUsernameCreated.status) {
-              return {
-                status: true,
-                data: newUserData,
-                text: "",
-              };
-            } else {
-              return {
-                status: false,
-                data: null,
-                text: "Something went wrong.",
-              };
-            }
+            return {
+              status: true,
+              data: newUserData,
+              text: "",
+            };
           })();
         }
       } catch (error) {

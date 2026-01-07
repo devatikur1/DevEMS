@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   KeyRound,
   Mail,
@@ -32,19 +32,40 @@ export default function EmailMethod({
 
   // 🔹 React-Router-Dom && State
   const [searchParams, setSearchParams] = useSearchParams();
-  const [showPassword, setShowPassword] = useState(false);
-  const [pass, setPass] = useState("");
-  const [imgData, setImgData] = useState({
-    url: "",
-    file: {},
-  });
-  const [pImgUploaded, setPImgUploaded] = useState(false);
+  const [isFormInvalid, setIsFormInvalid] = useState(true);
   const [formData, setFormData] = useState({
     username: "",
     name: "",
     email: "",
+    password: "",
     photoURL: "",
   });
+  const [showPass, setShowPass] = useState(false);
+  const [imgData, setImgData] = useState({
+    url: "",
+    file: undefined,
+  });
+  const [imgUploading, setImgUploading] = useState(false);
+
+  // ------------------------------
+  // ✅ Handle Form Validation
+  // ------------------------------
+  useEffect(() => {
+    const requiredFields = IsSignIn
+      ? ["email"]
+      : ["username", "name", "email", "photoURL"];
+
+    const hasEmptyField = requiredFields.some((key) => !formData[key]);
+
+    const isPasswordInvalid =
+      !formData.password || (!IsSignIn && formData.password.length < 8);
+
+    setIsFormInvalid(
+      hasEmptyField ||
+        isPasswordInvalid ||
+        (!IsSignIn && (imgData.file === undefined || imgUploading))
+    );
+  }, [formData, IsSignIn, imgData.file, imgUploading]);
 
   // ------------------------------
   // ✅ Handle Submit Data
@@ -52,13 +73,25 @@ export default function EmailMethod({
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLodingItem("email_auth");
-    const { status, data, text } = await authSign(
-      "email_auth",
-      IsSignIn,
-      role,
-      formData,
-      pass
-    );
+    if (isFormInvalid) {
+      setAuthError({ status: true, text: "Please fill up form" });
+      setImgUploading(false);
+      return;
+    }
+    const res = await authSign("email_auth", IsSignIn, role, formData);
+
+    if (!res) {
+      setUserDt(null);
+      setIsLogged(false);
+      setAuthError({
+        status: true,
+        text: "Something went wrong. Please try again.",
+      });
+      setLodingItem(null);
+      return;
+    }
+
+    const { status, data, text } = res;
 
     if (status) {
       setUserDt(data);
@@ -86,25 +119,38 @@ export default function EmailMethod({
 
   async function handleUpload(e) {
     e.preventDefault();
-    const imgDt = await UploadImage(imgData?.file);
-    if (!imgDt?.isError) {
-      setFormData(
+    setImgUploading(true);
+    if (!imgData?.file) {
+      setAuthError({ status: true, text: "Please select an image" });
+      setImgUploading(false);
+      return;
+    }
+
+    try {
+      const imgDt = await UploadImage(imgData?.file);
+      if (!imgDt?.isError) {
         setFormData({
           ...formData,
           photoURL: imgDt?.url,
-        })
-      );
+        });
+
+        setAuthError({
+          status: false,
+          text: "",
+        });
+      } else {
+        setAuthError({
+          status: true,
+          text: imgDt?.msg,
+        });
+      }
+    } catch (error) {
       setAuthError({
         status: true,
-        text: "",
+        text: "Something went wrong.",
       });
-      setPImgUploaded(true);
-    } else {
-      setAuthError({
-        status: false,
-        text: imgDt?.msg,
-      });
-      setPImgUploaded(false);
+    } finally {
+      setImgUploading(false);
     }
   }
 
@@ -166,10 +212,16 @@ export default function EmailMethod({
       </p>
 
       <form
-        onSubmit={() => (pImgUploaded ? handleSubmit() : handleUpload())}
+        onSubmit={(e) => {
+          if (!IsSignIn && formData.photoURL !== "") {
+            handleSubmit(e);
+          } else {
+            handleUpload(e);
+          }
+        }}
         className="flex flex-col gap-4"
       >
-        {pImgUploaded  && (
+        {(IsSignIn || formData.photoURL !== "") && (
           <>
             {Forms_Inputs.map((input) => {
               const Icon = input?.icon;
@@ -191,37 +243,31 @@ export default function EmailMethod({
                       id={input?.id}
                       type={
                         isPassword
-                          ? showPassword
+                          ? showPass
                             ? "text"
                             : "password"
                           : input?.type
                       }
-                      value={isPassword ? pass : formData[input?.id]}
+                      value={formData[input?.id]}
                       placeholder={input?.placeholder}
                       onChange={(e) =>
-                        isPassword
-                          ? setPass(e.target.value)
-                          : setFormData({
-                              ...formData,
-                              [input?.id]: e.target.value,
-                            })
+                        setFormData({
+                          ...formData,
+                          [input?.id]: e.target.value,
+                        })
                       }
-                      pattern={input?.pattern}
-                      title={input?.title}
+                      pattern={!IsSignIn && input?.pattern}
+                      title={!IsSignIn && input?.title}
                       className="w-full bg-surfaceSoft/60 border border-border focus:border-accent/50 rounded-xl py-2.5 pl-12 pr-12 text-sm text-textPrimary placeholder:text-textMuted/50 outline-none transition-all select-text"
                       required
                     />
                     {isPassword && (
                       <button
                         type="button"
-                        onClick={() => setShowPassword(!showPassword)}
+                        onClick={() => setShowPass(!showPass)}
                         className="absolute right-4 top-3 text-textMuted/95 hover:text-textPrimary/95 transition-colors"
                       >
-                        {showPassword ? (
-                          <EyeOff size={18} />
-                        ) : (
-                          <Eye size={18} />
-                        )}
+                        {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
                       </button>
                     )}
                   </div>
@@ -241,29 +287,24 @@ export default function EmailMethod({
             )}
           </>
         )}
-        {pImgUploaded && !IsSignIn && (<UploadImg img={{ imgData, setImgData }} />)}
+        {!IsSignIn && formData.photoURL === "" && (
+          <UploadImg img={{ imgData, setImgData }} />
+        )}
 
         <AuthError authError={authError} />
 
         <div className="flex flex-col gap-2">
           <button
             type="submit"
-            disabled={
-              pImgUploaded
-                ? lodingitem === "email_auth" ||
-                  Object.values(formData).some((d) => d === "")
-                : imgData.url === ""
-            }
+            disabled={isFormInvalid}
             className="mt-2 w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-textPrimary bg-accent font-medium py-3 rounded-xl shadow-lg ring-1 ring-border active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-accent/60"
           >
-            {pImgUploaded ? (
-              lodingitem === "email_auth" ? (
-                <Loader2 className="animate-spin mx-auto" size={20} />
-              ) : (
-                <span>{IsSignIn ? "Sign In" : "Create Account"}</span>
-              )
-            ) : (
+            {imgUploading || lodingitem === "email_auth" ? (
+              <Loader2 className="animate-spin mx-auto" size={20} />
+            ) : formData.photoURL === "" && !IsSignIn ? (
               <span>Upload Image</span>
+            ) : (
+              <span>{IsSignIn ? "Sign In" : "Create Account"}</span>
             )}
           </button>
           <button
