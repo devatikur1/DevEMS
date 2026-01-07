@@ -18,7 +18,7 @@ export async function UploadImage(file) {
     if (resData.data.display_url) {
       return { isError: false, url: resData.data.display_url };
     } else {
-      return { isError: true, msg: "ImgBB upload failed" };
+      return { isError: true, msg: "Image upload failed" };
     }
   } catch (error) {
     return { isError: true, msg: error };

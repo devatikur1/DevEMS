@@ -41,8 +41,8 @@
 }
 
 ::selection {
-  color: var(--color-bg);
-  background-color: var(--color-text);
+  color: #09090b;
+  background-color: #f9f9f9;
 }
 
 @layer base {
@@ -54,24 +54,24 @@
 
   /* Scrollbar-er background (Track) - apnar 'bg' color (#09090b) */
   ::-webkit-scrollbar-track {
-    background: var(--color-bg);
+    background: #09090b;
   }
 
   /* Scrollbar-er moving part (Thumb) - apnar 'border' color (#212123) */
   ::-webkit-scrollbar-thumb {
-    background: var(--color-box-hover);
+    background: 1f1f1f;
     border-radius: 10px;
-    border: 2px solid var(--color-border); /* Ete scrollbar-er pashe ektu gap thakbe, dekhte shundor lage */
+    border: 2px solid #212123; /* Ete scrollbar-er pashe ektu gap thakbe, dekhte shundor lage */
   }
 
   /* Hover korle thumb-er color change - apnar 'hover' color (#27272a) */
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-border);
+    background: #27272a;
   }
 
   /* Scrollbar corner (jokhon horizontal o vertical duitoy thake) */
   ::-webkit-scrollbar-corner {
-    background: var(--color-bg);
+    background: #09090b;
   }
 
   .scrollVeiwNone::-webkit-scrollbar {

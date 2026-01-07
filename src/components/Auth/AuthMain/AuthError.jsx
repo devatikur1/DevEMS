@@ -6,7 +6,7 @@ export default function AuthError({ authError }) {
   let { status, text } = authError;
   return (
     <AnimatePresence>
-      {status && (
+      {!status && (
         <motion.div
           initial={{ height: 0 }}
           animate={{ height: "auto" }}

@@ -7,17 +7,18 @@ import { AppContext } from "../../../context/AppContext";
 import { useSearchParams } from "react-router-dom";
 import setParamsOnUrl from "../../../function/setParamsOnUrl";
 
-export default function LoginProviders({
+export default function LoginMethods({
   providerSign,
   IsSignIn,
   setAuthError,
+  role,
 }) {
   // 🔹 useContext context
   const { authId } = useContext(AppContext);
   const { setIsLogged, setUserDt } = authId;
 
   // 🔹 Cutom Hook
-  const [lodingitem, setLodingItem, signIn] = providerSign;
+  const [lodingitem, setLodingItem, authSign] = providerSign;
 
   // 🔹 React-Router-Dom
   const [searchParams, setSearchParams] = useSearchParams();
@@ -53,10 +54,10 @@ export default function LoginProviders({
   // ---------------------
   return (
     <>
-      {LOGIN_PROVIDERS.map(({ id, label, icon: Icon }) => (
+      {LOGIN_PROVIDERS.map(({ id, label, icon: Icon }, i) => (
         <>
           <motion.button
-            key={id}
+            key={i}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{
@@ -74,19 +75,23 @@ export default function LoginProviders({
               } else {
                 (async () => {
                   setLodingItem(id);
-                  const { status, data, text } = await signIn(id, IsSignIn);
-                  if (status === false) {
+                  const { status, data, text } = await authSign(
+                    id,
+                    IsSignIn,
+                    role
+                  );
+                  if (status) {
                     setUserDt(data);
                     setIsLogged(true);
                     setAuthError({
-                      status: false,
+                      status: true,
                       text,
                     });
                   } else {
                     setUserDt(null);
                     setIsLogged(false);
                     setAuthError({
-                      status: true,
+                      status: false,
                       text,
                     });
                   }
@@ -97,8 +102,8 @@ export default function LoginProviders({
               }
             }}
             className={`group w-full flex justify-center items-center gap-3 bg-surfaceSoft/60 hover:bg-surfaceHard/70 active:scale-[0.98] transition-all duration-200 border border-border/85 hover:border-border rounded-xl px-4 py-3 ${
-              id === "email"
-             && "mt-9"}`}
+              id === "email" && "mt-9"
+            }`}
           >
             {lodingitem === id ? (
               <Loader2 className="animate-spin text-textPrimary" size={20} />

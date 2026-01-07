@@ -89,7 +89,6 @@ export default function CreateWorkspacePage() {
         maxMembers: totalMembers > 10 ? Number(totalMembers) : "Unlimited",
         lead: userDt?.name || "",
         leadUserName: userDt?.username || "",
-        leadId: userDt?.uid || "",
         tags: activeTags,
         performance: "0%",
         projectsCount: 0,

@@ -10,7 +10,7 @@ module.exports = {
         surface: "#151515",
         surfaceSoft: "#1f1f1f",
         surfaceHard: "#2b2b2b",
-
+        
         // ===== Text =====
         textPrimary: "#f9f9f9",
         textMuted: "#7e7e7e",
@@ -42,6 +42,7 @@ module.exports = {
         info: "#0ea5e9",
         blue: "#0082fb",
         purple: "#9333ea",
+        shadow: "#000000",
       },
     },
   },

@@ -43,7 +43,7 @@ export default function AppContextProvider({ children }) {
 
       // 🔹 Get Data
       try {
-        const docSnap = await getDoc(doc(db, "users", user.uid));
+        const docSnap = await getDoc(doc(db, "users", user.email));
 
         if (docSnap.exists()) {
           let data = docSnap.data();

@@ -141,7 +141,7 @@ export default function Header({ className= ""}) {
         await setDoc(
           doc(db, "username", username),
           {
-            uid: userDt?.uid,
+            uid: userDt?.email,
           },
           {
             merge: true,
@@ -156,7 +156,9 @@ export default function Header({ className= ""}) {
         username: username || userDt?.username,
         photoURL: finalPhotoURL,
       };
-      await setDoc(doc(db, "users", userDt?.uid), updatedData, { merge: true });
+      await setDoc(doc(db, "users", userDt?.email), updatedData, {
+        merge: true,
+      });
 
       // 🔹 3. State update & cleanup
       localStorage.setItem("userDt", JSON.stringify(updatedData));
