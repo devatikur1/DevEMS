@@ -35,7 +35,6 @@ export default function EmailMethod({
   const [showPassword, setShowPassword] = useState(false);
   const [pass, setPass] = useState("");
   const [imgData, setImgData] = useState({
-    isUpload: false,
     url: "",
     file: {},
   });
@@ -72,7 +71,7 @@ export default function EmailMethod({
       setUserDt(null);
       setIsLogged(false);
       setAuthError({
-        status: false,
+        status: true,
         text,
       });
     }
@@ -85,7 +84,8 @@ export default function EmailMethod({
   // ✅ Handle Upload Image
   // ------------------------------
 
-  async function handleUpload() {
+  async function handleUpload(e) {
+    e.preventDefault();
     const imgDt = await UploadImage(imgData?.file);
     if (!imgDt?.isError) {
       setFormData(
@@ -121,7 +121,7 @@ export default function EmailMethod({
       icon: User,
       pattern: "^[a-zA-Z0-9_]{3,20}$",
       title:
-        "Username can contain letters, numbers, and underscores (3–20 characters)",
+        "Username can contain letters, numbers, and underscores (3-20 characters)",
     },
     !IsSignIn && {
       id: "name",
@@ -165,8 +165,11 @@ export default function EmailMethod({
         {IsSignIn ? "Sign In" : "Sign Up"} with Email
       </p>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        {pImgUploaded ? (
+      <form
+        onSubmit={() => (pImgUploaded ? handleSubmit() : handleUpload())}
+        className="flex flex-col gap-4"
+      >
+        {pImgUploaded  && (
           <>
             {Forms_Inputs.map((input) => {
               const Icon = input?.icon;
@@ -237,20 +240,19 @@ export default function EmailMethod({
               </div>
             )}
           </>
-        ) : (
-          <UploadImg img={{ imgData, setImgData }} />
         )}
+        {pImgUploaded && !IsSignIn && (<UploadImg img={{ imgData, setImgData }} />)}
 
         <AuthError authError={authError} />
 
         <div className="flex flex-col gap-2">
           <button
-            type={pImgUploaded ? "submit" : "button"}
+            type="submit"
             disabled={
               pImgUploaded
                 ? lodingitem === "email_auth" ||
                   Object.values(formData).some((d) => d === "")
-                : !imgData.isUpload
+                : imgData.url === ""
             }
             className="mt-2 w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-textPrimary bg-accent font-medium py-3 rounded-xl shadow-lg ring-1 ring-border active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-accent/60"
           >

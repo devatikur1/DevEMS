@@ -1,7 +1,9 @@
 import {
+  createUserWithEmailAndPassword,
   FacebookAuthProvider,
   GithubAuthProvider,
   GoogleAuthProvider,
+  signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
 import { useCallback, useState } from "react";
@@ -42,14 +44,45 @@ function useAuthProvider() {
             (async () => {
               try {
                 const newUserData = {
-                  role: role,
+                  role,
                   ...formData,
+                  createdAt: Date.now(),
                   emailVerified: false,
                 };
+                if (IsSignIn) {
+                  await signInWithEmailAndPassword(auth, formData?.email, pass);
+                 
+                } else {
+                  await createUserWithEmailAndPassword(
+                    auth,
+                    formData?.email,
+                    pass
+                  );
+                  await setData({
+                    collId: "users",
+                    docId: formData.email,
+                    data: newUserData,
+                  });
+                  await setData({
+                    collId: "username",
+                    docId: formData.username,
+                    data: {
+                      email: formData.email,
+                    },
+                  });
 
-                return { status: false, data: null, text: "Unknown provider" };
+                  return {
+                    status: true,
+                    data: newUserData,
+                    text: "",
+                  };
+                }
               } catch (error) {
-                return { status: false, data: null, text: "Unknown provider" };
+                return {
+                  status: false,
+                  data: null,
+                  text: "Failed to save user data",
+                };
               }
             })();
             break;
@@ -72,20 +105,20 @@ function useAuthProvider() {
             docId: user.email,
           });
 
-          if (!docSnap?.isError && docSnap?.data?.role === role) {
+          if (docSnap.status && docSnap.data?.role === role) {
             const data = docSnap?.data;
             localStorage.setItem("isLogged", "true");
             localStorage.setItem("userDt", JSON.stringify(data));
             return {
               status: true,
               data: data,
-              text: "",
+              errText: "",
             };
           } else {
             return {
               status: false,
               data: null,
-              text: "No account found. Please sign up before logging in.",
+              errText: "No account found. Please sign up before logging in.",
             };
           }
         } else {
@@ -100,6 +133,7 @@ function useAuthProvider() {
               name: user.displayName,
               photoURL: user.photoURL,
               emailVerified: user.emailVerified,
+              createdAt: Date.now(),
             };
 
             const newUserCreated = await setData({
@@ -116,7 +150,7 @@ function useAuthProvider() {
               },
             });
 
-            if (!newUserCreated.isError && !newUsernameCreated.isError) {
+            if (newUserCreated.status && newUsernameCreated.status) {
               return {
                 status: true,
                 data: newUserData,

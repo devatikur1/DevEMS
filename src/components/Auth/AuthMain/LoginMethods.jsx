@@ -84,14 +84,14 @@ export default function LoginMethods({
                     setUserDt(data);
                     setIsLogged(true);
                     setAuthError({
-                      status: true,
+                      status: false,
                       text,
                     });
                   } else {
                     setUserDt(null);
                     setIsLogged(false);
                     setAuthError({
-                      status: false,
+                      status: true,
                       text,
                     });
                   }
