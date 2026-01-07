@@ -17,9 +17,9 @@ function useFirestore() {
       } else {
         await addDoc(collection(db, collId), data);
       }
-      return { isError: false, error: null };
+      return { status: true, error: null };
     } catch (error) {
-      return { isError: true, error };
+      return { status: false, error };
     }
   }
 
@@ -34,7 +34,7 @@ function useFirestore() {
         }
 
         return {
-          isError: false,
+          status: true,
           data: { id: snap.id, ...snap.data() },
         };
       }
@@ -49,9 +49,9 @@ function useFirestore() {
         ...doc.data(),
       }));
 
-      return { isError: false, data, error: null };
+      return { status: true, data, error: null };
     } catch (error) {
-      return { isError: true, data: null, error };
+      return { status: false, data: null, error };
     }
   }
 
