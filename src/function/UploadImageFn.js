@@ -1,4 +1,4 @@
-export async function UploadImage(file) {
+export default async function uploadImageFn(file) {
   try {
     const formData = new FormData();
     formData.append("image", file);
@@ -18,7 +18,7 @@ export async function UploadImage(file) {
     if (resData.data.display_url) {
       return { isError: false, url: resData.data.display_url };
     } else {
-      return { isError: true, msg: "Image upload failed" };
+      return { isError: true, msg: "custom/image-upload-failed" };
     }
   } catch (error) {
     return { isError: true, msg: error };

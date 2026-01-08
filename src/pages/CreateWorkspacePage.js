@@ -10,7 +10,7 @@ import {
   getCountFromServer,
   setDoc,
 } from "firebase/firestore";
-import { UploadImage } from "../function/UploadImage";
+import uploadImageFn from "../function/UploadImageFn";
 
 // ----------------------------
 // ✅ Generate Unique Id
@@ -63,7 +63,7 @@ export default function CreateWorkspacePage() {
         "https://cdn-icons-png.flaticon.com/512/919/919851.png";
       // 🔹 1. ImgBB Upload
       if (imgData.file) {
-        const res = await UploadImage(imgData.file);
+        const res = await uploadImageFn(imgData.file);
         if (res.isError === false) {
           finalPhotoURL = res.url;
         } else {

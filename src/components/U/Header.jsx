@@ -8,7 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
 import QuickMenu from "./Header/QuickMenu";
 import ProfileModalOverlay from "./Header/ProfileModalOverlay";
-import { UploadImage } from "../../function/UploadImage";
+import uploadImageFn from "../../function/UploadImageFn";
 
 export default function Header({ className= ""}) {
   // 🔹 useContext context
@@ -126,7 +126,7 @@ export default function Header({ className= ""}) {
 
       // 🔹 1. ImgBB Upload
       if (pUrl.file) {
-        const res = await UploadImage(pUrl.file);
+        const res = await uploadImageFn(pUrl.file);
         if (!res.isError) {
           finalPhotoURL = res.url;
         } else {

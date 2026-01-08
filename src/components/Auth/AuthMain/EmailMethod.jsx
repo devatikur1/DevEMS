@@ -12,8 +12,9 @@ import { motion } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
 import delParamsOnUrl from "../../../function/delParamsOnUrl";
 import AuthError from "./AuthError";
-import { UploadImage } from "../../../function/UploadImage";
-import UploadImg from "../custom/UploadImg";
+import UploadImg from "../../custom/UploadImg";
+import uploadImageFn from "../../../function/UploadImageFn";
+import { getErrorMessage } from "../../../function/getErrorMessage";
 
 export default function EmailMethod({
   IsSignIn,
@@ -53,7 +54,7 @@ export default function EmailMethod({
     const hasEmpty = requiredFields.some((key) => formData[key] === "");
     const imageMissing = !IsSignIn && !imgData.url;
 
-    setIsFormInvalid(hasEmpty || imageMissing);
+    setIsFormInvalid(imageMissing ? imageMissing : hasEmpty);
   }, [formData, IsSignIn, imgData.file, imgUploading, imgData.url]);
 
   // ------------------------------
@@ -61,33 +62,22 @@ export default function EmailMethod({
   // ------------------------------
   async function handleUpload(e) {
     e.preventDefault();
+    setAuthError({
+      status: false,
+      text: "",
+    });
     setImgUploading(true);
-    if (!imgData?.file) {
-      setAuthError({ status: true, text: "Please select an image" });
-      setImgUploading(false);
-      return;
-    }
+    if (!imgData?.file) throw { code: "custom/image-not-select" };
 
     try {
-      const imgDt = await UploadImage(imgData?.file);
-      if (imgDt?.isError) {
-        setAuthError({
-          status: true,
-          text: imgDt?.msg,
-        });
-        return;
-      }
+      const imgDt = await uploadImageFn(imgData?.file);
+      if (imgDt.isError) throw { code: imgDt.msg };
       setFormData({
         ...formData,
         photoURL: imgDt?.url,
       });
-
-      setAuthError({
-        status: false,
-        text: "",
-      });
     } catch (error) {
-      setAuthError({ status: true, text: "Image upload failed" });
+      setAuthError({ status: true, text: getErrorMessage(error) });
     } finally {
       setImgUploading(false);
     }
@@ -171,7 +161,7 @@ export default function EmailMethod({
 
       <form
         onSubmit={(e) => {
-          if (!IsSignIn && formData.photoURL) {
+          if ((!IsSignIn && formData.photoURL) || IsSignIn) {
             handleSubmit(e);
           } else {
             handleUpload(e);
@@ -180,7 +170,7 @@ export default function EmailMethod({
         className="flex flex-col gap-4"
       >
         {!IsSignIn && !formData.photoURL && (
-          <UploadImg img={{ imgData, setImgData }} />
+          <UploadImg img={imgData} setImg={setImgData} />
         )}
         {((!IsSignIn && formData.photoURL) || IsSignIn) && (
           <>

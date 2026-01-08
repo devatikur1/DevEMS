@@ -1,3 +1,5 @@
+/* eslint-disable no-throw-literal */
+
 import {
   createUserWithEmailAndPassword,
   FacebookAuthProvider,
@@ -10,6 +12,7 @@ import { useCallback, useContext, useState } from "react";
 import { AppContext, auth } from "../context/AppContext";
 import { genUniqueUsername } from "../function/genUniqueUsername";
 import useFirestore from "./useFirestore";
+import { getErrorMessage } from "../function/getErrorMessage";
 
 function useAuthProvider() {
   // 🔹 useContext context
@@ -34,60 +37,49 @@ function useAuthProvider() {
         // 🔹 EMAIL AUTH
         // ------------------------
         if (id === "email_auth") {
-          if (!formData?.email || (!IsSignIn && !formData?.password)) {
+          if (!formData?.email || !formData?.password) {
             throw { code: "custom/invalid-input" };
           }
-
-          if (IsSignIn) {
-            userResult = await signInWithEmailAndPassword(
-              auth,
-              formData.email,
-              formData.password
-            );
-          } else {
-            userResult = await createUserWithEmailAndPassword(
-              auth,
-              formData.email,
-              formData.password
-            );
-          }
+          userResult = IsSignIn
+            ? await signInWithEmailAndPassword(
+                auth,
+                formData.email,
+                formData.password
+              )
+            : await createUserWithEmailAndPassword(
+                auth,
+                formData.email,
+                formData.password
+              );
         } else {
           // ------------------------
-          // 🔹 SOCIAL PROVIDERS
+          // 🔹 SOCIAL AUTH
           // ------------------------
-          let provider;
-          switch (id) {
-            case "google":
-              provider = new GoogleAuthProvider();
-              break;
-            case "github":
-              provider = new GithubAuthProvider();
-              break;
-            case "facebook":
-              provider = new FacebookAuthProvider();
-              break;
-            default:
-              throw { code: "custom/unknown-provider" };
-          }
+          const PROVIDERS = {
+            google: new GoogleAuthProvider(),
+            github: new GithubAuthProvider(),
+            facebook: new FacebookAuthProvider(),
+          };
+
+          const provider = PROVIDERS[id];
+          if (!provider) throw { code: "custom/unknown-provider" };
 
           userResult = await signInWithPopup(auth, provider);
         }
 
         const user = userResult.user;
 
-        // ------------------------
+        // -------------------------
         // 🔹 Check Firestore user
-        // ------------------------
+        // -------------------------
         const userDoc = await getData({ collId: "users", docId: user.email });
 
         if (IsSignIn) {
-          if (userDoc.status && userDoc.data.role === role) {
-            finalUserData = userDoc.data;
-          } else if (userDoc.status) {
+          if (!userDoc.status) throw { code: "auth/user-not-found" };
+          if (userDoc.status && userDoc.data.role !== role)
             throw { code: "custom/role-mismatch" };
-          } else {
-            throw { code: "auth/user-not-found" };
-          }
+
+          finalUserData = userDoc.data;
         } else {
           if (userDoc.status) throw { code: "auth/email-already-in-use" };
 
@@ -121,45 +113,14 @@ function useAuthProvider() {
         }
 
         // ------------------------
-        // 🔹 Set localStorage & Context
+        // 🔹 Persist Session
         // ------------------------
-        localStorage.setItem("isLogged", "true");
         localStorage.setItem("userDt", JSON.stringify(finalUserData));
-        setIsLogged(true);
+        localStorage.setItem("isLogged", "true");
         setUserDt(finalUserData);
+        setIsLogged(true);
       } catch (error) {
-        console.error("Auth Error:", error);
-
-        let customMessage = "Something went wrong. Please try again.";
-
-        switch (error.code) {
-          case "custom/role-mismatch":
-            customMessage = `Account found, but not as a ${role}.`;
-            break;
-          case "custom/unknown-provider":
-            customMessage = "Unknown login provider.";
-            break;
-          case "custom/invalid-input":
-            customMessage = "Invalid email or password.";
-            break;
-          case "auth/user-not-found":
-          case "auth/wrong-password":
-            customMessage = "Invalid email or password.";
-            break;
-          case "auth/email-already-in-use":
-            customMessage = "Email already in use. Try logging in.";
-            break;
-          case "auth/popup-closed-by-user":
-            customMessage = "Login window closed.";
-            break;
-          case "auth/network-request-failed":
-            customMessage = "Network error. Check your connection.";
-            break;
-          default:
-            customMessage = error.message || customMessage;
-        }
-
-        setAuthError({ status: true, text: customMessage });
+        setAuthError({ status: true, text: getErrorMessage(error) });
       } finally {
         setTimeout(() => setLodingItem(null), 300);
       }

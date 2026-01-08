@@ -80,7 +80,7 @@ export default function LoginMethods({
               }
             }}
             className={`group w-full flex justify-center items-center gap-3 bg-surfaceSoft/60 hover:bg-surfaceHard/70 active:scale-[0.98] transition-all duration-200 border border-border/85 hover:border-border rounded-xl px-4 py-3 ${
-              id === "email" && "mt-9"
+              id === "email_auth" && "mt-9"
             }`}
           >
             {lodingitem === id ? (
@@ -96,7 +96,7 @@ export default function LoginMethods({
               </>
             )}
           </motion.button>
-          {id === "email" && (
+          {id === "email_auth" && (
             <div className="w-full flex items-center gap-4 px-2 py-1">
               <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent  via-border to-transparent" />
               <span className="text-xs font-medium text-textMuted/95 uppercase tracking-wider">
