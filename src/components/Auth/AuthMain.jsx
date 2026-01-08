@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
 import RoleSelector from "./AuthMain/RoleSelector";
@@ -18,6 +18,16 @@ export default function AuthMain({ IsSignIn }) {
     status: false,
     text: "",
   });
+
+  // -------------------------------
+  // ✅ set AuthError base on Load
+  // ------------------------------
+  useEffect(() => {
+    setAuthError({
+      status: false,
+      text: "",
+    });
+  }, [IsSignIn]);
 
   // ---------------------
   // ✅ Render

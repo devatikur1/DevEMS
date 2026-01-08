@@ -53,7 +53,7 @@ export default function OverviewPage() {
   // ✅ Chage Tilte base on Load
   // ----------------------------
   useEffect(() => {
-    document.title = "DevEMS - Workspaces";
+    document.title = "DevEMS - Overview";
   }, []);
 
   // -------------------------

@@ -28,7 +28,9 @@ export default function EmailMethod({
 
   // 🔹 React-Router-Dom && State
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isFormInvalid, setIsFormInvalid] = useState(true);
+  const [isImageUpBtnDis, setIsImageUpBtnDis] = useState(true);
+  const [isFormBtnDis, setIsFormBtnDis] = useState(true);
+
   const [formData, setFormData] = useState({
     username: "",
     name: "",
@@ -47,15 +49,18 @@ export default function EmailMethod({
   // ✅ Handle Form Validation
   // ------------------------------
   useEffect(() => {
+    setIsImageUpBtnDis(!imgData.url || imgUploading);
+  }, [imgData.url, imgUploading]);
+
+  useEffect(() => {
     const requiredFields = IsSignIn
       ? ["email", "password"]
       : ["username", "name", "email", "photoURL"];
 
     const hasEmpty = requiredFields.some((key) => formData[key] === "");
-    const imageMissing = !IsSignIn && !imgData.url;
 
-    setIsFormInvalid(imageMissing ? imageMissing : hasEmpty);
-  }, [formData, IsSignIn, imgData.file, imgUploading, imgData.url]);
+    setIsFormBtnDis(hasEmpty || lodingitem === "email_auth");
+  }, [IsSignIn, formData, lodingitem]);
 
   // ------------------------------
   // ✅ Handle Upload Image
@@ -88,7 +93,7 @@ export default function EmailMethod({
   // ------------------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isFormInvalid) {
+    if (isFormBtnDis) {
       setAuthError({ status: true, text: "Please fill up form" });
       setImgUploading(false);
       return;
@@ -242,21 +247,34 @@ export default function EmailMethod({
         <AuthError authError={authError} />
 
         <div className="flex flex-col gap-2">
-          <button
-            type="submit"
-            disabled={
-              isFormInvalid || lodingitem === "email_auth" || imgUploading
-            }
-            className="mt-2 w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-textPrimary bg-accent font-medium py-3 rounded-xl shadow-lg ring-1 ring-border active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-accent/60"
-          >
-            {imgUploading || lodingitem === "email_auth" ? (
-              <Loader2 className="animate-spin mx-auto" size={20} />
-            ) : formData.photoURL === "" && !IsSignIn ? (
-              <span>Upload Image</span>
-            ) : (
-              <span>{IsSignIn ? "Sign In" : "Create Account"}</span>
-            )}
-          </button>
+          {!IsSignIn && !formData.photoURL && (
+            <button
+              type="submit"
+              disabled={isImageUpBtnDis}
+              className="mt-2 w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-textPrimary bg-accent font-medium py-3 rounded-xl shadow-lg ring-1 ring-border active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-accent/60"
+            >
+              {imgUploading ? (
+                <Loader2 className="animate-spin mx-auto" size={20} />
+              ) : (
+                <span>Upload Image</span>
+              )}
+            </button>
+          )}
+          {(!IsSignIn && formData.photoURL) ||
+            (IsSignIn && (
+              <button
+                type="submit"
+                disabled={isFormBtnDis}
+                className="mt-2 w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-textPrimary bg-accent font-medium py-3 rounded-xl shadow-lg ring-1 ring-border active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-accent/60"
+              >
+                {lodingitem === "email_auth" ? (
+                  <Loader2 className="animate-spin mx-auto" size={20} />
+                ) : (
+                  <span>{IsSignIn ? "Sign In" : "Create Account"}</span>
+                )}
+              </button>
+            ))}
+
           <button
             type="button"
             onClick={() =>

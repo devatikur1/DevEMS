@@ -20,8 +20,8 @@ export default function AuthPage({ IsSignIn }) {
   // ✅ Change Title base on Load
   // ----------------------------
   useEffect(() => {
-    document.title = "Employee Management - Login";
-  }, []);
+    document.title = IsSignIn ? "Log In" : "Create Account";
+  }, [IsSignIn]);
 
   // ---------------------
   // ✅ Check isLogged
