@@ -1,13 +1,6 @@
+/* eslint-disable no-throw-literal */
 import React, { useEffect, useState } from "react";
-import {
-  KeyRound,
-  Mail,
-  Loader2,
-  Eye,
-  EyeOff,
-  User,
-  IdCard,
-} from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
 import delParamsOnUrl from "../../../function/delParamsOnUrl";
@@ -15,6 +8,7 @@ import AuthError from "./AuthError";
 import UploadImg from "../../custom/UploadImg";
 import uploadImageFn from "../../../function/UploadImageFn";
 import { getErrorMessage } from "../../../function/getErrorMessage";
+import FormInputStyle from "./FormInputStyle";
 
 export default function EmailMethod({
   IsSignIn,
@@ -26,78 +20,82 @@ export default function EmailMethod({
   // 🔹 Cutom Hook
   const [lodingitem, authSign] = providerSign;
 
-  // 🔹 React-Router-Dom && State
+  // 🔹 React-Router-Dom
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isImageUpBtnDis, setIsImageUpBtnDis] = useState(true);
-  const [isFormBtnDis, setIsFormBtnDis] = useState(true);
 
-  const [formData, setFormData] = useState({
-    username: "",
-    name: "",
-    email: "",
-    password: "",
-    photoURL: "",
-  });
+  //🔹 State
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
+  const [confirmPass, setConfirmPass] = useState("");
+  const [photoURL, setPhotoURL] = useState("");
+
   const [showPass, setShowPass] = useState(false);
-  const [imgData, setImgData] = useState({
-    url: "",
-    file: undefined,
-  });
+  const [showConfirmPass, setShowConfirmPass] = useState(false);
+  const [imgData, setImgData] = useState({ url: "", file: null });
   const [imgUploading, setImgUploading] = useState(false);
+  const [isFormBtnDis, setIsFormBtnDis] = useState(true);
+  const [isImageUpBtnDis, setIsImageUpBtnDis] = useState(true);
+
+  const [signUpPart, setSignUpPart] = useState(1);
 
   // ------------------------------
-  // ✅ Handle Form Validation
+  // ✅ Form validation
   // ------------------------------
+  useEffect(() => {
+    const requiredFields = IsSignIn
+      ? [email, pass]
+      : [username, name, email, pass, photoURL];
+
+    const hasEmpty = requiredFields.some((val) => !val);
+    setIsFormBtnDis(hasEmpty || lodingitem === "email_auth");
+  }, [IsSignIn, email, lodingitem, name, pass, photoURL, username]);
+
   useEffect(() => {
     setIsImageUpBtnDis(!imgData.url || imgUploading);
   }, [imgData.url, imgUploading]);
 
-  useEffect(() => {
-    const requiredFields = IsSignIn
-      ? ["email", "password"]
-      : ["username", "name", "email", "photoURL"];
-
-    const hasEmpty = requiredFields.some((key) => formData[key] === "");
-
-    setIsFormBtnDis(hasEmpty || lodingitem === "email_auth");
-  }, [IsSignIn, formData, lodingitem]);
-
   // ------------------------------
-  // ✅ Handle Upload Image
+  // ✅ Image upload handler
   // ------------------------------
-  async function handleUpload(e) {
+  const handleUpload = async (e) => {
     e.preventDefault();
-    setAuthError({
-      status: false,
-      text: "",
-    });
-    setImgUploading(true);
+
     if (!imgData?.file) throw { code: "custom/image-not-select" };
 
+    setImgUploading(true);
+    setAuthError({ status: false, text: "" });
+
     try {
-      const imgDt = await uploadImageFn(imgData?.file);
+      const imgDt = await uploadImageFn(imgData.file);
       if (imgDt.isError) throw { code: imgDt.msg };
-      setFormData({
-        ...formData,
-        photoURL: imgDt?.url,
-      });
+      setPhotoURL(imgDt.url);
     } catch (error) {
       setAuthError({ status: true, text: getErrorMessage(error) });
     } finally {
       setImgUploading(false);
     }
-  }
+  };
 
   // ------------------------------
-  // ✅ Handle Submit Data
+  // ✅ Form submit handler
   // ------------------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isFormBtnDis) {
-      setAuthError({ status: true, text: "Please fill up form" });
-      setImgUploading(false);
+      setAuthError({ status: true, text: "Please fill up the form." });
       return;
     }
+
+    const formData = {
+      username: username,
+      name: name,
+      email: email,
+      password: pass,
+      photoURL: photoURL,
+    };
+
     await authSign({
       id: "email_auth",
       IsSignIn,
@@ -108,51 +106,8 @@ export default function EmailMethod({
   };
 
   // ---------------------
-  // ✅ Forms inputs
+  // ✅ Render
   // ---------------------
-
-  const Forms_Inputs = [
-    !IsSignIn && {
-      id: "username",
-      type: "text",
-      label: "Username",
-      placeholder: "your_username",
-      icon: User,
-      pattern: "^[a-zA-Z0-9_]{3,20}$",
-      title:
-        "Username can contain letters, numbers, and underscores (3-20 characters)",
-    },
-    !IsSignIn && {
-      id: "name",
-      type: "text",
-      label: "Full Name",
-      placeholder: "John Doe",
-      icon: IdCard,
-      pattern: "^[a-zA-Z ]{2,30}$",
-      title: "Name should only contain letters and spaces",
-    },
-    {
-      id: "email",
-      type: "email",
-      label: "Email Address",
-      placeholder: "name@company.com",
-      icon: Mail,
-      pattern: "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
-      title: "Please enter a valid email address",
-    },
-    {
-      id: "password",
-      type: "password",
-      label: "Password",
-      placeholder: "••••••••",
-      icon: KeyRound,
-      pattern:
-        "(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}",
-      title:
-        "Minimum 8 characters, include uppercase, lowercase, number, and special character",
-    },
-  ].filter(Boolean);
-
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -166,7 +121,7 @@ export default function EmailMethod({
 
       <form
         onSubmit={(e) => {
-          if ((!IsSignIn && formData.photoURL) || IsSignIn) {
+          if ((!IsSignIn && photoURL) || IsSignIn) {
             handleSubmit(e);
           } else {
             handleUpload(e);
@@ -174,62 +129,31 @@ export default function EmailMethod({
         }}
         className="flex flex-col gap-4"
       >
-        {!IsSignIn && !formData.photoURL && (
+        {!IsSignIn && !photoURL && (
           <UploadImg img={imgData} setImg={setImgData} />
         )}
-        {((!IsSignIn && formData.photoURL) || IsSignIn) && (
+
+        {((!IsSignIn && photoURL) || IsSignIn) && (
           <>
-            {Forms_Inputs.map((input) => {
-              const Icon = input?.icon;
-              const isPassword = input?.type === "password";
-              return (
-                <div key={input?.id} className="space-y-1.5">
-                  <label
-                    htmlFor={input?.id}
-                    className="text-xs font-medium text-textMuted/95 ml-1"
-                  >
-                    {input?.label}
-                  </label>
-                  <div className="relative group">
-                    <Icon
-                      className="absolute left-4 top-3 text-textMuted/95 group-focus-within:text-blue-400 transition-colors"
-                      size={18}
-                    />
-                    <input
-                      id={input?.id}
-                      type={
-                        isPassword
-                          ? showPass
-                            ? "text"
-                            : "password"
-                          : input?.type
-                      }
-                      value={formData[input?.id]}
-                      placeholder={input?.placeholder}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          [input?.id]: e.target.value,
-                        })
-                      }
-                      pattern={!IsSignIn && input?.pattern}
-                      title={!IsSignIn && input?.title}
-                      className="w-full bg-surfaceSoft/60 border border-border focus:border-accent/50 rounded-xl py-2.5 pl-12 pr-12 text-sm text-textPrimary placeholder:text-textMuted/50 outline-none transition-all select-text"
-                      required
-                    />
-                    {isPassword && (
-                      <button
-                        type="button"
-                        onClick={() => setShowPass(!showPass)}
-                        className="absolute right-4 top-3 text-textMuted/95 hover:text-textPrimary/95 transition-colors"
-                      >
-                        {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
-                      </button>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+            <FormInputStyle
+              IsSignIn={IsSignIn}
+              username={username}
+              setUsername={setUsername}
+              name={name}
+              setName={setName}
+              email={email}
+              setEmail={setEmail}
+              pass={pass}
+              setPass={setPass}
+              confirmPass={confirmPass}
+              setConfirmPass={setConfirmPass}
+              showPass={showPass}
+              setShowPass={setShowPass}
+              showConfirmPass={showConfirmPass}
+              setShowConfirmPass={setShowConfirmPass}
+              signUpPart={signUpPart}
+              setSignUpPart={setSignUpPart}
+            />
 
             {IsSignIn && (
               <div className="flex justify-end">
@@ -247,33 +171,54 @@ export default function EmailMethod({
         <AuthError authError={authError} />
 
         <div className="flex flex-col gap-2">
-          {!IsSignIn && !formData.photoURL && (
+          {!IsSignIn && !photoURL && (
             <button
               type="submit"
               disabled={isImageUpBtnDis}
-              className="mt-2 w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-textPrimary bg-accent font-medium py-3 rounded-xl shadow-lg ring-1 ring-border active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-accent/60"
+              className="mt-2 w-full text-textPrimary bg-accent font-medium py-3 rounded-xl shadow-lg border border-border active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-accent/60"
             >
               {imgUploading ? (
                 <Loader2 className="animate-spin mx-auto" size={20} />
               ) : (
-                <span>Upload Image</span>
+                "Upload Image"
               )}
             </button>
           )}
-          {(!IsSignIn && formData.photoURL) ||
-            (IsSignIn && (
-              <button
-                type="submit"
-                disabled={isFormBtnDis}
-                className="mt-2 w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-textPrimary bg-accent font-medium py-3 rounded-xl shadow-lg ring-1 ring-border active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-accent/60"
-              >
-                {lodingitem === "email_auth" ? (
-                  <Loader2 className="animate-spin mx-auto" size={20} />
-                ) : (
-                  <span>{IsSignIn ? "Sign In" : "Create Account"}</span>
-                )}
-              </button>
-            ))}
+
+          {((!IsSignIn && photoURL) || IsSignIn) && (
+            <button
+              type={signUpPart < 3 ? "button" : "submit"}
+              onClick={() => {
+                if (signUpPart < 3) {
+                  setSignUpPart(signUpPart + 1);
+                }
+              }}
+              disabled={() => {
+                if (signUpPart === 1) {
+                  return !email;
+                } else if (signUpPart === 2) {
+                  return !name || !username;
+                } else {
+                  return !pass || !confirmPass || pass !== confirmPass;
+                }
+              }}
+              className="mt-2 w-full text-textPrimary bg-accent font-medium py-3 rounded-xl shadow-lg border border-border active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-accent/60"
+            >
+              {signUpPart < 3 ? (
+                <>{"Next"}</>
+              ) : (
+                <>
+                  {lodingitem === "email_auth" ? (
+                    <Loader2 className="animate-spin mx-auto" size={20} />
+                  ) : IsSignIn ? (
+                    "Sign In"
+                  ) : (
+                    "Create Account"
+                  )}
+                </>
+              )}
+            </button>
+          )}
 
           <button
             type="button"
@@ -285,7 +230,7 @@ export default function EmailMethod({
                 value: "email",
               })
             }
-            className="mt-2 w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-textPrimary bg-transparent hover:bg-surfaceSoft font-medium py-3 rounded-xl shadow-lg ring-1 ring-textMuted/40 active:scale-[0.98] transition-all"
+            className="mt-2 w-full text-textPrimary bg-surface hover:bg-surfaceHard/50 font-medium py-3 rounded-xl shadow-lg border border-border active:scale-[0.98] transition-all"
           >
             Go back
           </button>
