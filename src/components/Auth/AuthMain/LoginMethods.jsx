@@ -6,12 +6,7 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import { useSearchParams } from "react-router-dom";
 import setParamsOnUrl from "../../../function/setParamsOnUrl";
 
-export default function LoginMethods({
-  providerSign,
-  IsSignIn,
-  setAuthError,
-  role,
-}) {
+export default function LoginMethods({ providerSign, IsSignIn, role }) {
   // 🔹 Cutom Hook
   const [lodingitem, authSign] = providerSign;
 
@@ -49,10 +44,10 @@ export default function LoginMethods({
   // ---------------------
   return (
     <>
-      {LOGIN_PROVIDERS.map(({ id, label, icon: Icon }, i) => (
+      {LOGIN_PROVIDERS.map(({ id, label, icon: Icon }) => (
         <>
           <motion.button
-            key={i}
+            key={id}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{
@@ -73,8 +68,6 @@ export default function LoginMethods({
                     id,
                     IsSignIn,
                     role,
-
-                    setAuthError,
                   });
                 })();
               }

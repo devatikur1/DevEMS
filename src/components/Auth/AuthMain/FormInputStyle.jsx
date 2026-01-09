@@ -3,6 +3,7 @@ import { KeyRound, Mail, User, IdCard } from "lucide-react";
 import EmailInput from "../../custom/EmailInput";
 import PassInput from "../../custom/PassInput";
 import TextInput from "../../custom/TextInput";
+import UploadImg from "../../custom/UploadImg";
 
 export default function FormInputStyle({
   IsSignIn,
@@ -21,7 +22,8 @@ export default function FormInputStyle({
   showConfirmPass,
   setShowConfirmPass,
   signUpPart,
-  setSignUpPart,
+  imgData,
+  setImgData
 }) {
   // ------------------------------
   // ✅ Input config
@@ -61,7 +63,7 @@ export default function FormInputStyle({
     confirmPass: {
       id: "confirmPass",
       type: "password",
-      label: "confirm Password",
+      label: "Confirm Password",
       placeholder: "••••••••",
       icon: KeyRound,
     },
@@ -74,11 +76,15 @@ export default function FormInputStyle({
       {IsSignIn ? (
         <>
           <EmailInput input={Inputs_Config.email} setEmail={setEmail} email={email} />
-          <PassInput input={Inputs_Config.pass} setShowPass={setShowPass} showPass={showPass} setPass={setPass} pass={pass} />
+          <PassInput input={Inputs_Config.pass} setShowPass={setShowPass} showPass={showPass} setPass={setPass} pass={pass} IsSignIn={IsSignIn} confirmPassIsvalid={confirmPass === pass} />
         </>
       ) : (
         <>
-          {signUpPart === 1 ? (
+          {signUpPart === 0 ?(
+            <>
+              <UploadImg img={imgData} setImg={setImgData} />
+            </>
+          ) : signUpPart === 1 ? (
             <>
               <EmailInput input={Inputs_Config.email} setEmail={setEmail} email={email} />
             </>
@@ -90,8 +96,8 @@ export default function FormInputStyle({
           ) : (
             <>
               {" "}
-              <PassInput input={Inputs_Config.pass} setShowPass={setShowPass} showPass={showPass} setPass={setPass} pass={pass} />
-              <PassInput input={Inputs_Config.confirmPass} setShowPass={setShowConfirmPass} showPass={showConfirmPass} setPass={setConfirmPass} pass={confirmPass} />
+              <PassInput input={Inputs_Config.pass} setShowPass={setShowPass} showPass={showPass} setPass={setPass} pass={pass} IsSignIn={IsSignIn} confirmPassIsvalid={confirmPass === pass}  />
+              <PassInput input={Inputs_Config.confirmPass} setShowPass={setShowConfirmPass} showPass={showConfirmPass} setPass={setConfirmPass} pass={confirmPass} IsSignIn={IsSignIn} confirmPassIsvalid={confirmPass === pass}  />
             </>
           )}
         </>

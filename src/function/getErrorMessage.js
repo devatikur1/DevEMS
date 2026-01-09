@@ -56,8 +56,9 @@ export function getErrorMessage(error) {
     "custom/role-mismatch": "Account exists but role does not match.",
     "custom/unknown-provider": "Unknown login provider.",
     "custom/invalid-input": "Invalid email or password.",
-    "custom/image-not-select" : "Please select an image",
-    "custom/image-upload-failed" : "Image upload failed"
+    "custom/image-not-select": "Please select an image",
+    "custom/image-upload-failed": "Image upload failed",
+    "custom/email-not-type": "Please enter your email address.",
   };
 
   return (

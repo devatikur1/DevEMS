@@ -1,25 +1,16 @@
-import {
-  collection,
-  query,
-  where,
-  getCountFromServer,
-} from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { db } from "../context/AppContext";
 
 export async function genUniqueUsername(baseName) {
-  const usersRef = collection(db, "username");
-
   // Start with baseName
-  let username = baseName.trim().toLowerCase().replace(/\s+/g, "");
+  let username = baseName;
   let exists = true;
   let counter = 0;
 
   while (exists) {
-    const q = query(usersRef, where("username", "==", username));
-    const querySnapshot = await getCountFromServer(q);
-    const count = querySnapshot.data().count;
+    const usersDoc = await getDoc(doc(db, "username", username));
 
-    if (count === 0) {
+    if (!usersDoc.exists()) {
       exists = false;
     } else {
       counter += 1;

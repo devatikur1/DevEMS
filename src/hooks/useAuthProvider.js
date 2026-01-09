@@ -5,6 +5,7 @@ import {
   FacebookAuthProvider,
   GithubAuthProvider,
   GoogleAuthProvider,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
@@ -14,7 +15,7 @@ import { genUniqueUsername } from "../function/genUniqueUsername";
 import useFirestore from "./useFirestore";
 import { getErrorMessage } from "../function/getErrorMessage";
 
-function useAuthProvider() {
+function useAuthProvider(setAuthMsg) {
   // 🔹 useContext context
   const { authId } = useContext(AppContext);
   const { setIsLogged, setUserDt } = authId;
@@ -25,10 +26,10 @@ function useAuthProvider() {
 
   // 🔹 Login / Signup Function
   const authSign = useCallback(
-    async ({ id, IsSignIn, role, formData, setAuthError }) => {
+    async ({ id, IsSignIn, role, formData }) => {
       try {
         setLodingItem(id);
-        setAuthError({ status: false, text: "" });
+        setAuthMsg({ status: false, text: "", type: "suc" });
 
         let userResult;
         let finalUserData;
@@ -120,15 +121,33 @@ function useAuthProvider() {
         setUserDt(finalUserData);
         setIsLogged(true);
       } catch (error) {
-        setAuthError({ status: true, text: getErrorMessage(error) });
+        setAuthMsg({ status: true, text: getErrorMessage(error), type: "err" });
       } finally {
         setTimeout(() => setLodingItem(null), 300);
       }
     },
-    [getData, setData, setIsLogged, setUserDt]
+    [getData, setAuthMsg, setData, setIsLogged, setUserDt]
   );
 
-  return [lodingitem, authSign];
+  const forgotPass = useCallback(
+    async (email) => {
+      setAuthMsg({ status: false, text: "", type: "suc" });
+      try {
+        if (!email) throw { code: "custom/email-not-type" };
+        await sendPasswordResetEmail(auth, email);
+        setAuthMsg({
+          status: true,
+          type: "warn",
+          text: "We’ve sent a password reset link to your email. Check your inbox — and don’t forget to look in Spam or Promotions.",
+        });
+      } catch (error) {
+        setAuthMsg({ status: true, text: getErrorMessage(error), type: "err" });
+      }
+    },
+    [setAuthMsg]
+  );
+
+  return [lodingitem, authSign, forgotPass];
 }
 
 export default useAuthProvider;

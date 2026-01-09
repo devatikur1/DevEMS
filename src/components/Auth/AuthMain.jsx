@@ -4,28 +4,30 @@ import { useSearchParams } from "react-router-dom";
 import RoleSelector from "./AuthMain/RoleSelector";
 import LoginMethods from "./AuthMain/LoginMethods";
 import EmailMethod from "./AuthMain/EmailMethod";
-import AuthError from "./AuthMain/AuthError";
 import useAuthProvider from "../../hooks/useAuthProvider";
+import Msg from "./AuthMain/Msg";
 
 export default function AuthMain({ IsSignIn }) {
-  // 🔹 Cutom Hooks
-  const providerSign = useAuthProvider();
-
   // 🔹 React-Router-Dom && State
   const [searchParams] = useSearchParams();
   const [role, setRole] = useState("");
-  const [authError, setAuthError] = useState({
+  const [authMsg, setAuthMsg] = useState({
     status: false,
     text: "",
+    type: "suc",
   });
+
+  // 🔹 Cutom Hooks
+  const providerSign = useAuthProvider(setAuthMsg);
 
   // -------------------------------
   // ✅ set AuthError base on Load
   // ------------------------------
   useEffect(() => {
-    setAuthError({
+    setAuthMsg({
       status: false,
       text: "",
+      type: "suc",
     });
   }, [IsSignIn]);
 
@@ -50,15 +52,14 @@ export default function AuthMain({ IsSignIn }) {
                 {searchParams.get("method") === "email" ? (
                   <EmailMethod
                     IsSignIn={IsSignIn}
-                    authError={authError}
-                    setAuthError={setAuthError}
+                    authMsg={authMsg}
+                    setAuthMsg={setAuthMsg}
                     providerSign={providerSign}
                   />
                 ) : (
                   <LoginMethods
                     IsSignIn={IsSignIn}
                     role={role}
-                    setAuthError={setAuthError}
                     providerSign={providerSign}
                   />
                 )}
@@ -70,9 +71,7 @@ export default function AuthMain({ IsSignIn }) {
 
       {/* Auth Error Section */}
       {searchParams.get("role") !== null &&
-        searchParams.get("method") !== "email" && (
-          <AuthError authError={authError} />
-        )}
+        searchParams.get("method") !== "email" && <Msg msg={authMsg} />}
     </>
   );
 }
