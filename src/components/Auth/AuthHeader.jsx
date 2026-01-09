@@ -7,9 +7,9 @@ export default function AuthHeader() {
     <header className="flex flex-col items-center gap-0 text-center">
       <div className="p-3">
         <div className="flex items-center gap-3">
-          <Link to="/" className="pointer-events-auto flex items-center gap-2">
-            <img src={logo} alt="DevEMS Logo" className="h-8 w-auto" />
-            <span className="text-textPrimary font-bold tracking-tight text-lg">
+          <Link to="/" className="pointer-events-auto flex items-center gap-4">
+            <img src={logo} alt="DevEMS Logo" className="h-9 w-auto" />
+            <span className="text-textPrimary font-bold tracking-tight text-xl">
               DevEMS
             </span>
           </Link>

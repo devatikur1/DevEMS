@@ -47,23 +47,19 @@ export default function AuthMain({ IsSignIn }) {
           <AnimatePresence>
             {searchParams.get("role") === null ? (
               <RoleSelector role={role} setRole={setRole} />
+            ) : searchParams.get("method") === "email" ? (
+              <EmailMethod
+                IsSignIn={IsSignIn}
+                authMsg={authMsg}
+                setAuthMsg={setAuthMsg}
+                providerSign={providerSign}
+              />
             ) : (
-              <>
-                {searchParams.get("method") === "email" ? (
-                  <EmailMethod
-                    IsSignIn={IsSignIn}
-                    authMsg={authMsg}
-                    setAuthMsg={setAuthMsg}
-                    providerSign={providerSign}
-                  />
-                ) : (
-                  <LoginMethods
-                    IsSignIn={IsSignIn}
-                    role={role}
-                    providerSign={providerSign}
-                  />
-                )}
-              </>
+              <LoginMethods
+                IsSignIn={IsSignIn}
+                role={role}
+                providerSign={providerSign}
+              />
             )}
           </AnimatePresence>
         </motion.main>

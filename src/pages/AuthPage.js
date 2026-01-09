@@ -20,7 +20,9 @@ export default function AuthPage({ IsSignIn }) {
   // ✅ Change Title base on Load
   // ----------------------------
   useEffect(() => {
-    document.title = IsSignIn ? "Log In" : "Create Account";
+    document.title = IsSignIn
+      ? "Sign In to Your Account"
+      : "Create a New Account";
   }, [IsSignIn]);
 
   // ---------------------
@@ -38,7 +40,7 @@ export default function AuthPage({ IsSignIn }) {
   return (
     <aside className="relative h-screen overflow-x-hidden overflow-y-auto scrollVeiwNone w-full flex justify-center items-center bg-bg text-text">
       {/* Background Gradients */}
-      <div className="absolute inset-0 z-10">
+      <div className="fixed inset-0 z-10">
         <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue/20 rounded-full blur-[120px]" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-purple/20 rounded-full blur-[120px]" />
       </div>
