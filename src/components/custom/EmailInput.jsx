@@ -21,7 +21,7 @@ export default function EmailInput({ input, setEmail, email }) {
           value={email}
           placeholder={input.placeholder}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full bg-surfaceSoft/60 border border-border focus:border-accent/50 rounded-xl py-2.5 pl-12 pr-12 text-sm text-textPrimary placeholder:text-textMuted/50 outline-none transition-all"
+          className="w-full bg-surfaceSoft/60 border border-border/85 hover:border-borderborder-border/85 hover:border-border focus:border-accent/50 rounded-xl py-2.5 pl-12 pr-12 text-sm text-textPrimary placeholder:text-textMuted/50 outline-none transition-all"
           required
         />
       </div>

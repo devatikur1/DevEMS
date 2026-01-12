@@ -72,7 +72,7 @@ export default function LoginMethods({ providerSign, IsSignIn, role }) {
                 })();
               }
             }}
-            className={`group w-full flex justify-center items-center gap-3 bg-surfaceSoft/60 hover:bg-surfaceHard/70 active:scale-[0.98] transition-all duration-200 border border-border/85 hover:border-border rounded-xl px-4 py-3 ${
+            className={`group w-full flex justify-center items-center gap-3 text-textPrimary bg-surface hover:bg-surfaceHard/50 active:scale-[0.98] transition-all duration-200 border border-border/85 hover:border-border rounded-xl px-4 py-3 ${
               id === "email_auth" && "mt-9"
             }`}
           >

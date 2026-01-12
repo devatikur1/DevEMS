@@ -10,7 +10,7 @@ import QuickMenu from "./Header/QuickMenu";
 import ProfileModalOverlay from "./Header/ProfileModalOverlay";
 import uploadImageFn from "../../function/UploadImageFn";
 
-export default function Header({ className= ""}) {
+export default function Header({ className = "" }) {
   // 🔹 useContext context
   const { authId } = useContext(AppContext);
   const { setIsLogged, setUserDt, userDt } = authId;
@@ -183,7 +183,7 @@ export default function Header({ className= ""}) {
       {" "}
       {/* Main Header */}
       <header
-        className={`w-full flex justify-center items-center select-none *:select-none bg-surface ${className}`}
+        className={`w-full flex justify-center items-center select-none *:select-none text-textPrimary bg-surface/55 backdrop-blur-2xl ${className}`}
       >
         <section className="w-full flex items-center justify-between px-5 pt-4">
           <article>

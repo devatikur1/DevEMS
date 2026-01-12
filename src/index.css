@@ -1,3 +1,46 @@
+/* index.css */
+:root {
+  /* ===== Base Backgrounds ===== */
+  --color-bg: #000000;
+  --color-bgSoft: #ccc;
+  --color-surface: #0a0a0a;
+  --color-surfaceSoft: #1f1f1f;
+  --color-surfaceHard: #080808;
+
+  /* ===== Text ===== */
+  --color-textPrimary: #f9f9f9;
+  --color-textMuted: #7e7e7e;
+  --color-textDark: #000000;
+
+  /* ===== Accent / Brand ===== */
+  --color-accent: #3b82f6;
+  --color-accentSoft: #60a5fa;
+  --color-accentHover: #2563eb;
+  --color-accentA: #2b2b2b;
+
+  /* ===== UI States ===== */
+  --color-hover: #454545;
+  --color-border: #2d2d2d;
+  --color-boxHover: #181818;
+
+  /* ===== Status Colors ===== */
+  --color-success: #10b981;
+  --color-successSoft: #14532d;
+  --color-warning: #ffb300;
+  --color-warningSoft: #78350f;
+  --color-error: #ef4444;
+  --color-errorSoft: #881337;
+
+  /* ===== Extra / Legacy ===== */
+  --color-text: #f9f9f9;
+  --color-subtext: #7e7e7e;
+  --color-smtext: #525252;
+  --color-info: #0ea5e9;
+  --color-blue: #0082fb;
+  --color-purple: #9333ea;
+  --color-shadow: #000000;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

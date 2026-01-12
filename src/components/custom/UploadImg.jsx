@@ -43,7 +43,7 @@ export default function UploadImg({ img, setImg }) {
               className="w-28 h-28 rounded-full object-cover border-2 border-accent p-1 transition-transform group-hover:scale-105"
             />
           ) : (
-            <div className="w-28 h-28 rounded-full border-2 border-dashed border-border bg-surfaceSoft/10 flex flex-col items-center justify-center gap-2">
+            <div className="w-28 h-28 rounded-full border-2 border-dashed border-border/85 bg-surfaceSoft/10 flex flex-col items-center justify-center gap-2">
               <UploadCloud size={24} className="text-textMuted" />
               <span className="text-[10px] text-textMuted font-medium">
                 Upload

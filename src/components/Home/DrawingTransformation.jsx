@@ -93,7 +93,7 @@ export const DrawingTransformation = ({
         {/* Label tag that appears in stage 2 */}
         <div
           className={clsx(
-            "absolute -top-3 left-1/2 -translate-x-1/2 bg-text text-bg border border-boxHover text-[8px] md:text-[10px] font-mono font-bold px-2 py-0.5 rounded-sm transition-all duration-500",
+            "absolute -top-3 left-1/2 -translate-x-1/2 bg-bgSoft text-textDark border border-boxHover text-[8px] md:text-[10px] font-mono font-bold px-2 py-0.5 rounded-sm transition-all duration-500",
             stage === 2
               ? "opacity-100 translate-y-0" // apply this when 0, 1
               : "opacity-0 translate-y-2" // apply when 2
@@ -111,7 +111,7 @@ export const DrawingTransformation = ({
               stage === 1 ? "opacity-100" : "opacity-0"
             )}
           >
-            <InitialIcon className="w-8 h-8 md:w-12 md:h-12 text-smtext stroke-1" />
+            <InitialIcon className="w-8 h-8 md:w-12 md:h-12 text-textMuted stroke-1" />
           </div>
 
           {/* Stage 2: Alive/Interactive */}
@@ -124,9 +124,9 @@ export const DrawingTransformation = ({
           >
             <FinalIcon className="w-10 h-10 md:w-14 md:h-14 text-accent" />
             {stage === 2 && (
-              <div className="mt-3 flex items-center gap-2 px-2 py-1 bg-boxHover/50 rounded-full border border-boxHover">
-                <div className="w-1 h-1 bg-success rounded-full"></div>
-                <div className="w-8 h-0.5 bg-accentA rounded-full overflow-hidden">
+              <div className="mt-3 flex items-center gap-2 px-2 py-1 rounded-full border border-boxHover">
+                <div className="w-1 h-1 bg-accent rounded-full"></div>
+                <div className="w-8 h-0.5 bg-surfaceSoft rounded-full overflow-hidden">
                   <div className="h-full bg-accent w-2/3 animate-[pulse_1s_infinite]"></div>
                 </div>
               </div>

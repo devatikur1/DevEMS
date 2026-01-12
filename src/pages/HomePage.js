@@ -63,14 +63,14 @@ export default function HomePage() {
   return (
     <div className="relative h-screen overflow-x-hidden overflow-y-auto scrollVeiwNone w-full">
       {/* ColorFull Background */}
-      <div className="absolute inset-0 z-10 overflow-hidden">
+      <div className="fixed inset-0 z-10 overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue/20 rounded-full blur-[120px]" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-purple/20 rounded-full blur-[120px]" />
       </div>
 
       {/* Logo */}
       <div className="fixed top-4 left-1/2 -translate-x-1/2 z-30 pointer-events-none">
-        <div className="flex items-center gap-3 bg-surface/60 backdrop-blur-xl px-6 py-3 rounded-full shadow-lg">
+        <div className="flex items-center gap-3 bg-surface backdrop-blur-xl px-6 py-3 rounded-full shadow-lg">
           <Link to="/" className="pointer-events-auto flex items-center gap-2">
             <img src={logo} alt="DevEMS Logo" className="h-8 w-auto" />
             <span className="text-textPrimary font-bold tracking-tight text-lg">

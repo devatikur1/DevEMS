@@ -5,44 +5,44 @@ module.exports = {
     extend: {
       colors: {
         // ===== Base Backgrounds =====
-        bg: "#000000",
-        bgSoft: "#f9f9f9",
-        surface: "#151515",
-        surfaceSoft: "#1f1f1f",
-        surfaceHard: "#2b2b2b",
-        
+        bg: "var(--color-bg)",
+        bgSoft: "#ccc",
+        surface: "#0a0a0a",
+        surfaceSoft: "#141414",
+        surfaceHard: "#080808",
+
         // ===== Text =====
-        textPrimary: "#f9f9f9",
-        textMuted: "#7e7e7e",
+        textPrimary: "#ccc",
+        textMuted: "#a1a1a1",
         textDark: "#000000",
 
         // ===== Accent / Brand =====
         accent: "#3b82f6",
-        accentSoft: "#60a5fa",
-        accentHover: "#2563eb",
-        accentA: "#2b2b2b",
+        accentSoft: "var(--color-accentSoft)",
+        accentHover: "var(--color-accentHover)",
+        accentA: "var(--color-accentA)",
 
         // ===== UI States =====
-        hover: "#181818",
-        border: "#2d2d2d",
-        boxHover: "#1f1f1f",
+        hover: "var(--color-hover)",
+        border: "var(--color-border)",
+        boxHover: "var(--color-boxHover)",
 
         // ===== Status Colors =====
-        success: "#10b981",
-        successSoft: "#14532d",
-        warning: "#ffb300",
-        warningSoft: "#78350f",
-        error: "#ef4444",
-        errorSoft: "#881337",
+        success: "var(--color-success)",
+        successSoft: "var(--color-successSoft)",
+        warning: "var(--color-warning)",
+        warningSoft: "var(--color-warningSoft)",
+        error: "var(--color-error)",
+        errorSoft: "var(--color-errorSoft)",
 
         // ===== Extra / Legacy =====
-        text: "#f9f9f9",
-        subtext: "#7e7e7e",
-        smtext: "#525252",
-        info: "#0ea5e9",
+        text: "var(--color-text)",
+        subtext: "var(--color-subtext)",
+        smtext: "var(--color-smtext)",
+        info: "var(--color-info)",
         blue: "#0082fb",
         purple: "#9333ea",
-        shadow: "#000000",
+        shadow: "var(--color-shadow)",
       },
     },
   },

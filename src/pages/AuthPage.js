@@ -51,7 +51,7 @@ export default function AuthPage({ IsSignIn }) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative z-20 w-full h-screen md:h-auto hover:shadow-2xl shadow-shadow/50 duration-500 max-w-full md:max-w-[500px] md:mx-4 flex flex-col md:bg-surface/55 backdrop-blur-2xl md:border md:border-white/10 rounded-2xl p-8"
+          className="relative z-20 w-full h-screen md:h-auto hover:shadow-2xl shadow-shadow/50 duration-500 max-w-full md:max-w-[500px] md:mx-4 flex flex-col md:bg-surface backdrop-blur-2xl md:border md:border-border rounded-2xl p-8"
         >
           {/* Header Section */}
           <AuthHeader />
