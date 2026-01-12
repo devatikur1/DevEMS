@@ -72,7 +72,7 @@ export default function LoginMethods({ providerSign, IsSignIn, role }) {
                 })();
               }
             }}
-            className={`group w-full flex justify-center items-center gap-3 text-textPrimary bg-surface hover:bg-surfaceHard/50 active:scale-[0.98] transition-all duration-200 border border-border/85 hover:border-border rounded-xl px-4 py-3 ${
+            className={`group w-full flex justify-center items-center gap-3 text-textPrimary bg-surfaceSoft hover:bg-boxHover active:scale-[0.98] transition-all duration-200 border border-border hover:border-hover rounded-xl px-4 py-3 ${
               id === "email_auth" && "mt-9"
             }`}
           >
@@ -92,7 +92,7 @@ export default function LoginMethods({ providerSign, IsSignIn, role }) {
           {id === "email_auth" && (
             <div className="w-full flex items-center gap-4 px-2 py-1">
               <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent  via-border to-transparent" />
-              <span className="text-xs font-medium text-textMuted/95 uppercase tracking-wider">
+              <span className="text-xs font-medium text-textMuted uppercase tracking-wider">
                 Or continue with
               </span>
               <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />

@@ -51,14 +51,14 @@ export default function AuthPage({ IsSignIn }) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative z-20 w-full h-screen md:h-auto hover:shadow-2xl shadow-shadow/50 duration-500 max-w-full md:max-w-[500px] md:mx-4 flex flex-col md:bg-surface backdrop-blur-2xl md:border md:border-border rounded-2xl p-8"
+          className="relative z-20 w-full h-screen md:h-auto hover:shadow-2xl shadow-shadow/50 duration-500 max-w-full md:max-w-[500px] md:mx-4 flex flex-col md:bg-surface/60 backdrop-blur-2xl md:border md:border-border rounded-2xl p-8"
         >
           {/* Header Section */}
           <AuthHeader />
 
           {/* Divider && Header */}
           <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-border to-transparent my-5" />
-          <h2 className="text-3xl font-bold text-center tracking-tight bg-gradient-to-r from-textPrimary via-textPrimary to-textPrimary/95 bg-clip-text text-transparent">
+          <h2 className="text-3xl font-bold text-center tracking-tight text-textPrimary">
             {IsSignIn ? "Welcome Back" : "Create Account"}
           </h2>
 

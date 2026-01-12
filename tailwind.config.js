@@ -6,34 +6,34 @@ module.exports = {
       colors: {
         // ===== Base Backgrounds =====
         bg: "var(--color-bg)",
-        bgSoft: "#ccc",
+        bgSoft: "#f9f9f9",
         surface: "#0a0a0a",
         surfaceSoft: "#141414",
         surfaceHard: "#080808",
 
         // ===== Text =====
-        textPrimary: "#ccc",
-        textMuted: "#a1a1a1",
+        textPrimary: "#f9f9f9",
+        textMuted: "#7e7e7e",
         textDark: "#000000",
 
         // ===== Accent / Brand =====
         accent: "#3b82f6",
-        accentSoft: "var(--color-accentSoft)",
+        accentSoft: "#60a5fa",
         accentHover: "var(--color-accentHover)",
         accentA: "var(--color-accentA)",
 
         // ===== UI States =====
-        hover: "var(--color-hover)",
-        border: "var(--color-border)",
-        boxHover: "var(--color-boxHover)",
+        hover: "#454545",
+        border: "#2d2d2d",
+        boxHover: "#111111",
 
         // ===== Status Colors =====
-        success: "var(--color-success)",
-        successSoft: "var(--color-successSoft)",
-        warning: "var(--color-warning)",
-        warningSoft: "var(--color-warningSoft)",
-        error: "var(--color-error)",
-        errorSoft: "var(--color-errorSoft)",
+        success: "#10b981",
+        successSoft: "#14532d",
+        warning: "#ffb300",
+        warningSoft: "#78350f",
+        error: "#ef4444",
+        errorSoft: "#881337",
 
         // ===== Extra / Legacy =====
         text: "var(--color-text)",

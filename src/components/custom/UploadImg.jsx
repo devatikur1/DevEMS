@@ -43,9 +43,9 @@ export default function UploadImg({ img, setImg }) {
               className="w-28 h-28 rounded-full object-cover border-2 border-accent p-1 transition-transform group-hover:scale-105"
             />
           ) : (
-            <div className="w-28 h-28 rounded-full border-2 border-dashed border-border/85 bg-surfaceSoft/10 flex flex-col items-center justify-center gap-2">
+            <div className="w-28 h-28 rounded-full border-2 border-dashed border-border bg-surfaceSoft flex flex-col items-center justify-center gap-2">
               <UploadCloud size={24} className="text-textMuted" />
-              <span className="text-[10px] text-textMuted font-medium">
+              <span className="group-hover:hidden transition-all duration-300 text-[10px] text-textMuted font-medium">
                 Upload
               </span>
             </div>
@@ -55,14 +55,14 @@ export default function UploadImg({ img, setImg }) {
         {/* Edit button always visible on mobile, hover effect on desktop */}
         <label
           htmlFor="file"
-          className="absolute -bottom-1 -right-1 flex items-center gap-1 px-2 py-0.5 rounded-md bg-surface border border-border text-[11px] text-textMuted transition-transform hover:scale-110"
+          className="absolute -bottom-1 -right-1 flex items-center gap-1 px-2 py-0.5 rounded-md bg-surfaceHard border border-border text-[11px] text-textMuted transition-transform hover:scale-110"
         >
           <Pen size={12} />
           Edit
         </label>
       </div>
 
-      <p className="rounded-md border border-warning/40 bg-warning/10 px-4 py-2 text-[0.65rem] text-warning">
+      <p className="rounded-md border border-warningSoft/20  text-warning bg-warning/10 px-4 py-2 text-[0.65rem]">
         ⚠ Image must be lower than 32 MB
       </p>
 

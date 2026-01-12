@@ -219,7 +219,7 @@ export default function EmailMethod({
                 });
               }
             }}
-            className="mt-2 w-full text-textPrimary bg-surface hover:bg-surfaceHard/50 font-medium py-3 rounded-xl shadow-lg border border-border/85 hover:border-border active:scale-[0.98] transition-all"
+            className="mt-2 w-full text-textPrimary bg-surfaceSoft hover:bg-boxHover font-medium py-3 rounded-xl shadow-lg border border-border hover:border-hover active:scale-[0.98] transition-all"
           >
             Go back
           </button>

@@ -69,16 +69,23 @@ export default function HomePage() {
       </div>
 
       {/* Logo */}
-      <div className="fixed top-4 left-1/2 -translate-x-1/2 z-30 pointer-events-none">
+      <header
+        role="banner"
+        className="fixed top-4 left-1/2 -translate-x-1/2 z-30 pointer-events-none"
+      >
         <div className="flex items-center gap-3 bg-surface backdrop-blur-xl px-6 py-3 rounded-full shadow-lg">
-          <Link to="/" className="pointer-events-auto flex items-center gap-2">
+          <Link
+            to="/"
+            className="pointer-events-auto flex items-center gap-2"
+            aria-label="Go to DevEMS homepage"
+          >
             <img src={logo} alt="DevEMS Logo" className="h-8 w-auto" />
-            <span className="text-textPrimary font-bold tracking-tight text-lg">
+            <h1 className="text-textPrimary font-bold tracking-tight text-lg">
               DevEMS
-            </span>
+            </h1>
           </Link>
         </div>
-      </div>
+      </header>
 
       {/* Main Content */}
       <div

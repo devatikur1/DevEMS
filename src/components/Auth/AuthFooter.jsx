@@ -9,7 +9,7 @@ export default function AuthFooter({ IsSignIn }) {
         {"  "}
         <Link
           to={IsSignIn ? "/sign-up" : "/sign-in"}
-          className="text-white hover:text-accentSoft font-medium transition-colors duration-200"
+          className="text-textPrimary hover:text-accentSoft font-medium transition-colors duration-200"
         >
           {IsSignIn ? "Create account" : "Sign in"}
         </Link>
