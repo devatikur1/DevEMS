@@ -5,12 +5,12 @@ import RoleSelector from "./AuthMain/RoleSelector";
 import LoginMethods from "./AuthMain/LoginMethods";
 import EmailMethod from "./AuthMain/EmailMethod";
 import useAuthProvider from "../../hooks/useAuthProvider";
-import Msg from "./AuthMain/Msg";
+import Msg from "../custom/Msg";
 
 export default function AuthMain({ IsSignIn }) {
   // 🔹 React-Router-Dom && State
   const [searchParams] = useSearchParams();
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState(searchParams.get("role") || "");
   const [authMsg, setAuthMsg] = useState({
     status: false,
     text: "",
@@ -46,13 +46,14 @@ export default function AuthMain({ IsSignIn }) {
         >
           <AnimatePresence>
             {searchParams.get("role") === null ? (
-              <RoleSelector role={role} setRole={setRole} />
+              <RoleSelector setRole={setRole} />
             ) : searchParams.get("method") === "email" ? (
               <EmailMethod
                 IsSignIn={IsSignIn}
                 authMsg={authMsg}
                 setAuthMsg={setAuthMsg}
                 providerSign={providerSign}
+                role={role}
               />
             ) : (
               <LoginMethods

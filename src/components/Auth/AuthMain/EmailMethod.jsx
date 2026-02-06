@@ -3,12 +3,9 @@ import React, { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
-import delParamsOnUrl from "../../../function/delParamsOnUrl";
-import uploadImageFn from "../../../function/UploadImageFn";
-import { getErrorMessage } from "../../../function/getErrorMessage";
-import FormInputStyle from "./FormInputStyle";
-import passValidation from "../../../function/passValidation";
-import Msg from "./Msg";
+import FormInputs from "./FormInputs";
+import Msg from "../../custom/Msg";
+import useFunction from "../../../hooks/useFunction";
 
 export default function EmailMethod({
   IsSignIn,
@@ -18,7 +15,8 @@ export default function EmailMethod({
   providerSign,
 }) {
   // 🔹 Custom Hook
-  const [lodingitem, authSign, forgotPass] = providerSign;
+  const { passValidation, paramsUrl, uploadImageFn, getErrMsg } = useFunction();
+  const { lodingitem, authSign, forgotPass } = providerSign;
 
   // 🔹 React Router
   const [searchParams, setSearchParams] = useSearchParams();
@@ -44,34 +42,23 @@ export default function EmailMethod({
   // ✅ Form validation
   // ------------------------------
   useEffect(() => {
-    setIsFormBtnDis(
-      (IsSignIn
-        ? !email || !pass
+    setIsFormBtnDis(() =>
+      IsSignIn
+        ? !email || email.includes(" ") || !email.includes("@") || !pass
         : (signUpPart === 0 && !imgData.url) ||
-          (signUpPart === 1 && !email) ||
+          (signUpPart === 1 &&
+            (!email || email.includes(" ") || !email.includes("@"))) ||
           (signUpPart === 2 && (!name || !username)) ||
           (signUpPart === 3 &&
             (!photoURL ||
               !pass ||
               !confirmPass ||
               pass !== confirmPass ||
-              !passValidation(pass)))) ||
-        imgUploading ||
-        lodingitem === "email_auth"
+              !passValidation(pass))) ||
+          imgUploading ||
+          lodingitem === "email_auth",
     );
-  }, [
-    IsSignIn,
-    confirmPass,
-    email,
-    imgData.url,
-    imgUploading,
-    lodingitem,
-    name,
-    pass,
-    photoURL,
-    signUpPart,
-    username,
-  ]);
+  }, [IsSignIn, email, pass, signUpPart, imgData.url, name, username, photoURL, confirmPass, imgUploading, lodingitem, passValidation]);
 
   // ------------------------------
   // ✅ Handle Image Upload
@@ -88,7 +75,7 @@ export default function EmailMethod({
       setPhotoURL(imgDt.url);
       setSignUpPart(signUpPart + 1);
     } catch (error) {
-      setAuthMsg({ status: true, text: getErrorMessage(error), type: "err" });
+      setAuthMsg({ status: true, text: getErrMsg(error), type: "err" });
     } finally {
       setImgUploading(false);
     }
@@ -139,7 +126,7 @@ export default function EmailMethod({
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         {/* Form Inputs */}
-        <FormInputStyle
+        <FormInputs
           IsSignIn={IsSignIn}
           imgData={imgData}
           setImgData={setImgData}
@@ -211,7 +198,8 @@ export default function EmailMethod({
               if (signUpPart > 0) {
                 setSignUpPart(signUpPart - 1);
               } else {
-                delParamsOnUrl({
+                paramsUrl({
+                  type: "del",
                   get: searchParams,
                   set: setSearchParams,
                   key: "method",

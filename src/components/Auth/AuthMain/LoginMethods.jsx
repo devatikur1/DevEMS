@@ -8,7 +8,7 @@ import setParamsOnUrl from "../../../function/setParamsOnUrl";
 
 export default function LoginMethods({ providerSign, IsSignIn, role }) {
   // 🔹 Cutom Hook
-  const [lodingitem, authSign] = providerSign;
+  const { lodingitem, authSign } = providerSign;
 
   // 🔹 React-Router-Dom
   const [searchParams, setSearchParams] = useSearchParams();

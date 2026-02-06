@@ -10,6 +10,7 @@ import {
 import { db } from "../context/AppContext";
 
 function useFirestore() {
+  // 🔹 Set Data
   async function setData({ collId, docId, data }) {
     try {
       if (docId) {
@@ -23,6 +24,7 @@ function useFirestore() {
     }
   }
 
+  // 🔹 Get Data
   async function getData({ collId, docId, whereQuery }) {
     try {
       // 🔹 Single document
@@ -55,7 +57,7 @@ function useFirestore() {
     }
   }
 
-  return [setData, getData];
+  return { setData, getData };
 }
 
 export default useFirestore;

@@ -5,24 +5,26 @@ import {
   FacebookAuthProvider,
   GithubAuthProvider,
   GoogleAuthProvider,
+  linkWithPopup,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
 } from "firebase/auth";
 import { useCallback, useContext, useState } from "react";
 import { AppContext, auth } from "../context/AppContext";
-import { genUniqueUsername } from "../function/genUniqueUsername";
 import useFirestore from "./useFirestore";
-import { getErrorMessage } from "../function/getErrorMessage";
+import useFunction from "./useFunction";
 
 function useAuthProvider(setAuthMsg) {
-  // 🔹 useContext context
+  // 🔹 Context & Hooks
   const { authId } = useContext(AppContext);
   const { setIsLogged, setUserDt } = authId;
+  const { setData, getData } = useFirestore();
+  const { getErrMsg, uniUsername, genEmailbaseUid } = useFunction();
 
-  // 🔹 State & Custom Hook
+  // 🔹 State & Ref
   const [lodingitem, setLodingItem] = useState(null);
-  const [setData, getData] = useFirestore();
 
   // 🔹 Login / Signup Function
   const authSign = useCallback(
@@ -44,13 +46,13 @@ function useAuthProvider(setAuthMsg) {
           userResult = IsSignIn
             ? await signInWithEmailAndPassword(
                 auth,
-                formData.email,
-                formData.password
+                formData?.email,
+                formData?.password,
               )
             : await createUserWithEmailAndPassword(
                 auth,
-                formData.email,
-                formData.password
+                formData?.email,
+                formData?.password,
               );
         } else {
           // ------------------------
@@ -68,67 +70,79 @@ function useAuthProvider(setAuthMsg) {
           userResult = await signInWithPopup(auth, provider);
         }
 
-        const user = userResult.user;
-
         // -------------------------
         // 🔹 Check Firestore user
         // -------------------------
-        const userDoc = await getData({ collId: "users", docId: user.email });
+
+        const user = userResult.user;
+
+        const userDoc = await getData({
+          collId: "users",
+          docId: genEmailbaseUid(user.email),
+        });
 
         if (IsSignIn) {
           if (!userDoc.status) throw { code: "auth/user-not-found" };
-          if (userDoc.status && userDoc.data.role !== role)
+          if (userDoc.data.role !== role)
             throw { code: "custom/role-mismatch" };
-
           finalUserData = userDoc.data;
         } else {
           if (userDoc.status) throw { code: "auth/email-already-in-use" };
 
           const username =
             id === "email_auth"
-              ? formData.username
-              : await genUniqueUsername(
-                  `@${user.email.split("@")[0].toLowerCase()}`
-                );
+              ? formData?.username.trim()
+              : await uniUsername({
+                  type: "gen",
+                  baseName: `@${user.email.split("@")[0].toLowerCase()}`,
+                });
 
           finalUserData = {
+            uid: genEmailbaseUid(user.email),
             role,
-            username,
+            username: `@${username.replace(/@/gm, "")}`,
             email: user.email,
-            name: formData?.name || user.displayName || "User",
-            photoURL: formData?.photoURL || user.photoURL || "",
+            name: formData?.name.trim() || user.displayName || "User",
+            photoURL: formData?.photoURL.trim() || user.photoURL || "",
             emailVerified: user.emailVerified,
-            createdAt: Date.now(),
+            createdAt: new Date(),
           };
 
           await setData({
             collId: "users",
-            docId: user.email,
+            docId: finalUserData?.uid,
             data: finalUserData,
           });
           await setData({
             collId: "username",
-            docId: username,
+            docId: finalUserData?.username,
             data: { email: user.email },
           });
         }
 
-        // ------------------------
-        // 🔹 Persist Session
-        // ------------------------
         localStorage.setItem("userDt", JSON.stringify(finalUserData));
         localStorage.setItem("isLogged", "true");
         setUserDt(finalUserData);
         setIsLogged(true);
       } catch (error) {
-        setAuthMsg({ status: true, text: getErrorMessage(error), type: "err" });
+        setAuthMsg({ status: true, text: getErrMsg(error), type: "err" });
       } finally {
         setTimeout(() => setLodingItem(null), 300);
       }
     },
-    [getData, setAuthMsg, setData, setIsLogged, setUserDt]
+    [
+      genEmailbaseUid,
+      getData,
+      getErrMsg,
+      setAuthMsg,
+      setData,
+      setIsLogged,
+      setUserDt,
+      uniUsername,
+    ],
   );
 
+  // 🔹 Login Forgot Password  Function
   const forgotPass = useCallback(
     async (email) => {
       setAuthMsg({ status: false, text: "", type: "suc" });
@@ -141,13 +155,26 @@ function useAuthProvider(setAuthMsg) {
           text: "We’ve sent a password reset link to your email. Check your inbox — and don’t forget to look in Spam or Promotions.",
         });
       } catch (error) {
-        setAuthMsg({ status: true, text: getErrorMessage(error), type: "err" });
+        setAuthMsg({ status: true, text: getErrMsg(error), type: "err" });
       }
     },
-    [setAuthMsg]
+    [getErrMsg, setAuthMsg],
   );
 
-  return [lodingitem, authSign, forgotPass];
+  // 🔹 Log Out Function
+  const logOut = async () => {
+    try {
+      await signOut(auth);
+      localStorage.removeItem("isLogged");
+      localStorage.removeItem("userDt");
+      setIsLogged(false);
+      setUserDt({});
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+
+  return { lodingitem, authSign, forgotPass, logOut };
 }
 
 export default useAuthProvider;

@@ -46,7 +46,7 @@ export default function ULayout() {
   // ✅ Render
   // ---------------------
   return (
-    <main
+    <aside
       ref={containerRef}
       className="h-screen overflow-y-auto overflow-x-hidden"
     >
@@ -74,6 +74,6 @@ export default function ULayout() {
 
       {/* Outlet */}
       <Outlet />
-    </main>
+    </aside>
   );
 }
