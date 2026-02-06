@@ -38,7 +38,7 @@ export default function AuthPage({ IsSignIn }) {
   // ✅ Render
   // ---------------------
   return (
-    <aside className="relative h-screen overflow-x-hidden overflow-y-auto scrollVeiwNone w-full flex justify-center items-center bg-bg text-text">
+    <figure className="relative h-screen overflow-x-hidden overflow-y-auto scrollVeiwNone w-full flex justify-center items-center bg-bg text-text">
       {/* Background Gradients */}
       <div className="fixed inset-0 z-10">
         <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue/20 rounded-full blur-[120px]" />
@@ -46,7 +46,7 @@ export default function AuthPage({ IsSignIn }) {
       </div>
 
       <AnimatePresence>
-        <motion.article
+        <motion.aside
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
@@ -67,8 +67,8 @@ export default function AuthPage({ IsSignIn }) {
 
           {/* Footer Section */}
           <AuthFooter IsSignIn={IsSignIn} />
-        </motion.article>
+        </motion.aside>
       </AnimatePresence>
-    </aside>
+    </figure>
   );
 }
