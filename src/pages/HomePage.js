@@ -60,7 +60,7 @@ export default function HomePage() {
   // ✅ Render
   // ---------------------
   return (
-    <div className="relative h-screen overflow-x-hidden overflow-y-auto scrollVeiwNone w-full">
+    <figure className="relative h-screen overflow-x-hidden overflow-y-auto scrollVeiwNone w-full">
       {/* ColorFull Background */}
       <aside className="fixed inset-0 z-10 overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue/20 rounded-full blur-[120px]" />
@@ -178,6 +178,6 @@ export default function HomePage() {
           </div>
         </article>
       </main>
-    </div>
+    </figure>
   );
 }
