@@ -36,7 +36,6 @@ export default function HomePage() {
   // ---------------------
   useGSAP(
     () => {
-      // Text reveal animation: niche theke bhese uthbar effect
       gsap.from(".hp", {
         delay: 0.5,
         y: 100,
@@ -63,10 +62,10 @@ export default function HomePage() {
   return (
     <div className="relative h-screen overflow-x-hidden overflow-y-auto scrollVeiwNone w-full">
       {/* ColorFull Background */}
-      <div className="fixed inset-0 z-10 overflow-hidden">
+      <aside className="fixed inset-0 z-10 overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue/20 rounded-full blur-[120px]" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-purple/20 rounded-full blur-[120px]" />
-      </div>
+      </aside>
 
       {/* Logo */}
       <header
@@ -88,11 +87,11 @@ export default function HomePage() {
       </header>
 
       {/* Main Content */}
-      <div
+      <main
         ref={container}
         className="relative z-10 min-h-screen overflow-y-auto overflow-x-hidden"
       >
-        {/* Background elements (fixed) */}
+        {/* 🔹 Background elements (fixed) */}
         <div className="fixed inset-0 z-20 overflow-hidden pointer-events-none">
           {/* Top Left: Payroll */}
           <div className="hidden lg:block">
@@ -178,7 +177,7 @@ export default function HomePage() {
             </Link>
           </div>
         </article>
-      </div>
+      </main>
     </div>
   );
 }
