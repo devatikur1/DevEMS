@@ -11,14 +11,16 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
+import useFunction from "../hooks/useFunction";
+import useFirestore from "../hooks/useFirestore";
 
 export default function AppContextProvider({ children }) {
   // 🔹 authId-State
   const [isLogged, setIsLogged] = useState(
-    Boolean(JSON.parse(localStorage.getItem("isLogged"))) || false
+    Boolean(JSON.parse(localStorage.getItem("isLogged"))) || false,
   );
   const [userDt, setUserDt] = useState(
-    JSON.parse(localStorage.getItem("userDt")) || {}
+    JSON.parse(localStorage.getItem("userDt")) || {},
   );
 
   // 🔹 overviewdt-State && Ref
@@ -28,22 +30,23 @@ export default function AppContextProvider({ children }) {
   const [workspaces, setWorkspace] = useState([]);
   const containerRef = useRef(null);
 
+  // 🔹 custom hook
+  const { getData } = useFirestore();
+  const { genEmailbaseUid } = useFunction();
+
   // --------------------------
   // ✅ Get Current USer Data
   // --------------------------
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        localStorage.removeItem("isLogged");
-        localStorage.removeItem("userDt");
-        setIsLogged(false);
-        setUserDt({});
-        return;
-      }
+      if (!user) throw { code: "auth/user-not-found" };
 
       // 🔹 Get Data
       try {
-        const docSnap = await getDoc(doc(db, "users", user.email));
+        const docSnap = await getData({
+          collId: "users",
+          docId: genEmailbaseUid(user.email),
+        });
 
         if (docSnap.exists()) {
           let data = docSnap.data();
@@ -68,13 +71,15 @@ export default function AppContextProvider({ children }) {
               const q = query(
                 collectionRef,
                 orderBy("serialid", "asc"),
-                limit(Limit)
+                limit(Limit),
               );
               const querySnapshot = await getDocs(q);
               const wdata = querySnapshot.docs.map((doc) => doc.data());
 
               if (wdata.length === Limit && wdata.length !== count) {
-                setLastWorkspace(querySnapshot.docs[querySnapshot.docs.length - 1]);
+                setLastWorkspace(
+                  querySnapshot.docs[querySnapshot.docs.length - 1],
+                );
               } else {
                 setLastWorkspace(null);
               }
@@ -93,12 +98,7 @@ export default function AppContextProvider({ children }) {
           } finally {
             setWorkspacesGetting(false);
           }
-        } else {
-          localStorage.removeItem("isLogged");
-          localStorage.removeItem("userDt");
-          setIsLogged(false);
-          setUserDt({});
-        }
+        } else throw { code: "auth/user-not-found" };
       } catch (error) {
         console.error("🔥 Error fetching user data:", error);
         localStorage.removeItem("isLogged");

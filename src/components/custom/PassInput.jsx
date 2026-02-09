@@ -1,6 +1,6 @@
 import { Eye, EyeOff } from "lucide-react";
 import React, { useState } from "react";
-import passValidation from "../../function/passValidation";
+import useFunction from "../../hooks/useFunction";
 
 export default function PassInput({
   input,
@@ -12,6 +12,7 @@ export default function PassInput({
   confirmPassIsvalid,
 }) {
   const [passStatus, setPassStatus] = useState("Not Strong");
+  const { passValidation } = useFunction();
   const Icon = input.icon;
   return (
     <div key={input.id} className="space-y-1.5">
@@ -56,15 +57,13 @@ export default function PassInput({
           value={pass}
           placeholder={input.placeholder}
           onChange={(e) => {
+            setPass(e.target.value.trim());
             if (!IsSignIn && input.id === "password") {
-              setPass(e.target.value);
               setPassStatus("checking...");
-              const status = passValidation(e.target.value);
+              const status = passValidation(e.target.value.trim());
               setTimeout(() => {
                 setPassStatus(status ? "Strong" : "Not Strong");
               }, 300);
-            } else {
-              setPass(e.target.value);
             }
           }}
           className="w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 rounded-xl py-2.5 pl-12 pr-12 text-sm text-textPrimary placeholder:text-textMuted outline-none transition-all"

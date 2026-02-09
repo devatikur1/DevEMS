@@ -8,7 +8,7 @@ module.exports = {
         bg: "var(--color-bg)",
         bgSoft: "#f9f9f9",
         surface: "#0a0a0a",
-        surfaceSoft: "#141414",
+        surfaceSoft: "#111111",
         surfaceHard: "#080808",
 
         // ===== Text =====
@@ -19,13 +19,12 @@ module.exports = {
         // ===== Accent / Brand =====
         accent: "#3b82f6",
         accentSoft: "#60a5fa",
-        accentHover: "var(--color-accentHover)",
-        accentA: "var(--color-accentA)",
+        accentHover: "#2563eb",
 
         // ===== UI States =====
         hover: "#454545",
         border: "#2d2d2d",
-        boxHover: "#111111",
+        boxHover: "#141414",
 
         // ===== Status Colors =====
         success: "#10b981",
@@ -34,12 +33,13 @@ module.exports = {
         warningSoft: "#78350f",
         error: "#ef4444",
         errorSoft: "#881337",
+        info: "#38BDF8",
+        infoSoft: "#0B2A3A",
 
         // ===== Extra / Legacy =====
         text: "var(--color-text)",
         subtext: "var(--color-subtext)",
         smtext: "var(--color-smtext)",
-        info: "var(--color-info)",
         blue: "#0082fb",
         purple: "#9333ea",
         shadow: "var(--color-shadow)",

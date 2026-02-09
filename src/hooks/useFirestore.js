@@ -57,6 +57,18 @@ function useFirestore() {
     }
   }
 
+  async function getCount(collId) {
+    if (collId) throw { code: "custom/collection-name-not-found" }
+    try {
+      if (collId) {
+        await setDoc(doc(db, collId, docId), data, { merge: true });
+      
+      return { status: true, error: null };
+    } catch (error) {
+      return { status: false, error };
+    }
+  }
+
   return { setData, getData };
 }
 

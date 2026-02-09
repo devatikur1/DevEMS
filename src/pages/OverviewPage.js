@@ -141,7 +141,7 @@ export default function OverviewPage() {
     }
     setworkspaceData(sortedData);
     setNoWorkspace(sortedData.length === 0);
-  }, [searchParams, workspaces]);
+  }, [searchParams, setNoWorkspace, workspaces]);
 
   // -------------------------
   // ✅ Delete Worksplace Fn
@@ -242,8 +242,8 @@ export default function OverviewPage() {
   // ✅ Render
   // ---------------------
   return (
-    <main className="w-full flex justify-center text-text min-h-screen bg-transparent">
-      <div className="w-[95%] xl:w-[90%] 2xl:w-[71%] pt-10">
+    <main className="relative z-50 w-full flex justify-center text-text min-h-screen bg-transparent">
+      <figure className="w-[95%] xl:w-[90%] 2xl:w-[71%] pt-10">
         {/* Toolbar Section */}
         <Toolbar
           currentView={currentView}
@@ -268,7 +268,7 @@ export default function OverviewPage() {
           searchParams={searchParams}
           deleteWorksplace={deleteWorksplace}
         />
-      </div>
+      </figure>
     </main>
   );
 }

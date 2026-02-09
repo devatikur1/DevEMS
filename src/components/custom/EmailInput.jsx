@@ -20,7 +20,7 @@ export default function EmailInput({ input, setEmail, email }) {
           type="email"
           value={email}
           placeholder={input.placeholder}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value.trim())}
           className="w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 rounded-xl py-2.5 pl-12 pr-12 text-sm text-textPrimary placeholder:text-textMuted outline-none transition-all"
           required
         />

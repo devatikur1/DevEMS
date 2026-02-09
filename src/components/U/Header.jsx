@@ -1,177 +1,124 @@
+/* eslint-disable no-throw-literal */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { AppContext, auth, db } from "../../context/AppContext";
-import { signOut } from "firebase/auth";
-import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import { AppContext, db } from "../../context/AppContext";
+import { deleteDoc, doc } from "firebase/firestore";
 import { AnimatePresence } from "framer-motion";
-import toast from "react-hot-toast";
 import QuickMenu from "./Header/QuickMenu";
 import ProfileModalOverlay from "./Header/ProfileModalOverlay";
 import uploadImageFn from "../../function/UploadImageFn";
+import useAuthProvider from "../../hooks/useAuthProvider";
+import { getErrorMessage } from "../../function/getErrorMessage";
+import { findUniqueUsername } from "../../function/findUniqueUsername";
+import useFirestore from "../../hooks/useFirestore";
+import delParamsOnUrl from "../../function/delParamsOnUrl";
 
 export default function Header({ className = "" }) {
   // 🔹 useContext context
   const { authId } = useContext(AppContext);
-  const { setIsLogged, setUserDt, userDt } = authId;
+  const { setUserDt, userDt } = authId;
 
   // 🔹 router-dom
   const [searchParams, setSearchParams] = useSearchParams();
 
   // 🔹 State
-  const [showOpBar, setShowOpBar] = useState(false);
-  const [showPrOpBar, setShowPrOpBar] = useState(
-    searchParams.get("profile_setting") === "true" ? true : false
-  );
-  const [pUrl, setPUrl] = useState("");
+  const [quickMenuDetails, setQuickMenuDetails] = useState({
+    show: false,
+    x: 0,
+    y: 0,
+  });
+
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
-  const [usernameIsDoText, setUsernameIsDoText] = useState({});
-  const [updateLod, setUpdateLod] = useState(false);
+  const [imgData, setImgData] = useState({
+    file: {},
+    url: "",
+  });
+  const [authMsg, setAuthMsg] = useState({
+    status: false,
+    text: "",
+    type: "suc",
+  });
+  const [loding, setLoding] = useState(false);
 
-  // ---------------------
-  // ✅ Show Profile Fns
-  // ---------------------
-
-  /* 🔹 1 When Click Profile Btn */
-  function openProfile() {
-    const params = new URLSearchParams(searchParams);
-    params.set("profile_setting", "true");
-
-    setSearchParams(params);
-    setShowPrOpBar(true);
-  }
-
-  /* 🔹 2 When Close Profile */
-  const closeProfile = () => {
-    const params = new URLSearchParams(searchParams);
-    params.delete("profile_setting");
-
-    setSearchParams(params);
-    setShowPrOpBar(false);
-  };
-
-  /* 🔹 3 When Enter Website Use Link  */
-  useEffect(() => {
-    if (searchParams.get("profile_setting") === "true") {
-      setShowPrOpBar(true);
-    } else {
-      setShowPrOpBar(false);
-    }
-  }, [searchParams]);
-
-  // ---------------------
-  // ✅ Logout Function
-  // ---------------------
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      localStorage.removeItem("isLogged");
-      localStorage.removeItem("userDt");
-      setIsLogged(false);
-      setUserDt({});
-    } catch (error) {
-      console.error("Error signing out:", error);
-    } finally {
-      setShowOpBar(false);
-    }
-  };
+  // 🔹 Cutom Hook
+  const { logOut } = useAuthProvider(setAuthMsg);
+  const { setData } = useFirestore();
 
   // -----------------------------
-  // ✅ On  Update Username
+  // ✅ Close Profile
   // ----------------------------
-  async function onUpdateUserName(value) {
-    setUsernameIsDoText({
-      status: "warning",
-      text: "Checking...",
+  const closeProfile = () => {
+    setName("");
+    setImgData("");
+    setImgData({
+      file: {},
+      url: "",
     });
-    let mainValue = `@${value.replace("@", "").trim().toLowerCase()}`;
-    setUsername(mainValue);
-    if (value.length < 2) {
-      setUsernameIsDoText({ status: "", text: "" });
-      return;
-    }
-    try {
-      const docSnap = await getDoc(doc(db, "username", mainValue));
-
-      console.log(docSnap.data());
-
-      if (docSnap.exists()) {
-        setUsernameIsDoText({
-          status: "warning",
-          text: "This username is already taken.",
-        });
-      } else {
-        setUsernameIsDoText({
-          status: "success",
-          text: "Username is available!",
-        });
-      }
-    } catch (error) {
-      console.error("Username check error:", error);
-      setUsernameIsDoText({
-        status: "error",
-        text: "Something went wrong. Please try again.",
-      });
-    }
-  }
+    delParamsOnUrl({
+      get: searchParams,
+      set: setSearchParams,
+      key: "profile_setting",
+      value: "true",
+    });
+  };
 
   // -----------------------------
   // ✅ Profile Update Function
   // ----------------------------
   const handlePrUpdate = async () => {
     try {
-      setUpdateLod(true);
+      setLoding(true);
+      setAuthMsg({ status: false, text: "", type: "suc" });
       let finalPhotoURL = userDt?.photoURL;
 
       // 🔹 1. ImgBB Upload
-      if (pUrl.file) {
-        const res = await uploadImageFn(pUrl.file);
-        if (!res.isError) {
-          finalPhotoURL = res.url;
-        } else {
-          toast.error(res.msg);
-          return;
-        }
+      if (imgData?.url) {
+        if (!imgData?.file) throw { code: "custom/image-not-select" };
+        const imgDt = await uploadImageFn(imgData.file);
+        if (imgDt.isError) throw { code: imgDt.msg };
+        finalPhotoURL = imgDt.url;
       }
 
+      const userNameIsUniqe = await findUniqueUsername(`@${username}`);
+
       //  🔹 Optional When Chage Username The Firestore Update
-      if (username !== userDt?.username) {
+      if (userNameIsUniqe) {
         await deleteDoc(doc(db, "username", userDt?.username));
-        await setDoc(
-          doc(db, "username", username),
-          {
-            uid: userDt?.email,
-          },
-          {
-            merge: true,
-          }
-        );
+        await setData({
+          collId: "username",
+          docId: `@${username}`,
+          data: { email: userDt?.email },
+        });
       }
 
       // 🔹 2. Firestore Database Update
       const updatedData = {
         ...userDt,
-        name: name || userDt?.name,
-        username: username || userDt?.username,
+        name: name.trim() || userDt?.name,
+        username: `@${username}` || userDt?.username,
         photoURL: finalPhotoURL,
       };
-      await setDoc(doc(db, "users", userDt?.email), updatedData, {
-        merge: true,
+      await setData({
+        collId: "users",
+        docId: userDt?.email,
+        data: updatedData,
       });
 
       // 🔹 3. State update & cleanup
       localStorage.setItem("userDt", JSON.stringify(updatedData));
       setUserDt(updatedData);
-      setPUrl({});
       setName("");
-      setShowPrOpBar(false);
-      toast.success("Profile Updated Successfully!");
+      closeProfile();
     } catch (error) {
-      console.error("Update error:", error);
-      toast.error("Update failed, please try again.");
+      setAuthMsg({
+        status: true,
+        text: getErrorMessage(error),
+        type: "err",
+      });
     } finally {
-      setUpdateLod(false);
+      setLoding(false);
     }
   };
 
@@ -183,7 +130,7 @@ export default function Header({ className = "" }) {
       {" "}
       {/* Main Header */}
       <header
-        className={`w-full flex justify-center items-center select-none *:select-none text-textPrimary bg-surface/55 backdrop-blur-2xl ${className}`}
+        className={`relative z-[100] w-full flex justify-center items-center select-none *:select-none text-textPrimary bg-surface ${className}`}
       >
         <section className="w-full flex items-center justify-between px-5 pt-4">
           <article>
@@ -200,17 +147,30 @@ export default function Header({ className = "" }) {
             </Link>
           </article>
           <article>
-            <h1 className="text-[1.1rem] md:text-[1.15rem] font-bold tracking-tighter text-white">
+            <h1 className="text-[1.1rem] md:text-[1.15rem] font-bold tracking-tighter text-textPrimary">
               DevEMS
             </h1>
           </article>
           <article
             className="cursor-pointer"
-            onClick={() => setShowOpBar(!showOpBar)}
+            onClick={(e) => {
+              e.stopPropagation();
+              const rect = e.currentTarget.getBoundingClientRect();
+              setQuickMenuDetails((p) => ({
+                show: !p.show,
+                x: rect.top + rect.height + 10,
+                y: Math.max(8, rect.right - 235),
+              }));
+            }}
           >
             <img
-              src={userDt?.photoURL || "https://cdn.auth0.com/avatars/E.png"}
-              alt="user"
+              src={
+                userDt?.photoURL ||
+                `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(
+                  userDt?.name
+                )}`
+              }
+              alt={userDt?.name || "user"}
               className="size-[25px] md:size-[30px]  rounded-full border border-accent object-cover hover:scale-105 transition-transform"
             />
           </article>
@@ -218,30 +178,28 @@ export default function Header({ className = "" }) {
       </header>
       {/* User Quick Menu Dropdown */}
       <AnimatePresence>
-        {showOpBar && (
+        {quickMenuDetails.show && (
           <QuickMenu
             userDt={userDt}
-            openProfile={openProfile}
-            closeProfile={closeProfile}
-            setShowOpBar={setShowOpBar}
-            handleLogout={handleLogout}
+            quickMenuDetails={quickMenuDetails}
+            setQuickMenuDetails={setQuickMenuDetails}
+            logOut={logOut}
           />
         )}
       </AnimatePresence>
       {/* Profile Modal Overlay */}
       <AnimatePresence>
-        {showPrOpBar && (
+        {searchParams.get("profile_setting") === "true" && (
           <ProfileModalOverlay
-            closeProfile={closeProfile}
             name={name}
             setName={setName}
             username={username}
-            onUpdateUserName={onUpdateUserName}
-            usernameIsDoText={usernameIsDoText}
-            pUrl={pUrl}
-            setPUrl={setPUrl}
+            setUsername={setUsername}
+            authMsg={authMsg}
+            imgData={imgData}
+            setImgData={setImgData}
             photoURL={
-              pUrl?.url ||
+              imgData?.url ||
               userDt?.photoURL ||
               `https://cdn.auth0.com/avatars/${
                 userDt?.name.split("")[0] || "E"
@@ -249,7 +207,8 @@ export default function Header({ className = "" }) {
             }
             userDt={userDt}
             handlePrUpdate={handlePrUpdate}
-            updateLod={updateLod}
+            loding={loding}
+            closeProfile={closeProfile}
           />
         )}
       </AnimatePresence>

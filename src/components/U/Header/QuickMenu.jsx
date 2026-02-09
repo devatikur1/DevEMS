@@ -1,15 +1,13 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { LogOut, User, Settings } from "lucide-react"; // ShieldCheck role-er jonno bhalo lage
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import setParamsOnUrl from "../../../function/setParamsOnUrl";
 
-export default function QuickMenu({
-  userDt,
-  setShowOpBar,
-  openProfile,
-  handleLogout,
-}) {
+export default function QuickMenu({ userDt, quickMenuDetails, setQuickMenuDetails, logOut }) {
   const navigate = useNavigate();
+  // 🔹 router-dom
+  const [searchParams, setSearchParams] = useSearchParams();
   return (
     <>
       <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
@@ -18,26 +16,49 @@ export default function QuickMenu({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={() => setShowOpBar(false)}
+          onClick={() =>
+            setQuickMenuDetails((p) => ({
+              ...p,
+              show: false,
+            }))
+          }
           className="absolute inset-0 bg-transparent"
         />
 
         {/* Modal-Content */}
         <motion.div
-          initial={{ opacity: 0, y: -10, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -10, scale: 0.95 }}
-          className="absolute z-[110] top-[60px] md:right-5 md:mx-0 min-w-[95%] md:min-w-[240px] bg-surface backdrop-blur-2xl border border-border rounded-2xl shadow-2xl p-2 overflow-hidden"
+          initial={{
+            opacity: 0,
+            scale: 0.95,
+            height: 0,
+            top: quickMenuDetails.x,
+            left: quickMenuDetails.y,
+          }}
+          animate={{
+            opacity: 1,
+            scale: 1,
+            height: "auto",
+            top: quickMenuDetails.x,
+            left: quickMenuDetails.y,
+          }}
+          exit={{
+            opacity: 0,
+            scale: 0.95,
+            height: 0,
+            top: quickMenuDetails.x,
+            left: quickMenuDetails.y,
+          }}
+          className="absolute z-[110] min-w-[240px] bg-surface border border-border rounded-2xl shadow-2xl p-2 overflow-hidden"
         >
           {/* Header Section with Notun Data */}
-          <div className="px-4 py-3 border-b border-border/5 mb-2 bg-boxHover/70 rounded-xl">
+          <div className="px-4 py-3 border-b border-border/5 mb-2 bg-surfaceSoft hover:bg-boxHover transition-all duration-300 rounded-xl">
             <div className="flex items-center justify-between mb-1">
-              <p className="text-white text-[0.9rem] font-bold truncate leading-none">
+              <p className="text-textPrimary text-[0.9rem] font-bold truncate leading-none">
                 {userDt?.name || "User"}
               </p>
               {/* Role Badge */}
               <span className="text-[10px] text-subtext px-2 py-0.5 rounded-full border border-accent uppercase tracking-tighter">
-                {userDt?.role || "User"}
+                {userDt?.role || "Null"}
               </span>
             </div>
 
@@ -47,7 +68,7 @@ export default function QuickMenu({
             </p>
 
             {/* Email Display */}
-            <p className="text-zinc-500 text-[0.7rem] truncate">
+            <p className="text-textMuted text-[0.7rem] truncate">
               {userDt?.email}
             </p>
           </div>
@@ -58,35 +79,44 @@ export default function QuickMenu({
               onClick={() => {
                 navigate(`/${userDt?.username}`);
               }}
-              className="w-full text-left text-[0.8rem] md:text-[0.85rem]text-subtext/85 hover:text-white hover:bg-hover transition-all flex items-center gap-3 px-3 py-2.5 rounded-xl group"
+              className="w-full text-left text-[0.8rem] md:text-[0.83rem] text-textPrimary bg-transparent hover:bg-boxHover transition-all flex items-center gap-3 px-3 py-2.5 rounded-xl group"
             >
               <User
                 size={16}
-                className="text-zinc-500 group-hover:text-accent transition-colors"
+                className="text-textMuted group-hover:scale-110 transition-all duration-300"
               />
               You
             </button>
             <button
               onClick={() => {
-                openProfile();
-                setShowOpBar(false);
+                setQuickMenuDetails((p) => ({
+                  ...p,
+                  show: false,
+                }));
+                setParamsOnUrl({
+                  get: searchParams,
+                  set: setSearchParams,
+                  key: "profile_setting",
+                  value: "true",
+                });
               }}
-              className="w-full text-left text-[0.8rem] md:text-[0.85rem]text-subtext/85 hover:text-white hover:bg-hover/50 transition-all flex items-center gap-3 px-3 py-2.5 rounded-xl group"
+              className="w-full text-left text-[0.8rem] md:text-[0.82rem] text-textPrimary bg-transparent hover:bg-boxHover transition-all flex items-center gap-3 px-3 py-2.5 rounded-xl group"
             >
               <Settings
                 size={16}
-                className="text-zinc-500 group-hover:text-accent transition-colors"
+                className="text-textMuted group-hover:rotate-90 transition-all duration-300"
               />
               Profile Settings
             </button>
-            <div className="h-[1px] bg-border/50 my-1 mx-2" /> {/* Divider */}
+            <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-border to-transparent" />{" "}
+            {/* Divider */}
             <button
-              onClick={handleLogout}
-              className="w-full text-left text-[0.8rem] md:text-[0.85rem] text-red-400 hover:text-red-500 hover:bg-red-500/5 transition-all flex items-center gap-3 px-3 py-2.5 rounded-xl group"
+              onClick={async () => await logOut()}
+              className="w-full text-left text-[0.8rem] md:text-[0.82rem] text-error  bg-transparent  hover:bg-error/10 transition-all flex items-center gap-3 px-3 py-2.5 rounded-xl group"
             >
               <LogOut
                 size={16}
-                className="group-hover:translate-x-0.5 transition-transform"
+                className="group-hover:translate-x-0.5 transition-transform duration-300"
               />
               Logout
             </button>

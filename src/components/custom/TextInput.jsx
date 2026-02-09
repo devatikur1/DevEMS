@@ -1,16 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import { findUniqueUsername } from "../../function/findUniqueUsername";
+import React, { useRef, useState } from "react";
+import useFunction from "../../hooks/useFunction";
 
 export default function TextInput({ input, setText, text }) {
   const [usernameStatus, setUsernameStatus] = useState("Taken");
-  const [takenCount, setTakenCount] = useState(0);
+  const { uniUsername } = useFunction();
   const debounceTimerRef = useRef(null);
   const Icon = input.icon;
-
-  useEffect(() => {
-    console.log(takenCount);
-    console.log(debounceTimerRef);
-  }, [takenCount]);
 
   return (
     <div className="space-y-1.5">
@@ -25,12 +20,12 @@ export default function TextInput({ input, setText, text }) {
             className={`text-[11px] px-2 py-0.5 rounded ${
               usernameStatus === "Available "
                 ? "bg-success/10 text-success"
-                : usernameStatus === "Taken"
-                ? "bg-error/10 text-error"
-                : "bg-warning/10 text-warning"
+                : usernameStatus === "checking..."
+                  ? "bg-warning/10 text-warning"
+                  : "bg-error/10 text-error"
             }`}
           >
-            {`Status: ${usernameStatus} ${takenCount}`}
+            {`Status: ${usernameStatus}`}
           </span>
         )}
       </label>
@@ -46,14 +41,15 @@ export default function TextInput({ input, setText, text }) {
           placeholder={input.placeholder}
           onChange={async (e) => {
             if (input.id === "username") {
-              const val = e.target.value
+              const val = `${e.target.value
                 .toLowerCase()
                 .replace(/\s+/g, "")
                 .replace(/@+/g, "")
-                .replace(/[^a-z0-9._]/g, "");
+                .replace(/[^a-z0-9._]/g, "")}`;
               setUsernameStatus("checking...");
-              setText(val);
-              if (!val) {
+              setText(val.trim());
+              if (!val.trim()) {
+                clearTimeout(debounceTimerRef.current);
                 setUsernameStatus("Not Valid");
                 return;
               }
@@ -61,12 +57,11 @@ export default function TextInput({ input, setText, text }) {
                 clearTimeout(debounceTimerRef.current);
               }
               debounceTimerRef.current = setTimeout(async () => {
-                const status = await findUniqueUsername(`@${val}`);
-                setTakenCount((p) => p + 1);
+                const status = await uniUsername({type: "find", baseName: `@${val}` });
                 setUsernameStatus(status ? "Available " : "Taken");
               }, 800);
             } else {
-              setText(e.target.value);
+              setText(e.target.value.trim());
             }
           }}
           className="w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 rounded-xl py-2.5 pl-12 pr-12 text-sm text-textPrimary placeholder:text-textMuted outline-none transition-all"

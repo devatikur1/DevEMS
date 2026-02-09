@@ -69,7 +69,7 @@ export default function SortQuickMenu({
               setShowSortMenuBar(false);
             }
           }}
-          className="absolute z-[110] -bottom-20 sm:bottom-auto sm:top-[185px] sm:right-[370px] sm:mx-0 w-[99.9%] sm:w-[240px] bg-bg/80 backdrop-blur-2xl border border-white/10 rounded-xl sm:rounded-2xl shadow-2xl p-2 overflow-hidden pb-24 sm:pb-0"
+          className="absolute z-[110] -bottom-20 sm:bottom-auto sm:top-[185px] sm:right-[370px] sm:mx-0 w-[99.9%] sm:w-[240px] bg-bg/80 backdrop-blur-2xl border border-surface rounded-xl sm:rounded-2xl shadow-2xl p-2 overflow-hidden pb-24 sm:pb-0"
         >
           <div className="w-full flex sm:hidden justify-center">
             <div className="rounded-full bg-smtext h-1 w-10"></div>
@@ -79,7 +79,7 @@ export default function SortQuickMenu({
             {/* Ascending Direction */}
             <button
               onClick={() => updateDirection("asc")}
-              className="w-full text-left text-[0.8rem] md:text-[0.85rem]text-subtext/85 hover:text-white hover:bg-hover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
+              className="w-full text-left text-[0.8rem] md:text-[0.85rem] text-textPrimary/65 hover:text-textPrimary hover:bg-boxHover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
             >
               <div className="flex items-center gap-3">
                 <ArrowUpAZ
@@ -93,14 +93,14 @@ export default function SortQuickMenu({
               </div>
               <div>
                 {currentDirection === "asc" && (
-                  <Check size={16.5} className="text-subtext" />
+                  <Check size={16.5} className="text-textMuted" />
                 )}
               </div>
             </button>
             {/* Descending Direction */}
             <button
               onClick={() => updateDirection("desc")}
-              className="w-full text-left text-[0.8rem] md:text-[0.85rem]text-subtext/85 hover:text-white hover:bg-hover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
+              className="w-full text-left text-[0.8rem] md:text-[0.85rem] text-textPrimary/65 hover:text-textPrimary hover:bg-boxHover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
             >
               <div className="flex items-center gap-3">
                 <ArrowUpZA
@@ -114,18 +114,18 @@ export default function SortQuickMenu({
               </div>
               <div>
                 {currentDirection === "desc" && (
-                  <Check size={16.5} className="text-subtext" />
+                  <Check size={16.5} className="text-textMuted" />
                 )}
               </div>
             </button>
           </div>
-          <div className="block h-[1px] bg-white/10 my-1 mx-2" />{" "}
+          <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-border to-transparent" />{" "}
           <div className="flex flex-col gap-1 px-1.5 py-2">
-            <h1 className="text-[12px] text-smtext mb-2 ml-1">Sort by</h1>
+            <h1 className="text-[12px] text-textMuted mb-2 ml-1">Sort by</h1>
             {/* Date View */}
             <button
               onClick={() => updateSort("date")}
-              className="w-full text-left text-[0.8rem] md:text-[0.85rem]text-subtext/85 hover:text-white hover:bg-hover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
+              className="w-full text-left text-[0.8rem] md:text-[0.85rem] text-textPrimary/65 hover:text-textPrimary hover:bg-boxHover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
             >
               <div className="flex items-center gap-3">
                 <CalendarFold
@@ -136,14 +136,14 @@ export default function SortQuickMenu({
               </div>
               <div>
                 {currentSort === "date" && (
-                  <Check size={16.5} className="text-subtext" />
+                  <Check size={16.5} className="text-textMuted" />
                 )}
               </div>
             </button>
             {/* Name View */}
             <button
               onClick={() => updateSort("name")}
-              className="w-full text-left text-[0.8rem] md:text-[0.85rem]text-subtext/85 hover:text-white hover:bg-hover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
+              className="w-full text-left text-[0.8rem] md:text-[0.85rem] text-textPrimary/65 hover:text-textPrimary hover:bg-boxHover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
             >
               <div className="flex items-center gap-3">
                 <User
@@ -154,14 +154,14 @@ export default function SortQuickMenu({
               </div>
               <div>
                 {currentSort === "name" && (
-                  <Check size={16.5} className="text-subtext" />
+                  <Check size={16.5} className="text-textMuted" />
                 )}
               </div>
             </button>
             {/* Score View */}
             <button
               onClick={() => updateSort("score")}
-              className="w-full text-left text-[0.8rem] md:text-[0.85rem]text-subtext/85 hover:text-white hover:bg-hover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
+              className="w-full text-left text-[0.8rem] md:text-[0.85rem] text-textPrimary/65 hover:text-textPrimary hover:bg-boxHover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
             >
               <div className="flex items-center gap-3">
                 <Medal
@@ -172,19 +172,19 @@ export default function SortQuickMenu({
               </div>
               <div>
                 {currentSort === "score" && (
-                  <Check size={16.5} className="text-subtext" />
+                  <Check size={16.5} className="text-textMuted" />
                 )}
               </div>
             </button>
           </div>
-          <div className="block md:hidden h-[1px] bg-white/10 my-1 mx-2" />{" "}
+          <div className="flex md:hidden w-full h-[1px] bg-gradient-to-r from-transparent via-border to-transparent" />{" "}
           <div className="flex md:hidden flex-col gap-1 px-1.5 py-2">
             {/* View Header */}
-            <h1 className="text-[12px] text-smtext mb-2 ml-1">View</h1>
+            <h1 className="text-[12px] text-textMuted mb-2 ml-1">View</h1>
             {/* Grid View */}
             <button
               onClick={() => updateView("grid")}
-              className="w-full text-left text-[0.8rem] md:text-[0.85rem]text-subtext/85 hover:text-white hover:bg-hover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
+              className="w-full text-left text-[0.8rem] md:text-[0.85rem] text-textPrimary/65 hover:text-textPrimary hover:bg-boxHover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
             >
               <div className="flex items-center gap-3">
                 <LayoutGrid
@@ -195,14 +195,14 @@ export default function SortQuickMenu({
               </div>
               <div>
                 {currentView === "grid" && (
-                  <Check size={16.5} className="text-subtext" />
+                  <Check size={16.5} className="text-textMuted" />
                 )}
               </div>
             </button>
             {/* List View */}
             <button
               onClick={() => updateView("list")}
-              className="w-full text-left text-[0.8rem] md:text-[0.85rem]text-subtext/85 hover:text-white hover:bg-hover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
+              className="w-full text-left text-[0.8rem] md:text-[0.85rem] text-textPrimary/65 hover:text-textPrimary hover:bg-boxHover transition-all flex items-center justify-between px-3 py-2.5 rounded-[6px] group"
             >
               <div className="flex items-center gap-3">
                 <LayoutList
@@ -213,7 +213,7 @@ export default function SortQuickMenu({
               </div>
               <div>
                 {currentView === "list" && (
-                  <Check size={16.5} className="text-subtext" />
+                  <Check size={16.5} className="text-textMuted" />
                 )}
               </div>
             </button>
