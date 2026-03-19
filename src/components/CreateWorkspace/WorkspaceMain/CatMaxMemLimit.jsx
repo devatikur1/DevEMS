@@ -38,7 +38,7 @@ export default function CatMaxMemLimit({ cat, totalMem }) {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mb-6">
       {/* 🔹 Category Section */}
       <div className="flex flex-col gap-2">
-        <label className="text-[13px] font-medium text-text/80 ml-1">
+        <label className="text-[13px] font-medium text-textMuted mx-1 flex justify-between items-center">
           Workspace Category
         </label>
         <div className="relative flex items-center group">

@@ -66,7 +66,7 @@ export default function OptionHeader({ navItems, isScrolled }) {
                 {isActive && (
                   <motion.div
                     layoutId="activeBar"
-                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-white z-30"
+                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-bgSoft z-30"
                     transition={{ type: "spring", bounce: 0, duration: 0.4 }}
                   />
                 )}

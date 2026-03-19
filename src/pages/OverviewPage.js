@@ -1,3 +1,5 @@
+/* eslint-disable no-throw-literal */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {
   useCallback,
   useContext,
@@ -10,51 +12,105 @@ import Toolbar from "../components/Overview/Toolbar";
 import DynamicContent from "../components/Overview/DynamicContent";
 import { AppContext, db } from "../context/AppContext";
 import { useScroll } from "framer-motion";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getCountFromServer,
-  getDocs,
-  limit,
-  orderBy,
-  query,
-  startAfter,
-} from "firebase/firestore";
+import { deleteDoc, doc, orderBy, where } from "firebase/firestore";
 import toast from "react-hot-toast";
+import useFunction from "../hooks/useFunction";
+import useFirestore from "../hooks/useFirestore";
 
 export default function OverviewPage() {
   // 🔹 useContext context
   const { overviewdt, authId, containerRef } = useContext(AppContext);
   const { userDt } = authId;
-  const {
-    workspaces,
-    setWorkspace,
-    noWorkspaces,
-    setNoWorkspace,
-    workspacesGetting,
-    setWorkspacesGetting,
-    lastWorkspaces,
-    setLastWorkspace,
-  } = overviewdt;
+  const { workspaces, setWorkspace } = overviewdt;
 
   // 🔹 Router &&  State
   const [searchParams, setSearchParams] = useSearchParams();
-  const [currentView, setCurrentView] = useState("grid");
-  const [currentSort, setCurrentSort] = useState("date");
-  const [currentDirection, setCurrentDirection] = useState("asc");
   const [workspaceData, setworkspaceData] = useState([]);
   const [showSortMenuBar, setShowSortMenuBar] = useState(false);
+
+  // 🔹 Workplace-State
+  const [currentUid, setCurrentUid] = useState("");
+
+  const [workspacesGetting, setWorkspacesGetting] = useState(false);
+  const [lastWorkspaces, setLastWorkspace] = useState(null);
+  const [totalWorkplace, setTotalWorkplace] = useState(0);
+  const [importedWorkplace, setImportedWorkplace] = useState(0);
 
   // 🔹 Ref
   const scrollTriggeredRef = useRef(false);
 
-  // -----------------------------
-  // ✅ Chage Tilte base on Load
-  // ----------------------------
+  // 🔹 Custom Hook
+  const { paramsUrl } = useFunction();
+
+  const { getData, getCount } = useFirestore();
+
   useEffect(() => {
     document.title = "DevEMS - Overview";
-  }, []);
+    let refarene = searchParams.get("ref") || userDt?.username;
+    console.log(refarene);
+
+    // 🔹 Get Workspaces Data
+    if (refarene) {
+      setWorkspacesGetting(true);
+      setWorkspace([]);
+      (async () => {
+        try {
+          // 1. Get User Uid
+          let uid;
+          if (refarene === userDt?.username) {
+            uid = userDt?.uid;
+          } else {
+            const getDataa = await getData({
+              collId: "username",
+              docId: refarene,
+            });
+            if (getDataa.status && getDataa.data === null)
+              throw { code: "No Workspace" };
+            if (!getDataa.status) throw { code: "No Workspace" };
+            uid = getDataa.data?.uid;
+          }
+
+          setCurrentUid(uid);
+          console.log(uid);
+
+          // 2. Get Collection er Count
+          const { status, count, error } = await getCount({
+            collId: "workspace",
+            whereQuery: [where("leadUid", "==", uid)],
+          });
+          if (!status) throw { code: error };
+          setTotalWorkplace(count);
+
+          // 3. Then Check count < 0 tahole Get Data
+          if (count > 0) {
+            const { status, data, lastOne, error } = getData({
+              collId: "workspace",
+              isQuery: true,
+              whereQuery: [where("leadUid", "==", uid)],
+              limitt: 10,
+            });
+            console.log(data);
+            
+            if (status) {
+              setImportedWorkplace(data.length);
+              setWorkspace(data);
+              if (count > data.length) {
+                setLastWorkspace(lastOne);
+              } else {
+                setLastWorkspace(null);
+              }
+            } else throw { code: error };
+          } else throw { code: "No Workspace" };
+        } catch (error) {
+          console.log(error);
+          setWorkspace([]);
+          setLastWorkspace(null);
+        } finally {
+          setWorkspacesGetting(false);
+        }
+      })();
+    }
+  }, [userDt?.uid]);
 
   // -------------------------
   // ✅ Toolbar Handlers
@@ -62,38 +118,55 @@ export default function OverviewPage() {
 
   /* 🔹 View Change Function */
   const updateView = (newView) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("view", newView);
-    setSearchParams(params);
+    paramsUrl({
+      get: searchParams,
+      set: setSearchParams,
+      key: "view",
+      value: newView,
+    });
     setShowSortMenuBar(false);
   };
 
   /* 🔹 Sort Change Function */
   const updateSort = (newSort) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("sort", newSort);
-    setSearchParams(params);
+    paramsUrl({
+      get: searchParams,
+      set: setSearchParams,
+      key: "sort",
+      value: newSort,
+    });
     setShowSortMenuBar(false);
   };
 
   /* 🔹 Direction Change Function */
   const updateDirection = (newDri) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("direction", newDri);
-    setSearchParams(params);
+    paramsUrl({
+      get: searchParams,
+      set: setSearchParams,
+      key: "direction",
+      value: newDri,
+    });
     setShowSortMenuBar(false);
   };
 
   /* 🔹 Direction Change Function */
   const handleSearchChange = (e) => {
     const value = e.target.value;
-    const params = new URLSearchParams(searchParams);
     if (value !== "") {
-      params.set("q", value);
+      paramsUrl({
+        get: searchParams,
+        set: setSearchParams,
+        key: "q",
+        value: value,
+      });
     } else {
-      params.delete("q");
+      paramsUrl({
+        type: "del",
+        get: searchParams,
+        set: setSearchParams,
+        key: "q",
+      });
     }
-    setSearchParams(params);
   };
 
   // ----------------------------------------------------
@@ -101,24 +174,19 @@ export default function OverviewPage() {
   // ----------------------------------------------------
   useEffect(() => {
     // 1. Sync States from URL
-    const view = searchParams.get("view") === "list" ? "list" : "grid";
     const sort =
       searchParams.get("sort") === "name"
         ? "name"
         : searchParams.get("sort") === "score"
-        ? "score"
-        : "date";
+          ? "score"
+          : "date";
     const direction = searchParams.get("direction") === "desc" ? "desc" : "asc";
     const queryTerm = searchParams.get("q") || "";
-
-    setCurrentView(view);
-    setCurrentSort(sort);
-    setCurrentDirection(direction);
 
     let sortedData = [...workspaces];
 
     sortedData = workspaces.filter((item) =>
-      item.name.toLowerCase().includes(queryTerm.toLowerCase())
+      item.name.toLowerCase().includes(queryTerm.toLowerCase()),
     );
 
     // 2. Sorting Logic
@@ -126,7 +194,7 @@ export default function OverviewPage() {
       sortedData.sort((a, b) =>
         direction === "asc"
           ? a.name.localeCompare(b.name)
-          : b.name.localeCompare(a.name)
+          : b.name.localeCompare(a.name),
       );
     } else if (sort === "score") {
       sortedData.sort((a, b) => {
@@ -136,12 +204,11 @@ export default function OverviewPage() {
       });
     } else {
       sortedData.sort((a, b) =>
-        direction === "asc" ? a.serialid - b.serialid : b.serialid - a.serialid
+        direction === "asc" ? a.serialid - b.serialid : b.serialid - a.serialid,
       );
     }
     setworkspaceData(sortedData);
-    setNoWorkspace(sortedData.length === 0);
-  }, [searchParams, setNoWorkspace, workspaces]);
+  }, [searchParams, workspaces]);
 
   // -------------------------
   // ✅ Delete Worksplace Fn
@@ -151,7 +218,6 @@ export default function OverviewPage() {
     try {
       toast.promise(
         async () => {
-          await deleteDoc(doc(db, `${userDt?.username}-workspace`, id));
           await deleteDoc(doc(db, "workspace", id));
           setWorkspace((prev) => prev.filter((wp) => wp.id !== id));
         },
@@ -159,7 +225,7 @@ export default function OverviewPage() {
           loading: "Worksplace Deleteing...",
           success: <span>Worksplace Successfully!</span>,
           error: <span>Could not Deleted Worksplace .</span>,
-        }
+        },
       );
     } catch (error) {
       toast.error(error);
@@ -182,34 +248,23 @@ export default function OverviewPage() {
         setWorkspacesGetting(true);
 
         try {
-          const collectionRef = collection(db, `${userDt?.username}-workspace`);
-          // 1. Get Collection er Count
-          const countsnap = await getCountFromServer(collectionRef);
-          const count = countsnap.data().count;
-
-          // 3. Then Check count < 0 tahole Get Data
-          if (count - workspaceData?.length > 0) {
-            const Limit = 11;
-            const q = query(
-              collectionRef,
-              orderBy("serialid", "asc"),
-              limit(Limit),
-              startAfter(lastWorkspaces)
-            );
-            const querySnapshot = await getDocs(q);
-            const wdata = querySnapshot.docs.map((doc) => doc.data());
-            if (wdata.length === Limit) {
-              setLastWorkspace(
-                querySnapshot.docs[querySnapshot.docs.length - 1]
-              );
+          const { status, data, lastOne, error } = getData({
+            collId: "workspace",
+            isQuery: true,
+            whereQuery: [where("leadUid", "==", currentUid)],
+            limitt: 11,
+            startAfterr: lastWorkspaces,
+          });
+          if (status) {
+            let newDataCount = importedWorkplace + data.length;
+            setImportedWorkplace(newDataCount);
+            setWorkspace(data);
+            if (totalWorkplace > newDataCount) {
+              setLastWorkspace(lastOne);
             } else {
               setLastWorkspace(null);
             }
-            setWorkspace((p) => [...p, ...wdata]);
-          } else {
-            setWorkspace([]);
-            setLastWorkspace(null);
-          }
+          } else throw { code: error };
         } catch (error) {
           console.log(error);
           setWorkspace([]);
@@ -223,13 +278,12 @@ export default function OverviewPage() {
       }
     },
     [
+      importedWorkplace,
       lastWorkspaces,
-      setLastWorkspace,
       setWorkspace,
-      setWorkspacesGetting,
-      userDt?.username,
-      workspaceData.length,
-    ]
+      totalWorkplace,
+      userDt?.uid,
+    ],
   );
 
   useEffect(() => {
@@ -246,24 +300,18 @@ export default function OverviewPage() {
       <figure className="w-[95%] xl:w-[90%] 2xl:w-[71%] pt-10">
         {/* Toolbar Section */}
         <Toolbar
-          currentView={currentView}
-          currentSort={currentSort}
-          currentDirection={currentDirection}
           updateView={updateView}
           updateSort={updateSort}
           updateDirection={updateDirection}
+          handleSearchChange={handleSearchChange}
           showSortMenuBar={showSortMenuBar}
           setShowSortMenuBar={setShowSortMenuBar}
-          searchParams={searchParams}
-          handleSearchChange={handleSearchChange}
         />
 
         {/* Dynamic Content Area */}
         <DynamicContent
-          currentView={currentView}
           workspacesGetting={workspacesGetting}
           workspaceData={workspaceData}
-          noWorkspaces={noWorkspaces}
           role={userDt?.role}
           searchParams={searchParams}
           deleteWorksplace={deleteWorksplace}

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import Header from "../components/U/Header";
+import Header from "../components/custom/Header";
 import WorkspaceMain from "../components/CreateWorkspace/WorkspaceMain";
 import { AppContext, db } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
@@ -10,12 +10,13 @@ import {
   getCountFromServer,
   setDoc,
 } from "firebase/firestore";
-import uploadImageFn from "../function/UploadImageFn";
+import useFunction from "../hooks/useFunction";
+import useFirestore from "../hooks/useFirestore";
 
 // ----------------------------
 // ✅ Generate Unique Id
 // ----------------------------
-function generateUniqueId() {
+function genUniId() {
   if (crypto?.randomUUID) {
     return crypto.randomUUID();
   }
@@ -37,12 +38,21 @@ export default function CreateWorkspacePage() {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [imgData, setImgData] = useState({});
+  const [imgData, setImgData] = useState({ file: null, url: null });
   const [activeTags, setActiveTags] = useState([]);
   const [category, setCategory] = useState("");
   const [totalMembers, setTotalMembers] = useState(0);
-  const [isDisabled, setIsDisabled] = useState(false);
+
   const [isCreteing, setIsCreteing] = useState(false);
+  const [error, setError] = useState({
+    status: false,
+    text: "",
+    type: "suc",
+  });
+
+  // 🔹 Custom Hook
+  const { uploadImageFn, getErrMsg, genWSID } = useFunction();
+  const { setData, getCount } = useFirestore();
 
   // -----------------------------
   // ✅ Chage Tilte base on Load
@@ -51,34 +61,64 @@ export default function CreateWorkspacePage() {
     document.title = "DevEMS - Create Workspace";
   }, []);
 
+  useEffect(() => {
+    console.log({
+      id: "",
+      name: title,
+      favicon: imgData,
+      category: category,
+      description: description,
+      lastUpdate: new Date().toISOString(),
+      status: "Active",
+      members: 1,
+      maxMembers: totalMembers > 10 ? Number(totalMembers) : "Unlimited",
+      lead: userDt?.name || "",
+      leadEmail: userDt?.email || "",
+      tags: activeTags,
+      performance: "0%",
+      projectsCount: 0,
+      activeTasks: 0,
+      "WS-ID": "",
+    });
+  }, [
+    activeTags,
+    category,
+    description,
+    imgData,
+    title,
+    totalMembers,
+    userDt?.email,
+    userDt?.name,
+  ]);
+
   // ----------------------------
   // ✅ When Craete Workspace
   // ----------------------------
-
   async function CraeteWorkspacefn(e) {
     e.preventDefault();
     setIsCreteing(true);
     try {
-      let finalPhotoURL =
-        "https://cdn-icons-png.flaticon.com/512/919/919851.png";
+      let finalPhotoURL;
+
       // 🔹 1. ImgBB Upload
-      if (imgData.file) {
-        const res = await uploadImageFn(imgData.file);
-        if (res.isError === false) {
-          finalPhotoURL = res.url;
+      if (imgData.file !== null) {
+        const { isError, url, msg } = await uploadImageFn(imgData.file);
+        if (!isError) {
+          finalPhotoURL = url;
         } else {
-          toast.error(res.msg || "Image Upload Error");
-          return;
+          console.log(getErrMsg(msg));
+          finalPhotoURL = `https://cdn.auth0.com/avatars/${title.slice(0, 1) || 1}.png`;
         }
       }
 
       // Optional Get Count
-      const snap = await getCountFromServer(collection(db, "workspace"));
-      const serialsnapCount = snap.data().count;
+      const { status, count } = await getCount({ collId: "workspace" });
+      if (!status) throw { code: "error" };
+      const serialsnapCount = count;
 
       // 🔹 2. Firestore Database Update
       const newTeam = {
-        id: generateUniqueId(),
+        id: await genWSID(),
         name: title,
         favicon: finalPhotoURL,
         category: category,
@@ -88,59 +128,50 @@ export default function CreateWorkspacePage() {
         members: 1,
         maxMembers: totalMembers > 10 ? Number(totalMembers) : "Unlimited",
         lead: userDt?.name || "",
-        leadUserName: userDt?.username || "",
+        leadEmail: userDt?.email || "",
+        leadUid: userDt?.uid || "",
         tags: activeTags,
         performance: "0%",
         projectsCount: 0,
         activeTasks: 0,
-        serialid: serialsnapCount,
+        "WS-ID": serialsnapCount,
       };
-      toast.promise(
-        async () => {
-          await setDoc(doc(db, "workspace", newTeam.id), newTeam, {
-            merge: true,
-          });
-          await setDoc(
-            doc(db, `${userDt?.username}-workspace`, newTeam.id),
-            newTeam,
-            {
-              merge: true,
-            }
-          );
-          setWorkspace((p) => [newTeam, ...p]);
-        },
-        {
-          loading: "Worksplace Createing...",
-          success: <span>Worksplace Created!</span>,
-          error: <span>Could not Created Worksplace.</span>,
-        }
-      );
-      await navigate("/u");
+
+      const setDataa = await setData({
+        collId: "workspace",
+        docId: newTeam?.id,
+        data: newTeam,
+      });
+      if (!setDataa.status) throw { code: error };
+      setWorkspace((p) => [newTeam, ...p]);
+      setTimeout(async () => {
+        navigate("/u");
+      }, 2000);
     } catch (error) {
-      console.error("Update error:", error);
-      toast.error("Update failed, please try again.");
+      setError({
+        status: true,
+        text: getErrMsg(error),
+        type: "err",
+      });
     } finally {
-      setIsCreteing(false);
+      setTimeout(async () => {
+        setIsCreteing(false);
+      }, 1998);
     }
   }
-
-  useEffect(() => {
-    let checkDisabled =
-      title.trim() === "" ||
-      description.trim() === "" ||
-      activeTags.length === 0 ||
-      category === "" ||
-      !imgData.url;
-
-    setIsDisabled(checkDisabled);
-  }, [title, description, activeTags, imgData, category]);
 
   // ---------------------
   // ✅ Render
   // ---------------------
   return (
     <aside className="relative w-full h-screen overflow-y-auto">
-      <Header className={"border-b border-border pb-3.5 sticky top-0 z-50"} />
+      <Header
+        className={"border-b border-border pb-3.5 sticky top-0 z-50"}
+        link={"/u"}
+        isLogo={false}
+        isLogoName={false}
+        text={"New Project"}
+      />
       <WorkspaceMain
         img={{ imgData, setImgData }}
         tite={{ title, setTitle }}
@@ -149,7 +180,6 @@ export default function CreateWorkspacePage() {
         cat={{ category, setCategory }}
         totalMem={{ totalMembers, setTotalMembers }}
         CraeteWorkspacefn={CraeteWorkspacefn}
-        isDisabled={isDisabled}
         isCreteing={isCreteing}
       />
     </aside>

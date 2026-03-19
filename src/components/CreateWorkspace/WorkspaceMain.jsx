@@ -1,57 +1,50 @@
-import React from "react";
-import UploadImage from "./WorkspaceMain/UploadImage";
-import WorkspaceName from "./WorkspaceMain/WorkspaceName";
+import React, { useState } from "react";
+import { Loader2, ArrowRight, ArrowLeft, Plus } from "lucide-react";
+import WorkspaceName from "./WorkspaceMain/form/WorkspaceName";
 import CatMaxMemLimit from "./WorkspaceMain/CatMaxMemLimit";
 import WorkspaceDes from "./WorkspaceMain/WorkspaceDes";
 import WorkspaceTechStack from "./WorkspaceMain/WorkspaceTechStack";
-import { Loader2 } from "lucide-react";
+import ProgressBar from "./WorkspaceMain/ProgressBar";
+import Heading from "./WorkspaceMain/Heading";
+import FormContainer from "./WorkspaceMain/FormContainer";
 
-export default function CreateMain(props) {
+export default function WorkspaceMain(props) {
+  const [currentStep, setCurrentStep] = useState(1);
+  const totalSteps = 3;
+
+  const isStepValid = () => {
+    switch (currentStep) {
+      case 1:
+        return (props.tite?.title || "").trim().length > 0;
+      case 2:
+        return (
+          (props.cat?.category || "") !== "" &&
+          (props.totalMem?.totalMembers || 0) > 0
+        );
+      case 3:
+        return (props.des?.description || "").trim().length >= 10;
+      default:
+        return false;
+    }
+  };
+
   return (
-    <main className="w-full flex justify-center pb-20">
-      <section className="w-[98%] xl:w-[90%] 2xl:w-[65%] mt-10 rounded-xl px-4 md:px-8 py-10">
-        <h1 className="text-2xl md:text-3xl font-bold text-center text-white mb-2">
-          Create New Workspace
-        </h1>
-        <p className="text-smtext text-center text-[12px] md:text-sm mb-10">
-          Please provide the details below to set up your team profile.
-        </p>
+    <main className="bg-bg flex flex-col items-center justify-start pt-12 pb-20 px-4">
+      {/* 🔹 Progress Bar Section */}
+      <ProgressBar totalSteps={totalSteps} currentStep={currentStep} />
 
-        <form
-          onSubmit={props.CraeteWorkspacefn}
-          className="flex flex-col items-center max-w-4xl mx-auto"
-        >
-          {/* 1. CHANGE IMAGE */}
-          <UploadImage img={props.img} />
+      {/* 🔹 Heading Section */}
+      <Heading totalSteps={totalSteps} currentStep={currentStep} />
 
-          {/* 2. Workspace Name */}
-          <WorkspaceName tite={props.tite} />
-
-          {/* 3. Category && Maximum Member Limit */}
-          <CatMaxMemLimit cat={props.cat} totalMem={props.totalMem} />
-
-          {/* 4. Workspace Description*/}
-          <WorkspaceDes des={props.des} />
-
-          {/* 5. Workspace Tech Stack */}
-          <WorkspaceTechStack actTags={props.actTags} />
-
-          {/* 6. Create Workspace Workspace*/}
-          <button
-            disabled={props.isDisabled || props.isCreteing}
-            type="submit"
-            className="w-full bg-accent hover:bg-accent/90 text-text font-bold py-3 rounded-lg flex items-center justify-center gap-2 disabled:opacity-70 disabled:pointer-events-none transition-all shadow-lg shadow-accent/20 tracking-widest"
-          >
-            {props.isCreteing ? (
-              <>
-                <Loader2 size={19} className="animate-spin text-text" />
-                <span>Creating...</span>
-              </>
-            ) : (
-              "Create Workspace"
-            )}
-          </button>
-        </form>
+      {/* 🔹 Form Container (Clean Surface) */}
+      <section className="w-full max-w-2xl">
+        <FormContainer
+          totalSteps={totalSteps}
+          setCurrentStep={setCurrentStep}
+          currentStep={currentStep}
+          props={props}
+          isStepValid={isStepValid}
+        />
       </section>
     </main>
   );

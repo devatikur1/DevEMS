@@ -5,7 +5,7 @@ module.exports = {
     extend: {
       colors: {
         // ===== Base Backgrounds =====
-        bg: "var(--color-bg)",
+        bg: "#000000",
         bgSoft: "#f9f9f9",
         surface: "#0a0a0a",
         surfaceSoft: "#111111",
@@ -37,12 +37,12 @@ module.exports = {
         infoSoft: "#0B2A3A",
 
         // ===== Extra / Legacy =====
-        text: "var(--color-text)",
-        subtext: "var(--color-subtext)",
-        smtext: "var(--color-smtext)",
+        text: "#f9f9f9",
+        subtext: "#7e7e7e",
+        smtext: "#525252",
         blue: "#0082fb",
         purple: "#9333ea",
-        shadow: "var(--color-shadow)",
+        shadow: "#000000",
       },
     },
   },

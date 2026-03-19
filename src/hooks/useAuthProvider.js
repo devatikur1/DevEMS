@@ -5,7 +5,6 @@ import {
   FacebookAuthProvider,
   GithubAuthProvider,
   GoogleAuthProvider,
-  linkWithPopup,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -15,12 +14,13 @@ import { useCallback, useContext, useState } from "react";
 import { AppContext, auth } from "../context/AppContext";
 import useFirestore from "./useFirestore";
 import useFunction from "./useFunction";
+import { where } from "firebase/firestore";
 
 function useAuthProvider(setAuthMsg) {
   // 🔹 Context & Hooks
   const { authId } = useContext(AppContext);
   const { setIsLogged, setUserDt } = authId;
-  const { setData, getData } = useFirestore();
+  const { setData, getData, getCount } = useFirestore();
   const { getErrMsg, uniUsername, genEmailbaseUid } = useFunction();
 
   // 🔹 State & Ref
@@ -116,7 +116,7 @@ function useAuthProvider(setAuthMsg) {
           await setData({
             collId: "username",
             docId: finalUserData?.username,
-            data: { email: user.email },
+            data: { email: user.email, uid: finalUserData?.uid },
           });
         }
 
@@ -148,17 +148,26 @@ function useAuthProvider(setAuthMsg) {
       setAuthMsg({ status: false, text: "", type: "suc" });
       try {
         if (!email) throw { code: "custom/email-not-type" };
-        await sendPasswordResetEmail(auth, email);
-        setAuthMsg({
-          status: true,
-          type: "warn",
-          text: "We’ve sent a password reset link to your email. Check your inbox — and don’t forget to look in Spam or Promotions.",
+        const { status, count } = await getCount({
+          collId: "users",
+          whereQuery: [
+            where("disable", "==", false),
+            where("email", "==", email),
+          ],
         });
+        if (status && count === 1) {
+          await sendPasswordResetEmail(auth, email);
+          setAuthMsg({
+            status: true,
+            type: "warn",
+            text: "We’ve sent a password reset link to your email. Check your inbox — and don’t forget to look in Spam or Promotions.",
+          });
+        } else  throw { code: "custom/user-not-found" };
       } catch (error) {
         setAuthMsg({ status: true, text: getErrMsg(error), type: "err" });
       }
     },
-    [getErrMsg, setAuthMsg],
+    [getCount, getErrMsg, setAuthMsg],
   );
 
   // 🔹 Log Out Function

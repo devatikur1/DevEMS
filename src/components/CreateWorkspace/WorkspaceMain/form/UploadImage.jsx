@@ -1,47 +1,37 @@
-import { Info, Pen, UploadCloud, AlertCircle } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { Pen, UploadCloud, AlertCircle } from "lucide-react";
+import React, { useState } from "react";
 
-
-export default function UploadImg({ img, setImg, url }) {
+export default function UploadImage({ img }) {
+  const { imgData, setImgData } = img;
   const [error, setError] = useState(null);
 
+  // ---------------------
+  // ✅ Image Change Fn
+  // ---------------------
   function onChangeImage(e) {
-    const file = e.target.files?.[0];
+    const file = e?.target?.files[0];
+
     if (!file) return;
 
-    if (!file.type.startsWith("image/")) {
-      return;
-    }
-
-    if (file.size > 32 * 1024 * 1024) {
+    if (file.size < 32 * 1024 * 1024) {
+      setError(null);
+      setImgData({
+        file: file,
+        url: URL.createObjectURL(file),
+      });
+    } else {
       setError("Img Must be lower than 32 MB");
-      setImg({ file: null, url: null });
-      return;
+      setImgData({ file: null, url: null });
     }
-
-    setError(null);
-    const previewUrl = URL.createObjectURL(file);
-
-    setImg({
-      file,
-      url: previewUrl,
-    });
   }
-
-  // Logic: Memory leak bondho korar jonno object URL revoke kora
-  useEffect(() => {
-    return () => {
-      if (img?.url) URL.revokeObjectURL(img.url);
-    };
-  }, [img?.url]);
 
   return (
     <section className="flex flex-col items-center gap-6">
       <div className="relative z-10 group">
-        {img?.url ? (
+        {imgData?.url ? (
           <div className="relative">
             <img
-              src={img?.url}
+              src={imgData?.url}
               alt="Avatar"
               className="w-32 h-32 object-cover rounded-full border-2 border-accent/30 p-1 group-hover:border-accent group-hover:scale-[1.02] transition-all duration-500 shadow-lg shadow-accent/10"
             />
@@ -81,7 +71,7 @@ export default function UploadImg({ img, setImg, url }) {
         </div>
       )}
 
-      {!error && !img.url && (
+      {!error && !imgData.url && (
         <p className="text-[10px] text-textMuted font-medium tracking-wide opacity-50">
           Max size: 32MB
         </p>

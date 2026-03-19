@@ -6,6 +6,9 @@ import {
   getDoc,
   query,
   getDocs,
+  getCountFromServer,
+  limit,
+  startAfter,
 } from "firebase/firestore";
 import { db } from "../context/AppContext";
 
@@ -25,7 +28,15 @@ function useFirestore() {
   }
 
   // 🔹 Get Data
-  async function getData({ collId, docId, whereQuery }) {
+  async function getData({
+    collId,
+    docId,
+    isQuery,
+    whereQuery,
+    orderByy,
+    limitt=11,
+    startAfterr,
+  }) {
     try {
       // 🔹 Single document
       if (docId) {
@@ -43,7 +54,15 @@ function useFirestore() {
 
       // 🔹 Collection
       const colRef = collection(db, collId);
-      const q = whereQuery ? query(colRef, ...whereQuery) : colRef;
+      let queryConstraints = [];
+
+      if (isQuery) {
+        if (whereQuery.length) queryConstraints.push(...whereQuery);
+        if (orderByy.length) queryConstraints.push(...orderByy);
+        if (limitt) queryConstraints.push(limit(limitt));
+        if (startAfterr) queryConstraints.push(startAfter(startAfterr));
+      }
+      const q = isQuery ? query(colRef, ...queryConstraints) : colRef;
       const snap = await getDocs(q);
 
       const data = snap.docs.map((doc) => ({
@@ -51,26 +70,32 @@ function useFirestore() {
         ...doc.data(),
       }));
 
-      return { status: true, data, error: null };
+      let lastOne = null;
+
+      if (data.length === limitt) {
+        lastOne = snap.docs[snap.docs.length - 1];
+      }
+
+      return { status: true, data, lastOne, error: null };
     } catch (error) {
       return { status: false, data: null, error };
     }
   }
 
-//   async function getCount(collId) {
-//     if (collId) throw { code: "custom/collection-name-not-found" }
-//     try {
-//       if (collId) {
-//         await setDoc(doc(db, collId, docId), data, { merge: true });
-      
-//       return { status: true, error: null };
-//     } catch (error) {
-//       return { status: false, error };
-//     }
-//   }
-// }
+  // 🔹 Get Collection Length
+  async function getCount({ collId, whereQuery }) {
+    try {
+      if (!collId) throw { code: "custom/collection-name-not-found" };
+      const colRef = collection(db, collId);
+      const q = whereQuery ? query(colRef, ...whereQuery) : colRef;
+      const snapshot = await getCountFromServer(q);
+      return { status: true, count: snapshot.data().count, error: null };
+    } catch (error) {
+      return { status: false, error };
+    }
+  }
 
-  return { setData, getData };
+  return { setData, getData, getCount };
 }
 
 export default useFirestore;

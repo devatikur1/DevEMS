@@ -95,7 +95,7 @@ export default function LoginMethods({ providerSign, IsSignIn, role }) {
               <span className="text-xs font-medium text-textMuted uppercase tracking-wider">
                 Or continue with
               </span>
-              <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
+              <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-textMuted to-transparent" />
             </div>
           )}
         </>

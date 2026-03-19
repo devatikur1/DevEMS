@@ -34,8 +34,8 @@ export default function RoleSelector({ setRole }) {
   // ---------------------
   return (
     <motion.section
-      exit={{ height: 0, overflow: "hidden" }}
-      transition={{ duration: 0.5 }}
+      exit={{ height: 0, overflow: "hidden", opacity: 0 }}
+      transition={{ duration: 0.2 }}
       className="w-full flex flex-col gap-6 mt-2"
     >
       <p className="text-xs text-center text-textMuted">

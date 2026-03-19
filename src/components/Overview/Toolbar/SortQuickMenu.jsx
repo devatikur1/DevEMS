@@ -14,12 +14,10 @@ import React from "react";
 export default function SortQuickMenu({
   sortQuickDt,
   setShowSortMenuBar,
-  currentDirection,
   updateDirection,
-  currentSort,
   updateSort,
-  currentView,
   updateView,
+  searchParams
 }) {
   return (
     <>
@@ -69,13 +67,13 @@ export default function SortQuickMenu({
               setShowSortMenuBar(false);
             }
           }}
-          className="absolute z-[110] -bottom-20 sm:bottom-auto sm:top-[185px] sm:right-[370px] sm:mx-0 w-[99.9%] sm:w-[240px] bg-bg/80 backdrop-blur-2xl border border-surface rounded-xl sm:rounded-2xl shadow-2xl p-2 overflow-hidden pb-24 sm:pb-0"
+          className="absolute z-[110] -bottom-20 sm:bottom-auto sm:top-[185px] sm:right-[370px] sm:mx-0 w-[99.9%] sm:w-[240px] bg-surface backdrop-blur-2xl border border-border rounded-xl sm:rounded-2xl shadow-2xl p-2 overflow-hidden pb-24 sm:pb-0"
         >
           <div className="w-full flex sm:hidden justify-center">
-            <div className="rounded-full bg-smtext h-1 w-10"></div>
+            <div className="rounded-full bg-textMuted h-1 w-10"></div>
           </div>
           <div className="flex flex-col gap-1 px-1.5 py-2">
-            <h1 className="text-[12px] text-smtext mb-2 ml-1">Direction</h1>
+            <h1 className="text-[12px] text-textMuted mb-2 ml-1">Direction</h1>
             {/* Ascending Direction */}
             <button
               onClick={() => updateDirection("asc")}
@@ -88,11 +86,11 @@ export default function SortQuickMenu({
                 />
                 <span>
                   Ascending {"  "}{" "}
-                  <small className="text-smtext">{"(A-Z)"}</small>
+                  <small className="text-textMuted">{"(A-Z)"}</small>
                 </span>
               </div>
               <div>
-                {currentDirection === "asc" && (
+                {searchParams.get("direction") === "asc" && (
                   <Check size={16.5} className="text-textMuted" />
                 )}
               </div>
@@ -109,17 +107,17 @@ export default function SortQuickMenu({
                 />
                 <span>
                   Descending {"  "}{" "}
-                  <small className="text-smtext">{"(Z-A)"}</small>
+                  <small className="text-textMuted">{"(Z-A)"}</small>
                 </span>
               </div>
               <div>
-                {currentDirection === "desc" && (
+                {searchParams.get("direction") === "desc" && (
                   <Check size={16.5} className="text-textMuted" />
                 )}
               </div>
             </button>
           </div>
-          <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-border to-transparent" />{" "}
+          <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-textMuted to-transparent" />{" "}
           <div className="flex flex-col gap-1 px-1.5 py-2">
             <h1 className="text-[12px] text-textMuted mb-2 ml-1">Sort by</h1>
             {/* Date View */}
@@ -135,7 +133,7 @@ export default function SortQuickMenu({
                 <span>Date</span>
               </div>
               <div>
-                {currentSort === "date" && (
+                {searchParams.get("sort") === "date" && (
                   <Check size={16.5} className="text-textMuted" />
                 )}
               </div>
@@ -153,7 +151,7 @@ export default function SortQuickMenu({
                 <span>Name</span>
               </div>
               <div>
-                {currentSort === "name" && (
+                {searchParams.get("sort") === "name" && (
                   <Check size={16.5} className="text-textMuted" />
                 )}
               </div>
@@ -171,13 +169,13 @@ export default function SortQuickMenu({
                 <span>Score</span>
               </div>
               <div>
-                {currentSort === "score" && (
+                {searchParams.get("sort") === "score" && (
                   <Check size={16.5} className="text-textMuted" />
                 )}
               </div>
             </button>
           </div>
-          <div className="flex md:hidden w-full h-[1px] bg-gradient-to-r from-transparent via-border to-transparent" />{" "}
+          <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-textMuted to-transparent" />{" "}
           <div className="flex md:hidden flex-col gap-1 px-1.5 py-2">
             {/* View Header */}
             <h1 className="text-[12px] text-textMuted mb-2 ml-1">View</h1>
@@ -194,7 +192,7 @@ export default function SortQuickMenu({
                 <span>Grid View</span>
               </div>
               <div>
-                {currentView === "grid" && (
+                {searchParams.get("view") === "grid" && (
                   <Check size={16.5} className="text-textMuted" />
                 )}
               </div>
@@ -212,7 +210,7 @@ export default function SortQuickMenu({
                 <span>List View</span>
               </div>
               <div>
-                {currentView === "list" && (
+                {searchParams.get("view") === "list" && (
                   <Check size={16.5} className="text-textMuted" />
                 )}
               </div>

@@ -4,7 +4,7 @@
   --color-bg: #000000;
   --color-bgSoft: #f9f9f9;
   --color-surface: #0a0a0a;
-  --color-surfaceSoft: #1f1f1f;
+  --color-surfaceSoft: #111111;
   --color-surfaceHard: #080808;
 
   /* ===== Text ===== */
@@ -16,7 +16,6 @@
   --color-accent: #3b82f6;
   --color-accentSoft: #60a5fa;
   --color-accentHover: #2563eb;
-  --color-accentA: #2b2b2b;
 
   /* ===== UI States ===== */
   --color-hover: #454545;

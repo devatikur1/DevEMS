@@ -46,9 +46,10 @@ export default function AuthMain({ IsSignIn }) {
         >
           <AnimatePresence>
             {searchParams.get("role") === null ? (
-              <RoleSelector setRole={setRole} />
+              <RoleSelector key={"role-section"} setRole={setRole} />
             ) : searchParams.get("method") === "email" ? (
               <EmailMethod
+                key={"email-method"}
                 IsSignIn={IsSignIn}
                 authMsg={authMsg}
                 setAuthMsg={setAuthMsg}
@@ -57,6 +58,7 @@ export default function AuthMain({ IsSignIn }) {
               />
             ) : (
               <LoginMethods
+                key={"all-login-method"}
                 IsSignIn={IsSignIn}
                 role={role}
                 providerSign={providerSign}

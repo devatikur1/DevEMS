@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
@@ -33,9 +32,9 @@ export default function AuthPage({ IsSignIn }) {
 
       console.log(userDt);
       
-      navigate(`/${userDt?.username}`);
+      navigate(`/u?ref=${userDt?.username}`);
     }
-  }, [isLogged, navigate, userDt?.username]);
+  }, [isLogged, navigate, userDt, userDt?.username]);
 
   // ---------------------
   // ✅ Render

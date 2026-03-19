@@ -58,7 +58,20 @@ export default function EmailMethod({
           imgUploading ||
           lodingitem === "email_auth",
     );
-  }, [IsSignIn, email, pass, signUpPart, imgData.url, name, username, photoURL, confirmPass, imgUploading, lodingitem, passValidation]);
+  }, [
+    IsSignIn,
+    email,
+    pass,
+    signUpPart,
+    imgData.url,
+    name,
+    username,
+    photoURL,
+    confirmPass,
+    imgUploading,
+    lodingitem,
+    passValidation,
+  ]);
 
   // ------------------------------
   // ✅ Handle Image Upload
@@ -95,7 +108,7 @@ export default function EmailMethod({
     ) {
       setAuthMsg({
         status: true,
-        text: "Please fill up the form.",
+        text: "Please Full fill up the form.",
         type: "err",
       });
       return;
@@ -207,7 +220,8 @@ export default function EmailMethod({
                 });
               }
             }}
-            className="mt-2 w-full text-textPrimary bg-surfaceSoft hover:bg-boxHover font-medium py-3 rounded-xl shadow-lg border border-border hover:border-hover active:scale-[0.98] transition-all"
+            disabled={lodingitem === "email_auth"}
+            className="mt-2 w-full text-textPrimary bg-surfaceSoft hover:bg-boxHover font-medium py-3 rounded-xl shadow-lg border border-border hover:border-hover active:scale-[0.98] transition-all disabled:opacity-55"
           >
             Go back
           </button>

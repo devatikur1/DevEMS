@@ -13,6 +13,8 @@ import HighlightText from "./HighlightText";
 import { AnimatePresence } from "framer-motion";
 import OptionBar from "./OptionBar";
 import { getMemberLevel } from "../../../function/getMemberLevel";
+import useFirestore from "../../../hooks/useFirestore";
+import { where } from "firebase/firestore";
 
 export default function Placeholder({
   project,
@@ -25,24 +27,38 @@ export default function Placeholder({
 }) {
   const [showOptionBar, setShowOptionBar] = useState(false);
   const [optionBarDt, setOptionBarDt] = useState(null);
+  const [leadUserName, setLeadUserName] = useState("");
   const navigate = useNavigate();
+  const { getData } = useFirestore();
 
   if (!project) return null;
+
+  (async () => {
+    const { status, data, error } = await getData({
+      collId: "username",
+      isQuery: true,
+      whereQuery: [where("uid", "==", project.leadUid)],
+    });
+    if (!status) {
+      console.log(error);
+      return;
+    }
+    setLeadUserName(data[0].id);
+  })();
 
   return (
     <li className="static sm:relative list-none">
       <div
-        onClick={() => navigate(`/u/workspaces/${project.id}`)}
+        onClick={() => navigate(`/u/${leadUserName}/${project.id}`)}
         role="button"
         tabIndex="0"
         className={clsx(
-          "group relative grid p-5 bg-surface border border-boxHover hover:border-smtext/40 transition-all duration-300 w-full cursor-pointer",
+          "group relative grid p-5 bg-surface  transition-all duration-300 w-full cursor-pointer",
           isFast && !isGrid && "rounded-t-lg",
           isLast && !isGrid && "rounded-b-lg",
-          isGrid && "rounded-xl",
           isGrid
-            ? "grid-cols-2 grid-rows-[auto_auto_auto_auto] gap-4"
-            : "grid-cols-2 lg:grid-cols-3 gap-3.5 p-4 items-center"
+            ? "grid-cols-2 grid-rows-[auto_auto_auto_auto] gap-4 rounded-xl border border-boxHover hover:border-border"
+            : "grid-cols-2 lg:grid-cols-3 gap-3.5 p-4 items-center",
         )}
       >
         {/* 1. Logo & Name */}
@@ -66,7 +82,7 @@ export default function Placeholder({
                   <span
                     onClick={(e) => {
                       e.stopPropagation();
-                      navigate(`/${project.leadUserName}`);
+                      navigate(`u/${leadUserName}`);
                     }}
                     className="text-subtext hover:underline"
                   >
@@ -95,13 +111,13 @@ export default function Placeholder({
           className={clsx(
             "relative z-10 flex items-center justify-start col-start-1 col-end-2 row-start-2 row-end-3 pt-1",
             !isGrid &&
-              "lg:col-start-2 lg:col-end-3 lg:row-start-1 lg:row-end-2 lg:justify-center pt-2.5"
+              "lg:col-start-2 lg:col-end-3 lg:row-start-1 lg:row-end-2 lg:justify-center pt-2.5",
           )}
         >
           <div
             className={clsx(
               "flex items-center px-3 py-1 rounded-md text-[11px] text-text/80 bg-boxHover/50 border border-border gap-2 ",
-              !isGrid && "lg:bg-transparent lg:border-none"
+              !isGrid && "lg:bg-transparent lg:border-none",
             )}
           >
             <Layers size={13} className="text-smtext" />
@@ -113,7 +129,7 @@ export default function Placeholder({
         <div
           className={clsx(
             "relative z-10 flex justify-end items-center gap-6 col-start-2 col-end-3",
-            !isGrid && "lg:col-start-3 lg:col-end-4"
+            !isGrid && "lg:col-start-3 lg:col-end-4",
           )}
         >
           {!isGrid && (
@@ -181,13 +197,13 @@ export default function Placeholder({
         <section
           className={clsx(
             "col-span-2 flex flex-col gap-4 pt-1",
-            !isGrid && "lg:hidden"
+            !isGrid && "lg:hidden",
           )}
         >
           <p
             className={clsx(
               "text-subtext/70 text-[13px] leading-relaxed",
-              isGrid ? "line-clamp-2" : "line-clamp-1"
+              isGrid ? "line-clamp-2" : "line-clamp-1",
             )}
           >
             {project.description}

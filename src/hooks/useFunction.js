@@ -1,7 +1,9 @@
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, where } from "firebase/firestore";
 import { db } from "../context/AppContext";
+import useFirestore from "./useFirestore";
 
 export default function useFunction() {
+  const { getCount } = useFirestore();
   // 🔹 password Validation
   function passValidation(pass) {
     if (!pass) return false;
@@ -40,19 +42,65 @@ export default function useFunction() {
     }
   }
 
-  // 🔹 Unique Username (Gen/Find)
+  // 🔹 Unique Uid (Gen/Find)
   function genEmailbaseUid(email) {
-    const LId = "firebase"?.toLocaleLowerCase().split(" ").map((item) => item.split("").map((i) => i.charCodeAt(0).toString(30)).join("")).join("-");
+    const LId = "3c3f3o3b38373p3b";
     const MId = email.split("@")[1].split(".")[0];
     const FId = email.split("@")[0];
     return `${FId}-${MId}-${LId}`;
+  }
+
+  // 🔹 Gen ID
+  function genUniId() {
+    if (crypto?.randomUUID) {
+      return crypto.randomUUID();
+    }
+
+    return (
+      Date.now().toString(36) +
+      "-" +
+      Math.random().toString(36).substr(4, 9) +
+      "-" +
+      Math.random().toString(36).substr(4, 9) +
+      "-" +
+      Date.now().toString(36)
+    );
+  }
+
+  // 🔹 Unique WS-ID (Gen/Find)
+  async function genWSID() {
+    let id = genUniId();
+    let isUnique = false;
+
+    let attempts = 0;
+
+    while (!isUnique && attempts < 5) {
+      try {
+        const { status, count } = await getCount({
+          collId: "workspaces",
+          whereQuery: [where("id", "==", id)],
+        });
+
+        if (status && count === 0) {
+          isUnique = true;
+        } else {
+          id = genUniId();
+          attempts++;
+        }
+      } catch (error) {
+        console.error("ID validation failed:", error);
+        break;
+      }
+    }
+
+    return id;
   }
 
   // 🔹 Params Url
   function paramsUrl({ type, get, set, key, value }) {
     const params = new URLSearchParams(get);
     if (type === "del") {
-      params.delete(key, value);
+      params.delete(key);
     } else {
       params.set(key, value);
     }
@@ -122,10 +170,12 @@ export default function useFunction() {
       "custom/image-not-select": "Please select an image",
       "custom/image-upload-failed": "Image upload failed",
       "custom/email-not-type": "Please enter your email address.",
+      "custom/user-not-found":
+        "Email not found. Please create an account first.",
     };
-    
+
     return (
-      AUTH_ERROR_MESSAGE_MAP[code] || "Authentication failed. Please try again."
+      AUTH_ERROR_MESSAGE_MAP[code] || "Failed! Please try again."
     );
   }
 
@@ -154,7 +204,7 @@ export default function useFunction() {
     } catch (error) {
       console.log(Object.value(error));
       console.error(error);
-      
+
       return { isError: true, msg: error };
     }
   }
@@ -166,5 +216,6 @@ export default function useFunction() {
     getErrMsg: getErrMsg,
     uploadImageFn: uploadImageFn,
     genEmailbaseUid: genEmailbaseUid,
+    genWSID: genWSID,
   };
 }

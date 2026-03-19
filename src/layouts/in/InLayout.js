@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
-import Header from "../../components/U/Header";
-import OptionHeader from "../../components/U/OptionHeader";
+import Header from "../../components/custom/Header";
+import OptionHeader from "../../components/custom/OptionHeader";
 import { useScroll } from "framer-motion";
 
-export default function ULayout() {
+export default function InLayout() {
   // 🔹 useContext context
   const { authId, containerRef } = useContext(AppContext);
-  const { isLogged, userDt } = authId;
+  const { isLogged, userDt, authLoading } = authId;
 
   // 🔹 Motion, Ref & State
   const { scrollYProgress } = useScroll({ container: containerRef });
@@ -37,10 +37,10 @@ export default function ULayout() {
   // ✅ Check isLogged
   // ---------------------
   useEffect(() => {
-    if (!isLogged) {
+    if (!authLoading && !isLogged) {
       navigate("/sign-in");
     }
-  }, [isLogged, navigate]);
+  }, [authLoading, isLogged, navigate]);
 
   // ---------------------
   // ✅ Render
@@ -62,12 +62,14 @@ export default function ULayout() {
                 { name: "Activity", path: "/u/activity" },
                 { name: "Employees", path: "/u/employees" },
                 { name: "Analysis", path: "/u/analysis" },
+                { name: "Settings", path: "/u/settings" },
               ]
             : [
                 { name: "Overview", path: "/u" },
                 { name: "Activity", path: "/u/activity" },
                 { name: "Workspace", path: "/u/workspace" },
                 { name: "Analysis", path: "/u/analysis" },
+                { name: "Settings", path: "/u/settings" },
               ]
         }
       />
