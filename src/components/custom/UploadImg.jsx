@@ -2,30 +2,27 @@ import { Pen, UploadCloud, AlertCircle } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 
-export default function UploadImg({ img, setImg, url }) {
+export default function UploadImg({ img, setImg }) {
   const [error, setError] = useState(null);
 
+  // ---------------------
+  // ✅ Image Change Fn
+  // ---------------------
   function onChangeImage(e) {
-    const file = e.target.files?.[0];
+    const file = e?.target?.files[0];
+
     if (!file) return;
 
-    if (!file.type.startsWith("image/")) {
-      return;
-    }
-
-    if (file.size > 32 * 1024 * 1024) {
+    if (file.size < 32 * 1024 * 1024) {
+      setError(null);
+      setImg({
+        file: file,
+        url: URL.createObjectURL(file),
+      });
+    } else {
       setError("Img Must be lower than 32 MB");
       setImg({ file: null, url: null });
-      return;
     }
-
-    setError(null);
-    const previewUrl = URL.createObjectURL(file);
-
-    setImg({
-      file,
-      url: previewUrl,
-    });
   }
 
   // Logic: Memory leak bondho korar jonno object URL revoke kora
@@ -57,7 +54,7 @@ export default function UploadImg({ img, setImg, url }) {
         ) : (
           <label
             htmlFor="file"
-            className="relative w-32 h-32 rounded-full border border-dashed border-border/50 bg-surfaceSoft/20 backdrop-blur-md flex flex-col items-center justify-center gap-1 cursor-pointer transition-all duration-500 hover:border-accent/50 hover:bg-surfaceSoft/40 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)] active:scale-95 overflow-hidden"
+            className="relative w-32 h-32 rounded-full border border-dashed border-border/80 bg-surfaceSoft/20 backdrop-blur-md flex flex-col items-center justify-center gap-1 cursor-pointer transition-all duration-500 hover:border-accent/50 hover:bg-surfaceSoft/40 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)] active:scale-95 overflow-hidden"
           >
             <div className="absolute inset-0 bg-gradient-to-b from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 

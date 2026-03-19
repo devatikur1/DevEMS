@@ -44,12 +44,12 @@ export default function CatMaxMemLimit({ cat, totalMem }) {
         <div className="relative flex items-center group">
           <LayoutGrid
             size={18}
-            className="absolute left-4 text-smtext group-focus-within:text-accent transition-colors"
+            className="absolute left-4 text-textMuted group-focus-within:text-accent transition-colors"
           />
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="bg-surface w-full pl-12 pr-10 py-3 text-sm text-white border border-boxHover rounded-lg outline-none appearance-none cursor-pointer focus:border-accent/50 transition-all"
+            className="appearance-none cursor-pointer w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 rounded-md pl-12 pr-4 py-3 text-sm text-textPrimary placeholder:text-textMuted outline-none transition-all"
           >
             <option value="" disabled>
               Select Category
@@ -63,15 +63,17 @@ export default function CatMaxMemLimit({ cat, totalMem }) {
           {/* Custom Arrow for select */}
           <ChevronDown
             size={16}
-            className="absolute right-4 text-smtext pointer-events-none"
+            className="absolute right-4 text-textMuted pointer-events-none"
           />
         </div>
       </div>
 
       {/* 🔹 Maximum Member Limit Section */}
       <div className="flex flex-col gap-2">
-        <label className="flex justify-between items-center text-[13px] font-medium text-text/80 mx-1">
-          <span>Member Limit</span>
+        <label className="flex justify-between items-center text-[13px] font-medium mx-1">
+          <span className="text-[13px] font-medium text-textMuted mx-1 flex justify-between items-center">
+            Member Limit
+          </span>
           {/* Dynamic Label showing if it's Unlimited or a specific number */}
           <span
             className={`text-[11px] px-2 py-0.5 rounded ${
@@ -89,7 +91,7 @@ export default function CatMaxMemLimit({ cat, totalMem }) {
         <div className="relative flex items-center group">
           <Users
             size={18}
-            className="absolute left-4 text-smtext group-focus-within:text-accent transition-colors"
+            className="absolute left-4 text-textMuted group-focus-within:text-accent transition-colors"
           />
           <input
             value={totalMembers}
@@ -97,12 +99,13 @@ export default function CatMaxMemLimit({ cat, totalMem }) {
             min={0}
             type="number"
             placeholder="e.g. 10"
-            className="bg-surface w-full pl-12 pr-4 py-3 text-sm text-white border border-boxHover rounded-lg outline-none focus:border-accent/50 transition-all placeholder:text-zinc-600"
+            className="w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 rounded-md pl-12 pr-4 py-3 text-sm text-textPrimary placeholder:text-textMuted outline-none transition-all"
           />
         </div>
-        <p className="text-[10px] text-zinc-500 ml-1">
-          💡 Tip: Set <span className="text-zinc-300">0-10</span> for Unlimited,
-          or above <span className="text-zinc-300">10</span> for specific limit.
+        <p className="text-[10px] text-textMuted ml-1">
+          💡 Tip: Set <span className="text-textPrimary">1-10</span> for
+          Unlimited, or above <span className="text-textPrimary">10</span> for
+          specific limit.
         </p>
       </div>
     </div>

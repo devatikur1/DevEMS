@@ -52,12 +52,13 @@ export default function Placeholder({
         role="button"
         tabIndex="0"
         className={clsx(
-          "group relative grid p-5 bg-surface  transition-all duration-300 w-full cursor-pointer",
+          "group relative grid p-5 bg-surface transition-all duration-300 w-full cursor-pointer",
           isGrid
             ? "grid-cols-2 grid-rows-[auto_auto_auto_auto] gap-4 rounded-xl border border-boxHover hover:border-border"
-            : "grid-cols-2 lg:grid-cols-3 gap-3.5 p-4 items-center border border-b-border",
-          isFast && !isGrid && "rounded-t-lg border border-b-border",
-          isLast && !isGrid && "rounded-b-lg border border-b-transparent",
+            : "grid-cols-2 lg:grid-cols-3 gap-3.5 p-4 items-center border-b border-border",
+
+          isFast && !isGrid && "rounded-t-xl",
+          isLast && !isGrid && "rounded-b-xl border-b-transparent",
         )}
       >
         {/* 1. Logo & Name */}

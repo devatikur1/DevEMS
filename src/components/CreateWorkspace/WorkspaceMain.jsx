@@ -14,10 +14,10 @@ export default function WorkspaceMain(props) {
       case 2:
         return (
           (props.cat?.category || "") !== "" &&
-          (props.totalMem?.totalMembers || 0) > 0
-        );
+          (props.totalMem?.totalMembers || 0) > 0 &&
+          (props.des?.description || "").trim().length >= 10);
       case 3:
-        return (props.des?.description || "").trim().length >= 10;
+        return props.actTags?.activeTags.length > 0;
       default:
         return false;
     }

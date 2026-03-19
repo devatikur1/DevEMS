@@ -131,14 +131,14 @@ export default function WorkspaceTechStack({ actTags }) {
   };
   return (
     <section className="w-full flex flex-col gap-2 mb-10">
-      <label className="text-sm font-medium text-text ml-1 flex items-center gap-2">
+      <label className="text-[13px] font-medium text-textMuted mx-1 flex items-center gap-1.5">
         <Timer size={16} /> Workspace Tech Stack (Tags)
       </label>
 
       {/* Selected tag show here */}
-      <div className="flex flex-wrap gap-2 min-h-[50px] p-3 rounded-lg bg-surface border border-boxHover mb-4 transition-all duration-300">
+      <div className="flex flex-wrap gap-2 min-h-[50px] p-3 rounded-lg bg-surfaceSoft  border border-border mb-4 transition-all duration-300">
         {activeTags.length === 0 ? (
-          <span className="text-xs text-smtext opacity-50 italic">
+          <span className="text-xs text-textMuted opacity-50 italic">
             Select tools like React, Figma...
           </span>
         ) : (
@@ -150,7 +150,7 @@ export default function WorkspaceTechStack({ actTags }) {
               {tag}{" "}
               <X
                 size={12}
-                className="cursor-pointer hover:text-white"
+                className="cursor-pointer hover:text-textPrimary"
                 onClick={() => toggleTag(tag)}
               />
             </span>
@@ -167,8 +167,8 @@ export default function WorkspaceTechStack({ actTags }) {
             onClick={() => toggleTag(tag)}
             className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full border text-[11px] transition-all duration-300 ${
               activeTags.includes(tag)
-                ? "bg-accent border-accent text-text "
-                : "bg-surface border-boxHover text-smtext hover:border-accent"
+                ? "bg-accent border-accent text-textPrimary "
+                : "bg-surface border-boxHover text-textMuted hover:border-accent"
             }`}
           >
             <span>{tag}</span>

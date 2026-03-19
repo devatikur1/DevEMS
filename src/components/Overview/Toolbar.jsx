@@ -33,7 +33,7 @@ export default function Toolbar({
       {/* Toolbar Main Part */}
       <section className="w-full h-[42px] flex flex-row items-center gap-1 md:gap-2 lg:gap-3">
         {/* Search Filter */}
-        <article className="flex-1 h-full relative rounded-md bg-surface border border-border focus-within:border-hover transition-all group">
+        <article className="flex-1 h-full transition-all group relative rounded-md">
           <div className="absolute left-3 h-full flex items-center pointer-events-none">
             <Search
               size={16}
@@ -46,7 +46,7 @@ export default function Toolbar({
             value={searchParams.get("q") || ""}
             onChange={handleSearchChange}
             placeholder="Search Workspaces..."
-            className="bg-transparent w-full h-full pl-10 pr-4 text-sm text-textPrimary placeholder:text-textMuted outline-none"
+            className="w-full h-full bg-surface border border-border hover:border-hover focus:border-accent/50 rounded-md pl-10 pr-4 text-sm text-textPrimary placeholder:text-textMuted outline-none transition-all"
           />
         </article>
 

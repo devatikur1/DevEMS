@@ -1,9 +1,9 @@
 import React from "react";
 import { Loader2, ArrowRight, ArrowLeft } from "lucide-react";
-import UploadImage from "./form/UploadImage";
+import UploadImg from "../../custom/UploadImg";
 import WorkspaceName from "./form/WorkspaceName";
-import CatMaxMemLimit from "./CatMaxMemLimit";
-import WorkspaceDes from "./WorkspaceDes";
+import CatMaxMemLimit from "./form/CatMaxMemLimit";
+import WorkspaceDes from "./form/WorkspaceDes";
 import WorkspaceTechStack from "./WorkspaceTechStack";
 
 export default function FormContainer({
@@ -30,7 +30,7 @@ export default function FormContainer({
       {/* STEP 1: Identity */}
       {currentStep === 1 && (
         <div className="flex flex-col items-center space-y-8 animate-in fade-in zoom-in-95 duration-500">
-          <UploadImage img={props.img} />
+          <UploadImg img={props.img?.imgData} setImg={props.img?.setImgData} />
           <div className="w-full">
             <WorkspaceName tite={props.tite} />
           </div>
@@ -41,13 +41,13 @@ export default function FormContainer({
       {currentStep === 2 && (
         <div className="w-full space-y-8 animate-in fade-in zoom-in-95 duration-500">
           <CatMaxMemLimit cat={props.cat} totalMem={props.totalMem} />
+          <WorkspaceDes des={props.des} />
         </div>
       )}
 
       {/* STEP 3: Content */}
       {currentStep === 3 && (
         <div className="w-full space-y-8 animate-in fade-in zoom-in-95 duration-500">
-          <WorkspaceDes des={props.des} />
           <WorkspaceTechStack actTags={props.actTags} />
         </div>
       )}
@@ -55,7 +55,7 @@ export default function FormContainer({
       {/* 🔹 Action Buttons */}
       <div className="flex flex-col gap-2 w-full pt-5">
         <button
-          disabled={!isStepValid() || props.isCreteing} 
+          disabled={!isStepValid() || props.isCreteing}
           type="submit"
           className="relative group mt-3 w-full h-12 text-textPrimary bg-accent font-medium rounded-xl shadow-lg border border-border active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-accent/60 flex items-center justify-center gap-2 overflow-hidden"
         >

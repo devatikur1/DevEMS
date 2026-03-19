@@ -10,7 +10,7 @@ export default function WorkspaceName({ tite }) {
           <span>Workspace Name</span>
           <span className="text-[0.7rem]">{title.split("").length}/50</span>
         </label>
-        <div className="group relative rounded-lg">
+        <div className="group relative rounded-md">
           <TypeIcon
             size={18}
             className="absolute left-4 top-3.5 text-textMuted group-focus-within:text-accent transition-colors"
@@ -22,7 +22,7 @@ export default function WorkspaceName({ tite }) {
             }
             type="text"
             placeholder="e.g. Design Squad"
-            className="w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 rounded-xl pl-12 pr-4 py-3 text-sm text-textPrimary placeholder:text-textMuted outline-none transition-all"
+            className="w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 rounded-md pl-12 pr-4 py-3 text-sm text-textPrimary placeholder:text-textMuted outline-none transition-all"
           />
         </div>
       </div>
