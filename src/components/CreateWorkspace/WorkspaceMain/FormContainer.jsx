@@ -4,7 +4,7 @@ import UploadImg from "../../custom/UploadImg";
 import WorkspaceName from "./form/WorkspaceName";
 import CatMaxMemLimit from "./form/CatMaxMemLimit";
 import WorkspaceDes from "./form/WorkspaceDes";
-import WorkspaceTechStack from "./WorkspaceTechStack";
+import WorkspaceTechStack from "./form/WorkspaceTechStack";
 
 export default function FormContainer({
   totalSteps,

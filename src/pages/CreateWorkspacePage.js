@@ -43,36 +43,6 @@ export default function CreateWorkspacePage() {
     document.title = "DevEMS - Create Workspace";
   }, []);
 
-  useEffect(() => {
-    console.log({
-      id: "",
-      name: title,
-      favicon: imgData,
-      category: category,
-      description: description,
-      lastUpdate: new Date().toISOString(),
-      status: "Active",
-      members: 1,
-      maxMembers: totalMembers > 10 ? Number(totalMembers) : "Unlimited",
-      lead: userDt?.name || "",
-      leadEmail: userDt?.email || "",
-      tags: activeTags,
-      performance: "0%",
-      projectsCount: 0,
-      activeTasks: 0,
-      "WS-ID": "",
-    });
-  }, [
-    activeTags,
-    category,
-    description,
-    imgData,
-    title,
-    totalMembers,
-    userDt?.email,
-    userDt?.name,
-  ]);
-
   // ----------------------------
   // ✅ When Craete Workspace
   // ----------------------------
