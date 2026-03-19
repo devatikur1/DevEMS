@@ -3,7 +3,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
-import { ArrowLeft, MoveLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 export default function Header({
   className = "",

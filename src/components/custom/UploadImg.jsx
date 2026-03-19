@@ -1,4 +1,4 @@
-import { Info, Pen, UploadCloud, AlertCircle } from "lucide-react";
+import { Pen, UploadCloud, AlertCircle } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 

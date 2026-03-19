@@ -36,7 +36,6 @@ export default function Placeholder({
   (async () => {
     const { status, data, error } = await getData({
       collId: "username",
-      isQuery: true,
       whereQuery: [where("uid", "==", project.leadUid)],
     });
     if (!status) {

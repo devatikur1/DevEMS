@@ -32,7 +32,6 @@ function useFirestore() {
   async function getData({
     collId,
     docId,
-    isQuery,
     whereQuery,
     limitt=11,
     startAfterr,
@@ -56,12 +55,12 @@ function useFirestore() {
       const colRef = collection(db, collId);
       let queryConstraints = [];
 
-      if (isQuery) {
+      if (!docId) {
         if (whereQuery.length) queryConstraints.push(...whereQuery);
         if (limitt) queryConstraints.push(limit(limitt));
         if (startAfterr) queryConstraints.push(startAfter(startAfterr));
       }
-      const q = isQuery ? query(colRef, ...queryConstraints) : colRef;
+      const q = !docId ? query(colRef, ...queryConstraints) : colRef;
       const snap = await getDocs(q);
 
       const data = snap.docs.map((doc) => ({

@@ -47,7 +47,6 @@ export default function OverviewPage() {
   useEffect(() => {
     document.title = "DevEMS - Overview";
     let refarene = searchParams.get("ref") || userDt?.username;
-    console.log(refarene);
 
     // 🔹 Get Workspaces Data
     if (refarene) {
@@ -85,7 +84,6 @@ export default function OverviewPage() {
           if (count > 0) {
             const { status, data, lastOne, error } = getData({
               collId: "workspace",
-              isQuery: true,
               whereQuery: [where("leadUid", "==", uid)],
               limitt: 10,
             });
@@ -250,7 +248,6 @@ export default function OverviewPage() {
         try {
           const { status, data, lastOne, error } = getData({
             collId: "workspace",
-            isQuery: true,
             whereQuery: [where("leadUid", "==", currentUid)],
             limitt: 11,
             startAfterr: lastWorkspaces,
