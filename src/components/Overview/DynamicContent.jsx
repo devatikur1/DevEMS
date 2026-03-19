@@ -20,14 +20,19 @@ export default function DynamicContent({
       {/* VIEW */}
       <ul
         className={clsx(
-          "overflow-hidden",
+          "overflow-hidden transition-all duration-300",
+          // 1. Grid View
           searchParams.get("view") === "grid" &&
             "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5",
+
+          // 2. List View (Shudhu data thakle border/bg dekhabe)
           searchParams.get("view") === "list" &&
-            "flex flex-col bg-surface border border-border rounded-lg",
-          searchParams.get("view") === "list" &&
-            workspaceData.length === 0 &&
-            "border-none",
+            workspaceData.length > 0 &&
+            "flex flex-col bg-surface border border-border rounded-xl",
+
+          // 3. No Data State (Empty state-er sathe jate clash na kore)
+          workspaceData.length === 0 &&
+            "bg-transparent border-none shadow-none",
         )}
       >
         {workspaceData.length > 0 &&

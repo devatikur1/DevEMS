@@ -68,9 +68,7 @@ export default function OverviewPage() {
             if (!getDataa.status) throw { code: "No Workspace" };
             uid = getDataa.data?.uid;
           }
-
           setCurrentUid(uid);
-          console.log(uid);
 
           // 2. Get Collection er Count
           const { status, count, error } = await getCount({
@@ -82,12 +80,11 @@ export default function OverviewPage() {
 
           // 3. Then Check count < 0 tahole Get Data
           if (count > 0) {
-            const { status, data, lastOne, error } = getData({
+            const { status, data, lastOne, error } = await getData({
               collId: "workspace",
               whereQuery: [where("leadUid", "==", uid)],
               limitt: 10,
             });
-            console.log(data);
             
             if (status) {
               setImportedWorkplace(data.length);
@@ -109,6 +106,7 @@ export default function OverviewPage() {
       })();
     }
   }, [userDt?.uid]);
+
 
   // -------------------------
   // ✅ Toolbar Handlers
@@ -246,7 +244,7 @@ export default function OverviewPage() {
         setWorkspacesGetting(true);
 
         try {
-          const { status, data, lastOne, error } = getData({
+          const { status, data, lastOne, error } = await getData({
             collId: "workspace",
             whereQuery: [where("leadUid", "==", currentUid)],
             limitt: 11,

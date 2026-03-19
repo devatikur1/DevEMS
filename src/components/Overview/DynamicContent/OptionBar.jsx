@@ -24,7 +24,7 @@ export default function OptionBar({
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2 }}
         onClick={() => setShowOptionBar(false)}
-        className="absolute inset-0 bg-surface/35 sm:bg-transparent h-[100vh] overflow-y-auto"
+        className="absolute inset-0 bg-surface/35 sm:bg-transparent h-screen overflow-y-auto"
       />
 
       {/* Modal-Content */}
@@ -65,11 +65,11 @@ export default function OptionBar({
             setShowOptionBar(false);
           }
         }}
-        className="fixed bottom-0 sm:bottom-auto left-0 sm:left-auto right-0 sm:right-auto z-[110] sm:mx-0 w-[99%] sm:w-[240px] bg-bg/80 backdrop-blur-2xl border-t sm:border border-white/10 rounded-t-xl sm:rounded-2xl shadow-2xl shadow-black/40 p-2 overflow-hidden pb-32 sm:pb-2"
+        className="fixed bottom-0 sm:bottom-auto left-0 sm:left-auto right-0 sm:right-auto z-[110] sm:mx-0 w-[99%] sm:w-[240px] bg-surface backdrop-blur-2xl border-t sm:border border-border rounded-t-xl sm:rounded-2xl shadow-2xl shadow-bg/40 p-2 overflow-hidden pb-32 sm:pb-2"
       >
         {/* Drag Handle for mobile */}
         <div className="w-full flex sm:hidden justify-center py-2">
-          <div className="rounded-full bg-smtext/50 h-1 w-10"></div>
+          <div className="rounded-full bg-textMuted h-1 w-10"></div>
         </div>
         <div className="flex flex-col gap-3 pt-3 sm:pt-0 sm:gap-0.5">
           <button
@@ -88,7 +88,7 @@ export default function OptionBar({
                 setShowOptionBar(false);
               }, 200);
             }}
-            className="group w-full text-left px-3 py-2.5 sm:py-2 text-[13px] text-subtext/65 hover:text-white hover:bg-white/5 rounded-md transition-all duration-200 flex items-center gap-3"
+            className="group w-full text-left px-3 py-2.5 sm:py-2 text-[13px] text-textPrimary/65 hover:text-textPrimary hover:bg-boxHover rounded-md transition-all duration-200 flex items-center gap-3"
           >
             <Unlink
               size={15}
@@ -98,7 +98,7 @@ export default function OptionBar({
           </button>
           <Link
             to={optionBarDt.settings}
-            className="group w-full text-left px-3 py-2.5 sm:py-2 text-[13px] text-subtext/65 hover:text-white hover:bg-white/5 rounded-md transition-all duration-200 flex items-center gap-3"
+            className="group w-full text-left px-3 py-2.5 sm:py-2 text-[13px] text-textPrimary/65 hover:text-textPrimary hover:bg-boxHover rounded-md transition-all duration-200 flex items-center gap-3"
           >
             <Settings
               size={15}
@@ -108,7 +108,7 @@ export default function OptionBar({
           </Link>
           <Link
             to={optionBarDt.link}
-            className="group w-full text-left px-3 py-2.5 sm:py-2 text-[13px] text-subtext/65 hover:text-white hover:bg-white/5 rounded-md transition-all duration-200 flex items-center gap-3"
+            className="group w-full text-left px-3 py-2.5 sm:py-2 text-[13px] text-textPrimary/65 hover:text-textPrimary hover:bg-boxHover rounded-md transition-all duration-200 flex items-center gap-3"
           >
             <SquareArrowOutUpRight
               size={15}
@@ -116,7 +116,8 @@ export default function OptionBar({
             />
             <span>Visit</span>
           </Link>
-          <div className="h-[1px] bg-white/5 my-1" /> {/* Divider */}
+          <div className="my-1.5 h-[1px] w-full bg-gradient-to-r from-transparent via-textMuted to-transparent opacity-100" />{" "}
+          {/* Divider */}
           <button
             onClick={async () => {
               if (role === "admin") {

@@ -53,16 +53,16 @@ export default function Placeholder({
         tabIndex="0"
         className={clsx(
           "group relative grid p-5 bg-surface  transition-all duration-300 w-full cursor-pointer",
-          isFast && !isGrid && "rounded-t-lg",
-          isLast && !isGrid && "rounded-b-lg",
           isGrid
             ? "grid-cols-2 grid-rows-[auto_auto_auto_auto] gap-4 rounded-xl border border-boxHover hover:border-border"
-            : "grid-cols-2 lg:grid-cols-3 gap-3.5 p-4 items-center",
+            : "grid-cols-2 lg:grid-cols-3 gap-3.5 p-4 items-center border border-b-border",
+          isFast && !isGrid && "rounded-t-lg border border-b-border",
+          isLast && !isGrid && "rounded-b-lg border border-b-transparent",
         )}
       >
         {/* 1. Logo & Name */}
         <div className="relative z-10 flex items-center gap-4 col-start-1 col-end-2">
-          <div className="h-10 w-10 rounded-lg border border-zinc-800 bg-zinc-900 flex items-center justify-center overflow-hidden shrink-0">
+          <div className="h-10 w-10 rounded-lg border border-border bg-surfaceHard flex items-center justify-center overflow-hidden shrink-0">
             <img
               src={project.favicon}
               alt="logo"
@@ -76,14 +76,14 @@ export default function Placeholder({
             />
             <div className="flex items-center gap-2 mt-1">
               {role === "employee" && (
-                <span className="text-[11px] text-smtext font-medium">
+                <span className="text-[11px] text-textMuted font-medium">
                   By{" "}
                   <span
                     onClick={(e) => {
                       e.stopPropagation();
                       navigate(`u/${leadUserName}`);
                     }}
-                    className="text-subtext hover:underline"
+                    className="text-textMuted/70 hover:underline"
                   >
                     {project.lead}
                   </span>
@@ -96,7 +96,7 @@ export default function Placeholder({
                     project.status === "Active" ? "bg-success" : "bg-warning"
                   }`}
                 ></span>
-                <span className="text-[10px] text-zinc-500 uppercase tracking-tighter">
+                <span className="text-[10px] text-textMuted/80 uppercase tracking-tighter">
                   {project.status}
                 </span>
               </div>
@@ -115,11 +115,11 @@ export default function Placeholder({
         >
           <div
             className={clsx(
-              "flex items-center px-3 py-1 rounded-md text-[11px] text-text/80 bg-boxHover/50 border border-border gap-2 ",
+              "flex items-center px-3 py-1 rounded-md text-[11px] text-textMuted bg-surfaceSoft border border-border gap-2 ",
               !isGrid && "lg:bg-transparent lg:border-none",
             )}
           >
-            <Layers size={13} className="text-smtext" />
+            <Layers size={13} className="text-textMuted/70" />
             <span className="truncate max-w-[120px]">{project.category}</span>
           </div>
         </section>
@@ -133,10 +133,10 @@ export default function Placeholder({
         >
           {!isGrid && (
             <section className="hidden lg:flex flex-col items-start gap-1">
-              <span className="text-[10px] text-zinc-600 uppercase tracking-wider">
+              <span className="text-[10px] text-textMuted/70 uppercase tracking-wider">
                 Team Size
               </span>
-              <div className="flex items-center gap-1.5 text-zinc-400 text-[12px]">
+              <div className="flex items-center gap-1.5 text-textMuted/80 text-[12px]">
                 <Users size={13} />
                 <span>
                   {project.members}/{project.maxMembers}
@@ -163,7 +163,7 @@ export default function Placeholder({
                 y: isMobile ? undefined : Math.max(8, rect.right - 240),
               });
             }}
-            className="relative z-50 text-smtext hover:text-white bg-transparent hover:bg-hover px-1.5 py-0.5 rounded-md transition-colors"
+            className="relative z-50 text-textMuted/80 hover:text-textPrimary border border-transparent bg-transparent hover:bg-surfaceSoft hover:border-border px-1.5 py-0.5 rounded-md transition-all duration-300"
           >
             <MoreHorizontal size={18} />
           </button>
@@ -179,10 +179,10 @@ export default function Placeholder({
           ) : (
             /* Team Size Metric for List View */
             <div className="flex lg:hidden flex-col items-end justify-center">
-              <span className="flex justify-center items-end text-[10px] text-zinc-600 uppercase tracking-wider">
+              <span className="flex justify-center items-end text-[10px] text-textMuted/80 uppercase tracking-wider">
                 Team Size
               </span>
-              <div className="flex items-center gap-1.5 text-zinc-400 text-[12px]">
+              <div className="flex items-center gap-1.5 text-textMuted/85 text-[12px]">
                 <Users size={13} />
                 <span>
                   {project.members}/{project.maxMembers}
@@ -201,7 +201,7 @@ export default function Placeholder({
         >
           <p
             className={clsx(
-              "text-subtext/70 text-[13px] leading-relaxed",
+              "text-textMuted/80 text-[13px] leading-relaxed",
               isGrid ? "line-clamp-2" : "line-clamp-1",
             )}
           >
@@ -213,7 +213,7 @@ export default function Placeholder({
               {project.tags?.slice(0, 4).map((tag, index) => (
                 <span
                   key={index}
-                  className="px-2 py-0.5 bg-boxHover/30 border border-border/85 text-zinc-500 text-[10px] rounded"
+                  className="px-2 py-0.5 bg-surfaceHard border border-border text-textMuted/80 text-[10px] rounded"
                 >
                   {tag}
                 </span>
@@ -225,7 +225,7 @@ export default function Placeholder({
               )}
             </div>
           ) : (
-            <div className="flex lg:hidden items-center gap-3 text-[11px] text-smtext/85">
+            <div className="flex lg:hidden items-center gap-3 text-[11px] text-textMuted/80">
               <span className="flex items-center gap-1.5">
                 <Briefcase size={12} /> {project.projectsCount} Projects
               </span>
@@ -235,7 +235,7 @@ export default function Placeholder({
 
         {/* 6. Footer (Only for Grid) */}
         {isGrid && (
-          <section className="row-start-4 row-end-5 col-span-2 mt-1 pt-3 border-t border-boxHover flex items-center justify-between text-[11px] text-smtext/85">
+          <section className="row-start-4 row-end-5 col-span-2 mt-1 pt-3 border-t border-border flex items-center justify-between text-[11px] text-textMuted/80">
             <div className="flex items-center gap-3">
               <span className="flex items-center gap-1.5">
                 <Users size={12} /> {project.members}/{project.maxMembers}
@@ -244,7 +244,7 @@ export default function Placeholder({
                 <Briefcase size={12} /> {project.projectsCount} Projects
               </span>
             </div>
-            <div className="flex items-center gap-1 px-2 py-0.5 rounded bg-boxHover/80 text-zinc-400 border border-zinc-800">
+            <div className="flex items-center gap-1 px-2 py-0.5 rounded bg-surfaceSoft border border-border">
               <ShieldCheck size={12} className="text-blue-500" />
               <span>{getMemberLevel(project.maxMembers)}</span>
             </div>
