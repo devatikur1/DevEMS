@@ -1,5 +1,5 @@
 import React from "react";
-import { Loader2, ArrowRight, ArrowLeft, Plus } from "lucide-react";
+import { Loader2, ArrowRight, ArrowLeft } from "lucide-react";
 import UploadImage from "./form/UploadImage";
 import WorkspaceName from "./form/WorkspaceName";
 import CatMaxMemLimit from "./CatMaxMemLimit";

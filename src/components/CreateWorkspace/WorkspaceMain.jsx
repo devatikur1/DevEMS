@@ -1,9 +1,4 @@
 import React, { useState } from "react";
-import { Loader2, ArrowRight, ArrowLeft, Plus } from "lucide-react";
-import WorkspaceName from "./WorkspaceMain/form/WorkspaceName";
-import CatMaxMemLimit from "./WorkspaceMain/CatMaxMemLimit";
-import WorkspaceDes from "./WorkspaceMain/WorkspaceDes";
-import WorkspaceTechStack from "./WorkspaceMain/WorkspaceTechStack";
 import ProgressBar from "./WorkspaceMain/ProgressBar";
 import Heading from "./WorkspaceMain/Heading";
 import FormContainer from "./WorkspaceMain/FormContainer";

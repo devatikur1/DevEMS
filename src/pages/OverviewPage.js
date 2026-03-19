@@ -12,7 +12,7 @@ import Toolbar from "../components/Overview/Toolbar";
 import DynamicContent from "../components/Overview/DynamicContent";
 import { AppContext, db } from "../context/AppContext";
 import { useScroll } from "framer-motion";
-import { deleteDoc, doc, orderBy, where } from "firebase/firestore";
+import { deleteDoc, doc, where } from "firebase/firestore";
 import toast from "react-hot-toast";
 import useFunction from "../hooks/useFunction";
 import useFirestore from "../hooks/useFirestore";

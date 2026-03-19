@@ -1,5 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-throw-literal */
 import React, { useEffect, useRef, useState } from "react";
-import { AppContext, auth, db } from "./AppContext";
+import { AppContext, auth } from "./AppContext";
 import { onAuthStateChanged } from "firebase/auth";
 import useFunction from "../hooks/useFunction";
 import useFirestore from "../hooks/useFirestore";

@@ -1,29 +1,11 @@
+/* eslint-disable no-throw-literal */
 import React, { useContext, useEffect, useState } from "react";
 import Header from "../components/custom/Header";
 import WorkspaceMain from "../components/CreateWorkspace/WorkspaceMain";
-import { AppContext, db } from "../context/AppContext";
+import { AppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-import {
-  collection,
-  doc,
-  getCountFromServer,
-  setDoc,
-} from "firebase/firestore";
 import useFunction from "../hooks/useFunction";
 import useFirestore from "../hooks/useFirestore";
-
-// ----------------------------
-// ✅ Generate Unique Id
-// ----------------------------
-function genUniId() {
-  if (crypto?.randomUUID) {
-    return crypto.randomUUID();
-  }
-  return (
-    Date.now().toString(36) + "-" + Math.random().toString(36).substr(2, 9)
-  );
-}
 
 // -------------------
 // ✅ Main Fn

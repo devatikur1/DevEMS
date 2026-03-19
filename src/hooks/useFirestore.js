@@ -1,3 +1,4 @@
+/* eslint-disable no-throw-literal */
 import {
   setDoc,
   addDoc,
@@ -33,7 +34,6 @@ function useFirestore() {
     docId,
     isQuery,
     whereQuery,
-    orderByy,
     limitt=11,
     startAfterr,
   }) {
@@ -58,7 +58,6 @@ function useFirestore() {
 
       if (isQuery) {
         if (whereQuery.length) queryConstraints.push(...whereQuery);
-        if (orderByy.length) queryConstraints.push(...orderByy);
         if (limitt) queryConstraints.push(limit(limitt));
         if (startAfterr) queryConstraints.push(startAfter(startAfterr));
       }
