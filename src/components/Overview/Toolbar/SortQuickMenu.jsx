@@ -90,7 +90,8 @@ export default function SortQuickMenu({
                 </span>
               </div>
               <div>
-                {searchParams.get("direction") === "asc" && (
+                {(searchParams.get("direction") === "asc" ||
+                  searchParams.get("direction") === null) && (
                   <Check size={16.5} className="text-textMuted" />
                 )}
               </div>
@@ -133,7 +134,8 @@ export default function SortQuickMenu({
                 <span>Date</span>
               </div>
               <div>
-                {searchParams.get("sort") === "date" && (
+                {(searchParams.get("sort") === "date" ||
+                  searchParams.get("sort") === null) && (
                   <Check size={16.5} className="text-textMuted" />
                 )}
               </div>
@@ -192,7 +194,8 @@ export default function SortQuickMenu({
                 <span>Grid View</span>
               </div>
               <div>
-                {searchParams.get("view") === "grid" && (
+                {(searchParams.get("view") === "grid" ||
+                  searchParams.get("view") === null) && (
                   <Check size={16.5} className="text-textMuted" />
                 )}
               </div>

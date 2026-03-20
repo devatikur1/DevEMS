@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-throw-literal */
 import React, { useContext, useEffect, useState } from "react";
 import Header from "../components/custom/Header";
@@ -13,7 +14,7 @@ import useFirestore from "../hooks/useFirestore";
 export default function CreateWorkspacePage() {
   // 🔹 useContext context
   const { authId, overviewdt } = useContext(AppContext);
-  const { userDt } = authId;
+  const { userDt, isLogged } = authId;
   const { setWorkspace } = overviewdt;
 
   // 🔹 State && useNavigate
@@ -41,7 +42,13 @@ export default function CreateWorkspacePage() {
   // ----------------------------
   useEffect(() => {
     document.title = "DevEMS - Create Workspace";
-  }, []);
+    if (!isLogged) {
+      navigate("/");
+    }
+    if (userDt.role === "employee") {
+      navigate("/u");
+    }
+  }, [isLogged, userDt]);
 
   // ----------------------------
   // ✅ When Craete Workspace

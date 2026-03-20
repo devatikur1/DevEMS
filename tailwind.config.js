@@ -37,9 +37,6 @@ module.exports = {
         infoSoft: "#0B2A3A",
 
         // ===== Extra / Legacy =====
-        text: "#f9f9f9",
-        subtext: "#7e7e7e",
-        smtext: "#525252",
         blue: "#0082fb",
         purple: "#9333ea",
         shadow: "#000000",

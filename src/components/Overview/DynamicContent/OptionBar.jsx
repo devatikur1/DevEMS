@@ -6,7 +6,6 @@ import {
   Trash2,
   Unlink,
 } from "lucide-react";
-import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
 export default function OptionBar({
@@ -65,7 +64,7 @@ export default function OptionBar({
             setShowOptionBar(false);
           }
         }}
-        className="fixed bottom-0 sm:bottom-auto left-0 sm:left-auto right-0 sm:right-auto z-[110] sm:mx-0 w-[99%] sm:w-[240px] bg-surface backdrop-blur-2xl border-t sm:border border-border rounded-t-xl sm:rounded-2xl shadow-2xl shadow-bg/40 p-2 overflow-hidden pb-32 sm:pb-2"
+        className="fixed bottom-0 sm:bottom-auto left-0 sm:left-auto right-0 sm:right-auto z-[110] sm:mx-0 w-[99%] sm:w-[240px] bg-surface backdrop-blur-2xl border-t sm:border border-border rounded-t-xl sm:rounded-2xl shadow-2xl shadow-shadow/40 p-2 overflow-hidden pb-32 sm:pb-2"
       >
         {/* Drag Handle for mobile */}
         <div className="w-full flex sm:hidden justify-center py-2">
@@ -73,20 +72,20 @@ export default function OptionBar({
         </div>
         <div className="flex flex-col gap-3 pt-3 sm:pt-0 sm:gap-0.5">
           <button
-            onClick={() => {
+            onClick={(e) => {
               navigator.clipboard
                 .writeText(optionBarDt.link)
                 .then(() => {
-                  toast.success("Copied!");
-                  console.log("Copied!");
+                  e.target.innerText = "Copied!";
                 })
                 .catch((err) => {
                   console.log("Could not copy text: ", err);
-                  toast.error("Could not copy text!");
+                   e.target.innerText = "Could not copy text!";
+                  
                 });
               setTimeout(() => {
                 setShowOptionBar(false);
-              }, 200);
+              }, 300);
             }}
             className="group w-full text-left px-3 py-2.5 sm:py-2 text-[13px] text-textPrimary/65 hover:text-textPrimary hover:bg-boxHover rounded-md transition-all duration-200 flex items-center gap-3"
           >
@@ -94,7 +93,7 @@ export default function OptionBar({
               size={15}
               className="sm:group-hover:scale-110 transition-transform"
             />
-            <span>Copy URL</span>
+            <span className="line-clamp-1">Copy URL</span>
           </button>
           <Link
             to={optionBarDt.settings}
@@ -119,14 +118,15 @@ export default function OptionBar({
           <div className="my-1.5 h-[1px] w-full bg-gradient-to-r from-transparent via-textMuted to-transparent opacity-100" />{" "}
           {/* Divider */}
           <button
-            onClick={async () => {
-              if (role === "admin") {
-                await deleteWorksplace(optionBarDt.link.split("/")[3]);
-                setShowOptionBar(false);
-              } else {
-                console.log("Exit workspace");
-                setShowOptionBar(false);
-              }
+            onClick={async (e) => {
+              await deleteWorksplace(
+                e,
+                optionBarDt.link.split("/")[3],
+                role,
+                () => {
+                  setShowOptionBar(false);
+                },
+              );
             }}
             className="group w-full text-left px-3 py-2.5 sm:py-2 text-[13px] text-error/90 hover:text-error hover:bg-error/10 rounded-md transition-all duration-200 flex items-center gap-3"
           >
@@ -136,7 +136,7 @@ export default function OptionBar({
                   size={15}
                   className="sm:group-hover:scale-110 transition-transform"
                 />
-                <span>Delete Workspace</span>
+                <span className="line-clamp-1">Delete Workspace</span>
               </>
             ) : (
               <>
@@ -144,7 +144,7 @@ export default function OptionBar({
                   size={15}
                   className="sm:group-hover:translate-x-0.5 transition-transform"
                 />
-                <span>Exit Workspace</span>
+                <span className="line-clamp-1">Exit Workspace</span>
               </>
             )}
           </button>

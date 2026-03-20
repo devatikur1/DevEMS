@@ -10,12 +10,11 @@ import React, {
 import { useSearchParams } from "react-router-dom";
 import Toolbar from "../components/Overview/Toolbar";
 import DynamicContent from "../components/Overview/DynamicContent";
-import { AppContext, db } from "../context/AppContext";
+import { AppContext, } from "../context/AppContext";
 import { useScroll } from "framer-motion";
-import { deleteDoc, doc, where } from "firebase/firestore";
-import toast from "react-hot-toast";
 import useFunction from "../hooks/useFunction";
 import useFirestore from "../hooks/useFirestore";
+import { where } from "firebase/firestore";
 
 export default function OverviewPage() {
   // 🔹 useContext context
@@ -27,6 +26,7 @@ export default function OverviewPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [workspaceData, setworkspaceData] = useState([]);
   const [showSortMenuBar, setShowSortMenuBar] = useState(false);
+  // const [wsDeleteBtnText, setWsDeleteBtnText] = useState("");
 
   // 🔹 Workplace-State
   const [currentUid, setCurrentUid] = useState("");
@@ -41,9 +41,11 @@ export default function OverviewPage() {
 
   // 🔹 Custom Hook
   const { paramsUrl } = useFunction();
-
   const { getData, getCount } = useFirestore();
 
+  // -------------------------
+  // ✅ Main Work
+  // -------------------------
   useEffect(() => {
     document.title = "DevEMS - Overview";
     let refarene = searchParams.get("ref") || userDt?.username;
@@ -85,7 +87,7 @@ export default function OverviewPage() {
               whereQuery: [where("leadUid", "==", uid)],
               limitt: 10,
             });
-            
+
             if (status) {
               setImportedWorkplace(data.length);
               setWorkspace(data);
@@ -106,7 +108,6 @@ export default function OverviewPage() {
       })();
     }
   }, [userDt?.uid]);
-
 
   // -------------------------
   // ✅ Toolbar Handlers
@@ -210,21 +211,54 @@ export default function OverviewPage() {
   // ✅ Delete Worksplace Fn
   // -------------------------
 
-  const deleteWorksplace = async (id) => {
+  const deleteWorksplace = async (e, id, role, fn) => {
     try {
-      toast.promise(
-        async () => {
-          await deleteDoc(doc(db, "workspace", id));
-          setWorkspace((prev) => prev.filter((wp) => wp.id !== id));
-        },
-        {
-          loading: "Worksplace Deleteing...",
-          success: <span>Worksplace Successfully!</span>,
-          error: <span>Could not Deleted Worksplace .</span>,
-        },
-      );
+      console.log(e);
+      console.log(id);
+      console.log(role);
+
+      if (role === "admin") {
+        e.target.innerText = "Deleting...";
+        e.target.disable = true;
+        setTimeout(() => {
+          console.log("col");
+          e.target.innerText = "Delete Workspace";
+          e.target.disable = false;
+          fn();
+        }, 3000);
+        // await deleteDoc(doc(db, "workspace", id));
+        //     // setWorkspace((prev) => prev.filter((wp) => wp.id !== id));
+      } else {
+        e.target.innerText = "Exciting...";
+        e.target.disable = true;
+        // await deleteDoc(doc(db, `${userDt?.uid}-join-workspace`, id));
+        //     // setWorkspace((prev) => prev.filter((wp) => wp.id !== id));
+        e.target.innerText = "Exit Workspace";
+        e.target.disable = false;
+      }
+
+      // toast.promise(
+      //   async () => {
+      //     // await deleteDoc(doc(db, "workspace", id));
+      //     // setWorkspace((prev) => prev.filter((wp) => wp.id !== id));
+      //   },
+      //   {
+      //     loading: "Worksplace Deleteing...",
+      //     success: <span>Worksplace Successfully!</span>,
+      //     error: <span>Could not Deleted Worksplace .</span>,
+      //   },
+      // );
     } catch (error) {
-      toast.error(error);
+      e.target.innerText = "Could not Deleted Worksplace .";
+      setTimeout(() => {
+        if (role === "admin") {
+          e.target.innerText = "Delete Workspace";
+          e.target.disable = false;
+        } else {
+          e.target.innerText = "Exit Workspace";
+          e.target.disable = false;
+        }
+      }, 900);
     }
   };
 
@@ -291,7 +325,7 @@ export default function OverviewPage() {
   // ✅ Render
   // ---------------------
   return (
-    <main className="relative z-50 w-full flex justify-center text-text min-h-screen bg-transparent">
+    <main className="relative z-50 w-full flex justify-center text-textPrimary h-auto bg-transparent">
       <figure className="w-[95%] xl:w-[90%] 2xl:w-[71%] pt-10">
         {/* Toolbar Section */}
         <Toolbar

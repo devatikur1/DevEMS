@@ -112,7 +112,7 @@ export default function Placeholder({
           className={clsx(
             "relative z-10 flex items-center justify-start col-start-1 col-end-2 row-start-2 row-end-3 pt-1",
             !isGrid &&
-              "lg:col-start-2 lg:col-end-3 lg:row-start-1 lg:row-end-2 lg:justify-center pt-2.5",
+              "lg:col-start-2 lg:col-end-3 lg:row-start-1 lg:row-end-2 lg:justify-center",
           )}
         >
           <div
@@ -203,7 +203,7 @@ export default function Placeholder({
         >
           <p
             className={clsx(
-              "text-textMuted/80 text-[13px] leading-relaxed",
+              "text-textMuted/80 text-[13px] leading-relaxed min-h-[42.6px]",
               isGrid ? "line-clamp-2" : "line-clamp-1",
             )}
           >

@@ -64,7 +64,7 @@ export default function ListPgLoading({ isFast, isLast }) {
           <div className="hidden lg:block h-2 w-12 bg-border rounded mb-1"></div>
 
           <div className="flex items-center gap-2 px-3 py-1 rounded-md border border-border lg:border-none bg-accentA/30 shimmer min-w-[100px]">
-            <Layers size={13} className="text-smtext" />
+            <Layers size={13} className="text-textMuted/90" />
             <div className="h-2.5 w-16 bg-boxHover/50 rounded"></div>
           </div>
         </div>
@@ -75,17 +75,17 @@ export default function ListPgLoading({ isFast, isLast }) {
 
         <div className="hidden lg:flex flex-col items-start gap-1.5">
           <div className="h-2 w-12 bg-border rounded"></div>
-          <div className="flex items-center gap-1.5 text-smtext">
+          <div className="flex items-center gap-1.5 text-textMuted/90">
             <Users size={13} />
             <div className="h-3 w-8 bg-boxHover rounded shimmer"></div>
           </div>
         </div>
 
     
-        <div className="h-8 w-8 rounded-full border-2 border-accentA shimmer"></div>
+        <div className="h-8 w-8 rounded-full border-2 border-border shimmer"></div>
 
     
-        <div className="text-smtext">
+        <div className="text-textMuted/90">
           <MoreHorizontal size={18} />
         </div>
       </div>
@@ -94,7 +94,7 @@ export default function ListPgLoading({ isFast, isLast }) {
       <div className="col-span-2 flex lg:hidden flex-col gap-3 mt-2 border-t border-border pt-3">
         <div className="h-3 w-full bg-accentA/40 rounded shimmer"></div>
 
-        <div className="flex items-center justify-between text-smtext">
+        <div className="flex items-center justify-between text-textMuted/90">
           <div className="flex items-center gap-1.5">
             <Users size={12} />
             <div className="h-2.5 w-10 bg-boxHover rounded shimmer"></div>

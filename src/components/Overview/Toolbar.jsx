@@ -7,7 +7,6 @@ import SortQuickMenu from "./Toolbar/SortQuickMenu";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function Toolbar({
-
   updateView,
   updateSort,
   updateDirection,
@@ -79,7 +78,8 @@ export default function Toolbar({
             title="Grid View"
             className={clsx(
               "h-full px-2.5 flex items-center rounded-sm transition-all duration-200 cursor-pointer",
-              searchParams.get("view") === "grid"
+              searchParams.get("view") === "grid" ||
+                searchParams.get("view") === null
                 ? "bg-boxHover text-textPrimary shadow-sm"
                 : "bg-transparent hover:bg-boxHover hover:text-textPrimary/80",
             )}

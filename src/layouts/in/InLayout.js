@@ -20,15 +20,22 @@ export default function InLayout() {
 
   useEffect(() => {
     if (!scrollYProgress) return;
+    let scrollWidth = containerRef.current.scrollHeight;
+    let clientWidth = containerRef.current.clientHeight;
+
     const unsubscribe = scrollYProgress.on("change", async (value) => {
-      if (value >= 0.04632152588555858) {
-        setIsScrolled(true);
+      if (scrollWidth > clientWidth) {
+        if (value >= 0.04632152588555858) {
+          setIsScrolled(true);
+        } else {
+          setIsScrolled(false);
+        }
       } else {
         setIsScrolled(false);
       }
     });
     return () => unsubscribe?.();
-  }, [scrollYProgress]);
+  }, [scrollYProgress, containerRef]);
 
   // 🔹 Ref
   const navigate = useNavigate();
@@ -48,7 +55,7 @@ export default function InLayout() {
   return (
     <aside
       ref={containerRef}
-      className="h-screen overflow-y-auto overflow-x-hidden"
+      className="min-h-screen overflow-y-auto overflow-x-hidden"
     >
       {/* Main Header */}
       <Header />

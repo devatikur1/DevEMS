@@ -29,8 +29,6 @@ export default function AuthPage({ IsSignIn }) {
   // ---------------------
   useEffect(() => {
     if (isLogged === true) {
-
-      console.log(userDt);
       
       navigate(`/u?ref=${userDt?.username}`);
     }

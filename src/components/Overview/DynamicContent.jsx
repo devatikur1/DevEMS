@@ -16,12 +16,15 @@ export default function DynamicContent({
   const navigate = useNavigate();
   return (
     <section className="mt-8 mb-20 overflow-hidden">
-      <h1 className="pb-5 text-text font-semibold text-xl">Workspaces</h1>
+      <h1 className="pb-5 text-textPrimary font-semibold text-xl">
+        Workspaces
+      </h1>
       {/* VIEW */}
       <ul
         className={clsx(
           "overflow-hidden transition-all duration-0",
-          searchParams.get("view") === "grid" &&
+          (searchParams.get("view") === "grid" ||
+            searchParams.get("view") === null) &&
             "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5",
 
           searchParams.get("view") === "list" &&
@@ -44,10 +47,16 @@ export default function DynamicContent({
               role={role}
               searchParams={searchParams}
               deleteWorksplace={deleteWorksplace}
-              isGrid={searchParams.get("view") === "grid" ? true : false}
+              isGrid={
+                searchParams.get("view") === "grid" ||
+                searchParams.get("view") === null
+                  ? true
+                  : false
+              }
             />
           ))}
-        {searchParams.get("view") === "grid" &&
+        {(searchParams.get("view") === "grid" ||
+          searchParams.get("view") === null) &&
           workspacesGetting &&
           [...Array(10)].map((_, i) => <GridPgLoading key={i} />)}
 
@@ -82,19 +91,24 @@ export default function DynamicContent({
             <h3 className="text-textPrimary font-bold text-xl mb-2 tracking-tight">
               No workspaces found
             </h3>
-            <p className="text-textMuted text-sm max-w-[280px] mx-auto leading-relaxed opacity-80 group-hover:opacity-100 transition-opacity">
-              It looks like you haven't joined any workspace yet. Start your
-              journey by creating one.
+            <p className="text-textMuted text-sm max-w-[320px] mx-auto leading-relaxed opacity-80 group-hover:opacity-100 transition-opacity">
+              {role === "admin"
+                ? "You haven't created any workspaces yet. Build your first environment and start managing your team."
+                : "You are not a member of any workspace yet. Contact your administrator to get an invitation or join a team."}
             </p>
           </div>
 
           <button
-            onClick={() => navigate("/create-workspace")}
+            onClick={() =>
+              navigate(role === "admin" ? "/create-workspace" : "/u/workspace")
+            }
             className="mt-8 relative group/btn overflow-hidden px-8 py-3 bg-accent/10 hover:bg-accent border border-accent/20 hover:border-accent text-accent hover:text-white font-bold rounded-xl transition-all duration-300 active:scale-95 flex items-center gap-2 shadow-lg shadow-accent/5"
           >
             <Plus size={18} />
             <span className="uppercase tracking-[0.1em] text-[11px]">
-              Create Your First Workspace
+              {role === "admin"
+                ? "Create Your First Workspace"
+                : "No workspaces joined yet"}{" "}
             </span>
 
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/btn:animate-shine" />
