@@ -201,7 +201,7 @@ export default function OverviewPage() {
       });
     } else {
       sortedData.sort((a, b) =>
-        direction === "asc" ? a.serialid - b.serialid : b.serialid - a.serialid,
+        direction === "asc" ? a["WS-ID"] - b["WS-ID"] : b["WS-ID"] - a["WS-ID"],
       );
     }
     setworkspaceData(sortedData);
