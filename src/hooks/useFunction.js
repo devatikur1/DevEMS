@@ -96,6 +96,18 @@ export default function useFunction() {
     return id;
   }
 
+  // 🔹 Get Member Level
+  const getMemberLevel = (count) => {
+    if (count === "Unlimited") {
+      return "High";
+    } else {
+      const members = Number(count);
+      if (members >= 20) return "High";
+      if (members >= 10) return "Medium";
+      return "Low";
+    }
+  };
+
   // 🔹 Params Url
   function paramsUrl({ type, get, set, key, value }) {
     const params = new URLSearchParams(get);
@@ -174,11 +186,10 @@ export default function useFunction() {
         "Email not found. Please create an account first.",
     };
 
-    return (
-      AUTH_ERROR_MESSAGE_MAP[code] || "Failed! Please try again."
-    );
+    return AUTH_ERROR_MESSAGE_MAP[code] || "Failed! Please try again.";
   }
 
+  //🔹 Upload Image Fn
   async function uploadImageFn(file) {
     try {
       const formData = new FormData();
@@ -217,5 +228,6 @@ export default function useFunction() {
     uploadImageFn: uploadImageFn,
     genEmailbaseUid: genEmailbaseUid,
     genWSID: genWSID,
+    getMemberLevel: getMemberLevel,
   };
 }

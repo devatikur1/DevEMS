@@ -65,7 +65,7 @@ export default function FormContainer({
           {props.isCreteing ? (
             <>
               <Loader2 size={20} className="animate-spin" />
-              <span className="tracking-widest uppercase text-xs">
+              <span className="tracking-widest text-sm">
                 Creating...
               </span>
             </>

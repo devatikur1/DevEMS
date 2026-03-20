@@ -1,12 +1,13 @@
 import { ShieldCheck, User } from "lucide-react";
 import React from "react";
 import { motion } from "framer-motion";
-import setParamsOnUrl from "../../../function/setParamsOnUrl";
 import { useSearchParams } from "react-router-dom";
+import useFunction from "../../../hooks/useFunction";
 
 export default function RoleSelector({ setRole }) {
   // 🔹 React-Router-Dom && State
   const [searchParams, setSearchParams] = useSearchParams();
+  const { paramsUrl } = useFunction();
 
   // ---------------------
   // ✅ All Roles
@@ -48,7 +49,7 @@ export default function RoleSelector({ setRole }) {
             key={item.id}
             onClick={() => {
               setRole(item.id);
-              setParamsOnUrl({
+              paramsUrl({
                 get: searchParams,
                 set: setSearchParams,
                 key: "role",

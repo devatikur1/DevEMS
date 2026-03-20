@@ -12,9 +12,9 @@ import PerformanceGauge from "./PerformanceGauge";
 import HighlightText from "./HighlightText";
 import { AnimatePresence } from "framer-motion";
 import OptionBar from "./OptionBar";
-import { getMemberLevel } from "../../../function/getMemberLevel";
 import useFirestore from "../../../hooks/useFirestore";
 import { where } from "firebase/firestore";
+import useFunction from "../../../hooks/useFunction";
 
 export default function Placeholder({
   project,
@@ -30,6 +30,7 @@ export default function Placeholder({
   const [leadUserName, setLeadUserName] = useState("");
   const navigate = useNavigate();
   const { getData } = useFirestore();
+  const { getMemberLevel } = useFunction();
 
   if (!project) return null;
 

@@ -4,11 +4,12 @@ import { Facebook, Loader2, Mail } from "lucide-react";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { useSearchParams } from "react-router-dom";
-import setParamsOnUrl from "../../../function/setParamsOnUrl";
+import useFunction from "../../../hooks/useFunction";
 
 export default function LoginMethods({ providerSign, IsSignIn, role }) {
   // 🔹 Cutom Hook
   const { lodingitem, authSign } = providerSign;
+  const { paramsUrl } = useFunction();
 
   // 🔹 React-Router-Dom
   const [searchParams, setSearchParams] = useSearchParams();
@@ -56,7 +57,7 @@ export default function LoginMethods({ providerSign, IsSignIn, role }) {
             }}
             onClick={() => {
               if (id === "email_auth") {
-                setParamsOnUrl({
+                paramsUrl({
                   get: searchParams,
                   set: setSearchParams,
                   key: "method",

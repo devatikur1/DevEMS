@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import clsx from "clsx";
 import { useScroll } from "framer-motion";
 import { Plus, Timer, X, Search, Loader2 } from "lucide-react";
 import React, { useState, useEffect, useRef, useCallback } from "react";
@@ -40,7 +41,7 @@ export default function WorkspaceTechStack({ actTags }) {
 
       let url = `https://api.stackexchange.com/2.3/tags?order=desc&sort=popular&site=stackoverflow&pagesize=15&page=${pageNum}`;
       if (searchQuery.trim().length > 0) {
-        url += `&inname=${encodeURIComponent(searchQuery.trim())}`;
+        url += `&inname=${encodeURIComponent(searchQuery.trim().toLowerCase())}`;
       }
 
       const res = await fetch(url);
@@ -55,7 +56,7 @@ export default function WorkspaceTechStack({ actTags }) {
         });
 
         setHasMore(data.has_more);
-        data.has_more && setPage((p) => p + 1)
+        data.has_more && setPage((p) => p + 1);
       } else {
         if (pageNum === 1) setResults([]);
         setHasMore(false);
@@ -100,7 +101,7 @@ export default function WorkspaceTechStack({ actTags }) {
         await fetchTags(query, page);
       }
     },
-    [fetchTags, hasMore, isFetchingMore, query],
+    [hasMore, isFetchingMore, query],
   );
 
   useEffect(() => {
@@ -172,62 +173,77 @@ export default function WorkspaceTechStack({ actTags }) {
         </div>
 
         {/* Dropdown Results */}
-        {isFocused && (
-          <div className="absolute top-12 left-0 w-full bg-surfaceSoft border border-border rounded-lg shadow-xl z-20 flex flex-col py-2 px-1 space-y-1">
-            {results.length > 0 ? (
-              <div
-                className="max-h-56 overflow-y-auto flex flex-col px-2 custom-scrollbar relative"
-                ref={containerRef}
-              >
-                <div className="sticky top-0 z-10 bg-surfaceSoft text-[11px] font-medium text-textMuted uppercase tracking-wider px-2 py-1 mb-1">
-                  {query ? "Search Results" : "Recommended Tools"}
-                </div>
-                <ul>
-                  {results.map((tag, idx) => (
-                    <li
-                      key={`${tag}-${idx}`}
-                      type="button"
-                      onClick={() => addTag(tag)}
-                      className="group relative flex items-center justify-between w-full px-3 py-2 rounded-md hover:bg-boxHover transition-colors cursor-pointer text-left"
-                    >
-                      <span className="text-[13px] text-textPrimary/65 group-hover:text-textPrimary">
-                        {tag}
-                      </span>
-                      {activeTags.includes(tag) ? (
-                        <span className="text-[10px] text-accent font-medium px-2 py-0.5 rounded-full bg-accent/10 border border-accent/20">
-                          Added
-                        </span>
-                      ) : (
-                        <Plus
-                          size={16}
-                          className="text-textMuted group-hover:text-textPrimary cursor-pointer"
-                        />
-                      )}
-                    </li>
-                  ))}
-                </ul>
 
-                {/* Show spinner at bottom when fetching more */}
-                {isFetchingMore && (
-                  <div className="flex justify-center items-center py-3 text-textMuted">
-                    <Loader2 size={16} className="animate-spin text-accent" />
-                  </div>
-                )}
-              </div>
-            ) : !isLoading ? (
-              <div className="px-3 py-4 text-center text-sm text-textMuted italic">
-                No tools found. Try a different search.
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center px-3 py-8 text-textMuted">
-                <Loader2 size={24} className="animate-spin text-accent mb-2" />
-                <span className="text-[13px] font-medium animate-pulse">
-                  {query ? "Searching tools..." : "Loading options..."}
-                </span>
+        <div
+          className={clsx(
+            isFocused ? "flex" : "hidden",
+            "absolute top-12 left-0 w-full bg-surfaceSoft border border-border rounded-lg shadow-xl z-20 flex-col py-2 px-1 space-y-1",
+          )}
+        >
+          <div
+            className={clsx(
+              results.length > 0 ? "flex" : "hidden",
+              "max-h-56 overflow-y-auto flex flex-col px-2 custom-scrollbar relative",
+            )}
+            ref={containerRef}
+          >
+            <div className="sticky top-0 z-10 bg-surfaceSoft text-[11px] font-medium text-textMuted uppercase tracking-wider px-2 py-1 mb-1">
+              {query ? "Search Results" : "Recommended Tools"}
+            </div>
+            <ul>
+              {results.map((tag, idx) => (
+                <li
+                  key={`${tag}-${idx}`}
+                  type="button"
+                  onClick={() => addTag(tag)}
+                  className="group relative flex items-center justify-between w-full px-3 py-2 rounded-md hover:bg-boxHover transition-colors cursor-pointer text-left"
+                >
+                  <span className="text-[13px] text-textPrimary/65 group-hover:text-textPrimary">
+                    {tag}
+                  </span>
+                  {activeTags.includes(tag) ? (
+                    <span className="text-[10px] text-accent font-medium px-2 py-0.5 rounded-full bg-accent/10 border border-accent/20">
+                      Added
+                    </span>
+                  ) : (
+                    <Plus
+                      size={16}
+                      className="text-textMuted group-hover:text-textPrimary cursor-pointer"
+                    />
+                  )}
+                </li>
+              ))}
+            </ul>
+
+            {/* Show spinner at bottom when fetching more */}
+            {isFetchingMore && (
+              <div className="flex justify-center items-center py-3 text-textMuted">
+                <Loader2 size={16} className="animate-spin text-accent" />
               </div>
             )}
           </div>
-        )}
+
+          <div
+            className={clsx(
+              results.length === 0 && !isLoading ? "flex" : "hidden",
+              "px-3 py-4 text-center text-sm text-textMuted italic",
+            )}
+          >
+            No tools found. Try a different search.
+          </div>
+
+          <div
+            className={clsx(
+              results.length === 0 && isLoading ? "flex" : "hidden",
+              "flex flex-col items-center justify-center px-3 py-8 text-textMuted",
+            )}
+          >
+            <Loader2 size={24} className="animate-spin text-accent mb-2" />
+            <span className="text-[13px] font-medium animate-pulse">
+              {query ? "Searching tools..." : "Loading options..."}
+            </span>
+          </div>
+        </div>
       </div>
     </section>
   );
