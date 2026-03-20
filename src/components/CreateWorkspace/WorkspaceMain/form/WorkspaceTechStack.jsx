@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useScroll } from "framer-motion";
 import { Plus, Timer, X, Search, Loader2 } from "lucide-react";
 import React, { useState, useEffect, useRef, useCallback } from "react";
@@ -12,7 +13,6 @@ export default function WorkspaceTechStack({ actTags }) {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
-
 
   // 🔹 Ref
   const dropdownRef = useRef(null);
@@ -55,6 +55,7 @@ export default function WorkspaceTechStack({ actTags }) {
         });
 
         setHasMore(data.has_more);
+        data.has_more && setPage((p) => p + 1)
       } else {
         if (pageNum === 1) setResults([]);
         setHasMore(false);
@@ -87,22 +88,26 @@ export default function WorkspaceTechStack({ actTags }) {
   // --------------------------------------
   const { scrollYProgress } = useScroll({ container: containerRef });
 
-  const handleScrollChange = useCallback(async (value) => {
-    if (value > 0.85 && hasMore && !scrollTriggeredRef.current && !isFetchingMore) {
-      scrollTriggeredRef.current = true; 
-      setPage((prevPage) => {
-        const nextPage = prevPage + 1;
-        fetchTags(query, nextPage);
-        return nextPage;
-      });
-    }
-  }, [hasMore, isFetchingMore, query, fetchTags]);
+  const handleScrollChange = useCallback(
+    async (value) => {
+      if (
+        value > 0.85 &&
+        hasMore &&
+        !scrollTriggeredRef.current &&
+        !isFetchingMore
+      ) {
+        scrollTriggeredRef.current = true;
+        await fetchTags(query, page);
+      }
+    },
+    [fetchTags, hasMore, isFetchingMore, query],
+  );
 
   useEffect(() => {
     if (!scrollYProgress) return;
     const unsubscribe = scrollYProgress.on("change", handleScrollChange);
     return () => unsubscribe?.();
-  }, [scrollYProgress, handleScrollChange]);
+  }, [scrollYProgress]);
 
   const removeTag = (tagToRemove) => {
     setActiveTags(activeTags.filter((t) => t !== tagToRemove));
