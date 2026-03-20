@@ -70,7 +70,7 @@ const EmployeesPage = () => {
 
   // 🔹 Employees-State
   // const [searchQuery, setSearchQuery] = useState("");
-  const employees = useMemo(() => generateEmployees(10), []);
+  const employees = useMemo(() => generateEmployees(50), []);
   const [employeesGetting, setEmployeesGetting] = useState(false);
   const [lastEmployee, setLastEmployee] = useState(null);
   const [totalEmployees, setTotalEmployees] = useState(0);
@@ -146,12 +146,12 @@ const EmployeesPage = () => {
   // ----------------------------------------------------
   useEffect(() => {
     // 1. Sync States from URL
-     const FC =
-       searchParams.get("fc") === "department"
-         ? "department"
-         : searchParams.get("fc") === "position"
-           ? "position"
-           : "name";
+    const FC =
+      searchParams.get("fc") === "department"
+        ? "department"
+        : searchParams.get("fc") === "position"
+          ? "position"
+          : "name";
     const sort =
       searchParams.get("sort") === "name"
         ? "name"
@@ -191,7 +191,7 @@ const EmployeesPage = () => {
   }, [employees, searchParams]);
 
   return (
-    <main className="relative z-50 w-full min-h-screen flex justify-center text-textPrimary h-auto bg-transparent">
+    <main className="relative z-50 w-full min-h-screen flex justify-center text-textPrimary h-auto bg-transparent overflow-x-hidden">
       <figure className="w-[95%] xl:w-[90%] 2xl:w-[71%] pt-10">
         {/* Toolbar Section */}
         <Toolbar
@@ -212,6 +212,6 @@ const EmployeesPage = () => {
       </figure>
     </main>
   );
-};;
+};
 
 export default EmployeesPage;

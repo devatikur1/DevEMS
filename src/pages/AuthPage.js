@@ -29,7 +29,7 @@ export default function AuthPage({ IsSignIn }) {
   // ---------------------
   useEffect(() => {
     if (isLogged === true) {
-      navigate(`/u?ref=${userDt?.username}`);
+      navigate(`/u/${userDt?.username}`);
     }
   }, [isLogged, navigate, userDt, userDt?.username]);
 

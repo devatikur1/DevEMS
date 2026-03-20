@@ -58,27 +58,10 @@ export default function DynamicContent({
               No employees found
             </h3>
             <p className="text-textMuted text-sm max-w-[340px] mx-auto leading-relaxed opacity-80 group-hover:opacity-100 transition-opacity">
-              {role === "admin"
-                ? "Your team is empty. Start by inviting employees to your workspace to begin collaborating."
-                : "It looks like there are no other members in this workspace yet."}
+              No employees found. It looks like you are the first member here or
+              no one has joined yet.
             </p>
           </div>
-
-          <button
-            onClick={() =>
-              navigate(role === "admin" ? "/u/employees/invite" : "/u/overview")
-            }
-            className="mt-8 relative group/btn overflow-hidden px-8 py-3 bg-accent/10 hover:bg-accent border border-accent/20 hover:border-accent text-accent hover:text-white font-bold rounded-xl transition-all duration-300 active:scale-95 flex items-center gap-2 shadow-lg shadow-accent/5"
-          >
-            <Plus size={18} />
-            <span className="uppercase tracking-[0.1em] text-[11px]">
-              {role === "admin"
-                ? "Invite Your First Employee"
-                : "Return to Dashboard"}
-            </span>
-
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/btn:animate-shine" />
-          </button>
         </div>
       )}
     </section>

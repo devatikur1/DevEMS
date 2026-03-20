@@ -24,7 +24,7 @@ export default function App() {
         <Route path="sign-in" element={<AuthPage IsSignIn={true} />} />
         <Route path="sign-up" element={<AuthPage />} />
         <Route path="u" element={<InLayout />}>
-          <Route index element={<OverviewPage />} />
+          <Route path=":username" element={<OverviewPage />} />
           <Route path="employees" element={<EmployeesPage />} />
         </Route>
         <Route path="create-workspace" element={<CreateWorkspacePage />} />

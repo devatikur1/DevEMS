@@ -55,7 +55,7 @@ export default function InLayout() {
   return (
     <aside
       ref={containerRef}
-      className="min-h-screen overflow-y-auto overflow-x-hidden"
+      className="w-full h-screen overflow-y-auto overflow-x-hidden"
     >
       {/* Main Header */}
       <Header />
@@ -65,14 +65,20 @@ export default function InLayout() {
         navItems={
           userDt?.role === "admin"
             ? [
-                { name: "Overview", path: "/u" },
+                {
+                  name: "Overview",
+                  path: `/u/${userDt?.username || ":username"}`,
+                },
                 { name: "Activity", path: "/u/activity" },
                 { name: "Employees", path: "/u/employees" },
                 { name: "Analysis", path: "/u/analysis" },
                 { name: "Settings", path: "/u/settings" },
               ]
             : [
-                { name: "Overview", path: "/u" },
+                {
+                  name: "Overview",
+                  path: `/u/${userDt?.username || ":username"}`,
+                },
                 { name: "Activity", path: "/u/activity" },
                 { name: "Workspace", path: "/u/workspace" },
                 { name: "Analysis", path: "/u/analysis" },
