@@ -2,7 +2,7 @@
 /* eslint-disable no-throw-literal */
 import React, { useContext, useEffect, useState } from "react";
 import Header from "../components/custom/Header";
-import WorkspaceMain from "../components/CreateWorkspace/WorkspaceMain";
+import WorkspaceMain from "../components/createWorkspace/WorkspaceMain";
 import { AppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import useFunction from "../hooks/useFunction";

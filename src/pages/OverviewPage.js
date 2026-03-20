@@ -8,8 +8,8 @@ import React, {
   useState,
 } from "react";
 import { useSearchParams } from "react-router-dom";
-import Toolbar from "../components/Overview/Toolbar";
-import DynamicContent from "../components/Overview/DynamicContent";
+import Toolbar from "../components/overview/Toolbar";
+import DynamicContent from "../components/overview/DynamicContent";
 import { AppContext, } from "../context/AppContext";
 import { useScroll } from "framer-motion";
 import useFunction from "../hooks/useFunction";
