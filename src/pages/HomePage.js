@@ -53,7 +53,7 @@ export default function HomePage() {
         },
       });
     },
-    { scope: container }
+    { scope: container },
   );
 
   // ---------------------
