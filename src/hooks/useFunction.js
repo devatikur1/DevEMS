@@ -42,6 +42,12 @@ export default function useFunction() {
     }
   }
 
+  // 🔹 Check Uniqueness (Finds items in oldArr NOT in newArr)
+  function checkUniNessOnArr({ newArr, oldArr }) {
+    return newArr.filter(
+      (newItem) => !oldArr.some((oldItem) => oldItem.id === newItem.id),
+    );
+  }
   // 🔹 Unique Uid (Gen/Find)
   function genEmailbaseUid(email) {
     const LId = "3c3f3o3b38373p3b";
@@ -229,5 +235,6 @@ export default function useFunction() {
     genEmailbaseUid: genEmailbaseUid,
     genWSID: genWSID,
     getMemberLevel: getMemberLevel,
+    checkUniNessOnArr: checkUniNessOnArr,
   };
 }

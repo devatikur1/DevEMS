@@ -99,13 +99,24 @@ function useAuthProvider(setAuthMsg) {
 
           finalUserData = {
             uid: genEmailbaseUid(user.email),
+            name: formData?.name.trim() || user.displayName || "User",
+            email: user.email,
+            photoURL: formData?.photoURL.trim() || user.photoURL || "",
             role,
             username: `@${username.replace(/@/gm, "")}`,
-            email: user.email,
-            name: formData?.name.trim() || user.displayName || "User",
-            photoURL: formData?.photoURL.trim() || user.photoURL || "",
             emailVerified: user.emailVerified,
             createdAt: new Date(),
+            lastUpdated: new Date(),
+            status: "online",
+            description: "",
+            ...(role === "employee" && {
+              position: "",
+              department: "",
+              location: "",
+              tasksCompleted: 0,
+              joinedWS: 0,
+              performance: 0,
+            }),
           };
 
           await setData({

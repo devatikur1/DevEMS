@@ -1,47 +1,51 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: "class",
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+
   theme: {
     extend: {
       colors: {
-        // ===== Base Backgrounds =====
-        bg: "#000000",
-        bgSoft: "#f9f9f9",
-        surface: "#0a0a0a",
-        surfaceSoft: "#111111",
-        surfaceHard: "#080808",
+        bg: "rgb(var(--bg) / <alpha-value>)",
+        bgSoft: "rgb(var(--bgSoft) / <alpha-value>)",
 
-        // ===== Text =====
-        textPrimary: "#f9f9f9",
-        textMuted: "#7e7e7e",
-        textDark: "#000000",
+        surface: "rgb(var(--surface) / <alpha-value>)",
+        surfaceSoft: "rgb(var(--surfaceSoft) / <alpha-value>)",
+        surfaceHard: "rgb(var(--surfaceHard) / <alpha-value>)",
 
-        // ===== Accent / Brand =====
-        accent: "#3b82f6",
-        accentSoft: "#60a5fa",
-        accentHover: "#2563eb",
+        textPrimary: "rgb(var(--textPrimary) / <alpha-value>)",
+        textMuted: "rgb(var(--textMuted) / <alpha-value>)",
+        textDark: "rgb(var(--textDark) / <alpha-value>)",
 
-        // ===== UI States =====
-        hover: "#454545",
-        border: "#2d2d2d",
-        boxHover: "#141414",
+        accent: "rgb(var(--accent) / <alpha-value>)",
+        accentSoft: "rgb(var(--accentSoft) / <alpha-value>)",
+        accentHover: "rgb(var(--accentHover) / <alpha-value>)",
 
-        // ===== Status Colors =====
-        success: "#10b981",
-        successSoft: "#14532d",
-        warning: "#ffb300",
-        warningSoft: "#78350f",
-        error: "#ef4444",
-        errorSoft: "#881337",
-        info: "#38BDF8",
-        infoSoft: "#0B2A3A",
+        hover: "rgb(var(--hover) / <alpha-value>)",
+        border: "rgb(var(--border) / <alpha-value>)",
+        boxHover: "rgb(var(--boxHover) / <alpha-value>)",
 
-        // ===== Extra / Legacy =====
-        blue: "#0082fb",
-        purple: "#9333ea",
-        shadow: "#000000",
+        success: "rgb(var(--success) / <alpha-value>)",
+        successSoft: "rgb(var(--successSoft) / <alpha-value>)",
+
+        warning: "rgb(var(--warning) / <alpha-value>)",
+        warningSoft: "rgb(var(--warningSoft) / <alpha-value>)",
+
+        error: "rgb(var(--error) / <alpha-value>)",
+        errorSoft: "rgb(var(--errorSoft) / <alpha-value>)",
+
+        info: "rgb(var(--info) / <alpha-value>)",
+        infoSoft: "rgb(var(--infoSoft) / <alpha-value>)",
+      },
+
+      boxShadow: {
+        sm: "var(--shadow-sm)",
+        md: "var(--shadow-md)",
+        lg: "var(--shadow-lg)",
+        glow: "var(--shadow-glow)",
       },
     },
   },
+
   plugins: [],
 };

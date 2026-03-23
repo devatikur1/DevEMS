@@ -1,3 +1,6 @@
+/* Google font */
+@import url("https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
 /* index.css */
 :root {
   /* ===== Base Backgrounds ===== */
@@ -53,10 +56,126 @@
   font-display: swap;
 }
 
-* {
-  font-family: "CustomTriangleFont", sans-serif;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* ===== LIGHT THEME ===== */
+:root {
+  --bg: 248 250 252;
+  --bgSoft: 241 245 249;
+
+  --surface: 255 255 255;
+  --surfaceSoft: 249 250 251;
+  --surfaceHard: 243 244 246;
+
+  --textPrimary: 15 23 42;
+  --textMuted: 100 116 139;
+  --textDark: 0 0 0;
+
+  --accent: 37 99 235;
+  --accentSoft: 59 130 246;
+  --accentHover: 29 78 216;
+
+  --hover: 226 232 240;
+  --border: 229 231 235;
+  --boxHover: 241 245 249;
+
+  --success: 22 163 74;
+  --successSoft: 220 252 231;
+
+  --warning: 245 158 11;
+  --warningSoft: 254 243 199;
+
+  --error: 220 38 38;
+  --errorSoft: 254 226 226;
+
+  --info: 14 165 233;
+  --infoSoft: 224 242 254;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
 }
 
+/* ===== DARK THEME ===== */
+.dark {
+  --bg: 0 0 0;
+  --bgSoft: 10 10 10;
+
+  --surface: 10 10 10;
+  --surfaceSoft: 17 17 17;
+  --surfaceHard: 8 8 8;
+
+  --textPrimary: 249 250 251;
+  --textMuted: 126 126 126;
+  --textDark: 0 0 0;
+
+  --accent: 59 130 246;
+  --accentSoft: 96 165 250;
+  --accentHover: 37 99 235;
+
+  --hover: 31 31 31;
+  --border: 45 45 45;
+  --boxHover: 20 20 20;
+
+  --success: 16 185 129;
+  --successSoft: 20 83 45;
+
+  --warning: 255 179 0;
+  --warningSoft: 120 53 15;
+
+  --error: 239 68 68;
+  --errorSoft: 136 19 55;
+
+  --info: 56 189 248;
+  --infoSoft: 11 42 58;
+
+  /* Dark shadow */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.6);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.7);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.9);
+
+  /* Glow */
+  --shadow-glow: 0 0 0 1px rgba(255,255,255,0.05);
+}
+/* Fonts Mapping */
+html.font1 > * {
+  font-family: "CustomTriangleFont", sans-serif;
+}
+html.font2 > * {
+  font-family: "Google Sans", sans-serif;
+}
+html.font3 > * {
+ font-family: "Montserrat", sans-serif;
+}
+html.font4 > * {
+  font-family: "Google Sans", sans-serif;
+}
+html.font5 > * {
+  font-family: "Arimo", sans-serif;
+}
+
+/* Helper Classes */
+.font1 {
+  font-family: "CustomTriangleFont", sans-serif;
+}
+.font2 {
+  font-family: "Google Sans", sans-serif;
+}
+.font3 {
+  font-family: "Montserrat", sans-serif;
+}
+.font4 {
+  font-family: "Google Sans", sans-serif;
+}
+.font5 {
+  font-family: "Arimo", sans-serif;
+}
+
+/* Fonts End */
 @keyframes moveBackground {
   0% {
     background-position: 0 0;

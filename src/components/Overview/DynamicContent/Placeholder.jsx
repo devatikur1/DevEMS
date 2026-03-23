@@ -55,7 +55,7 @@ export default function Placeholder({
         className={clsx(
           "group relative grid p-5 bg-surface transition-all duration-300 w-full cursor-pointer",
           isGrid
-            ? "grid-cols-2 grid-rows-[auto_auto_auto_auto] gap-4 rounded-xl border border-boxHover hover:border-border"
+            ? "grid-cols-2 grid-rows-[auto_auto_auto_auto] gap-4 rounded-xl border border-boxHover hover:border-accentHover/30"
             : "grid-cols-2 lg:grid-cols-3 gap-3.5 p-4 items-center border-b border-border",
 
           isFast && !isGrid && "rounded-t-xl",

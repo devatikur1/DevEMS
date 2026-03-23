@@ -65,20 +65,14 @@ export default function InLayout() {
         navItems={
           userDt?.role === "admin"
             ? [
-                {
-                  name: "Overview",
-                  path: `/u/${userDt?.username || ":username"}`,
-                },
+                { name: "Overview", path: "/u" },
                 { name: "Activity", path: "/u/activity" },
                 { name: "Employees", path: "/u/employees" },
                 { name: "Analysis", path: "/u/analysis" },
                 { name: "Settings", path: "/u/settings" },
               ]
             : [
-                {
-                  name: "Overview",
-                  path: `/u/${userDt?.username || ":username"}`,
-                },
+                { name: "Overview", path: "/u" },
                 { name: "Activity", path: "/u/activity" },
                 { name: "Workspace", path: "/u/workspace" },
                 { name: "Analysis", path: "/u/analysis" },

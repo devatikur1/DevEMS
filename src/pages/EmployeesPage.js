@@ -1,10 +1,22 @@
-import React, { useState, useEffect, useMemo, useContext, useRef } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-throw-literal */
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useContext,
+  useRef,
+  useCallback,
+} from "react";
 
 import Toolbar from "../components/employee/Toolbar";
 import { useSearchParams } from "react-router-dom";
 import useFunction from "../hooks/useFunction";
 import { AppContext } from "../context/AppContext";
 import DynamicContent from "../components/employee/DynamicContent";
+import useFirestore from "../hooks/useFirestore";
+import { where } from "firebase/firestore";
+import { useScroll } from "framer-motion";
 
 // 🔹 1. Updated Data Generator (Added Description)
 const generateEmployees = (count) => {
@@ -59,30 +71,82 @@ const EmployeesPage = () => {
   const { authId, containerRef } = useContext(AppContext);
   const { userDt } = authId;
 
-  // 🔹 Ref
-  // const scrollTriggeredRef = useRef(false);
-
   // 🔹 Router &&  State
   const [searchParams, setSearchParams] = useSearchParams();
-  // const [employees, setEmployees] = useState([]);
+  const [employees, setEmployees] = useState([]);
   const [employeesData, setEmployeesData] = useState([]);
   const [showSortMenuBar, setShowSortMenuBar] = useState(false);
 
   // 🔹 Employees-State
   // const [searchQuery, setSearchQuery] = useState("");
-  const employees = useMemo(() => generateEmployees(50), []);
+  // const employees = useMemo(() => generateEmployees(50), []);
   const [employeesGetting, setEmployeesGetting] = useState(false);
   const [lastEmployee, setLastEmployee] = useState(null);
   const [totalEmployees, setTotalEmployees] = useState(0);
   const [importedEmployees, setImportedEmployees] = useState(0);
 
   // 🔹 Custom Hook
-  const { paramsUrl } = useFunction();
-  // const { getData, getCount } = useFirestore();
+  const { paramsUrl, checkUniNessOnArr } = useFunction();
+  const { getData, getCount } = useFirestore();
+
+  // 🔹 Ref
+  const scrollTriggeredRef = useRef(false);
 
   useEffect(() => {
     console.log(employeesData);
   }, [employeesData]);
+
+  // -------------------------
+  // ✅ Main Work
+  // -------------------------
+  useEffect(() => {
+    document.title = "DevEMS - Employees";
+
+    // 🔹 Get Employees Data
+    setEmployeesGetting(true);
+    setEmployees([]);
+    (async () => {
+      try {
+        // 1. Get Employee Count
+        const { status, count, error } = await getCount({
+          collId: "users",
+          whereQuery: [where("role", "==", "employee")],
+        });
+        if (!status) throw { code: error };
+        setTotalEmployees(count);
+
+        if (status && count > 0) {
+
+          // 2. Then Check count > 0 tahole Get Data
+          const { status, data, lastOne, error } = await getData({
+            collId: "users",
+            whereQuery: [where("role", "==", "employee")],
+            limitt: 10,
+          });
+          console.log(data);
+          let uniDat = checkUniNessOnArr({
+            newArr: data,
+            oldArr: employees,
+          });
+          if (status) {
+            setImportedEmployees(uniDat.length);
+            setEmployees(uniDat);
+            if (count > uniDat.length) {
+              setLastEmployee(lastOne);
+            } else {
+              setLastEmployee(null);
+            }
+          } else throw { code: error };
+        } else throw { code: "No Employees" };
+      } catch (error) {
+        console.log(error);
+        setEmployees([]);
+        setLastEmployee(null);
+      } finally {
+        setEmployeesGetting(false);
+      }
+    })();
+  }, [userDt?.uid]);
 
   // -------------------------
   // ✅ Toolbar Handlers
@@ -189,6 +253,65 @@ const EmployeesPage = () => {
     }
     setEmployeesData(sortedData);
   }, [employees, searchParams]);
+
+  // --------------------------------------
+  // ✅ INFINITE SCROLL FOR SUBSCRIPTIONS
+  // --------------------------------------
+  const { scrollYProgress } = useScroll({ container: containerRef });
+
+  const handleScrollChange = useCallback(
+    async (value) => {
+      if (
+        value > 0.85 &&
+        lastEmployee !== null &&
+        !scrollTriggeredRef.current
+      ) {
+        scrollTriggeredRef.current = true;
+        setEmployeesGetting(true);
+
+        try {
+          if (totalEmployees > importedEmployees) {
+            // 1. Then Check count > 0 tahole Get Data
+            const getDataa = await getData({
+              collId: "users",
+              whereQuery: [where("role", "==", "employee")],
+              limitt: 10,
+              startAfterr: lastEmployee,
+            });
+            let uniDat = checkUniNessOnArr({
+              newArr: getDataa.data,
+              oldArr: employees,
+            });
+            if (getDataa.status) {
+              setImportedEmployees(uniDat.length);
+              setEmployees(uniDat);
+              if (totalEmployees > uniDat.length) {
+                setLastEmployee(getDataa.lastOne);
+              } else {
+                setLastEmployee(null);
+              }
+            } else throw { code: getDataa.error };
+          } else throw { code: "No Employees" };
+        } catch (error) {
+          console.log(error);
+          setEmployees([]);
+          setLastEmployee(null);
+        } finally {
+          setEmployeesGetting(false);
+          setTimeout(() => {
+            scrollTriggeredRef.current = false;
+          }, 1000);
+        }
+      }
+    },
+    [employees, importedEmployees, lastEmployee, totalEmployees],
+  );
+
+  useEffect(() => {
+    if (!scrollYProgress) return;
+    const unsubscribe = scrollYProgress.on("change", handleScrollChange);
+    return () => unsubscribe?.();
+  }, [scrollYProgress, handleScrollChange]);
 
   return (
     <main className="relative z-50 w-full min-h-screen flex justify-center text-textPrimary h-auto bg-transparent overflow-x-hidden">

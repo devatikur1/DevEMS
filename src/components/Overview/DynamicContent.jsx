@@ -102,7 +102,7 @@ export default function DynamicContent({
             onClick={() =>
               navigate(role === "admin" ? "/create-workspace" : "/u/workspace")
             }
-            className="mt-8 relative group/btn overflow-hidden px-8 py-3 bg-accent/10 hover:bg-accent border border-accent/20 hover:border-accent text-accent hover:text-white font-bold rounded-xl transition-all duration-300 active:scale-95 flex items-center gap-2 shadow-lg shadow-accent/5"
+            className="mt-8 relative group/btn overflow-hidden px-8 py-3 bg-accent/10 hover:bg-accent border border-accent/20 hover:border-accentHover text-accent hover:text-white font-bold rounded-xl transition-all duration-300 active:scale-95 flex items-center gap-2 shadow-lg shadow-accent/5"
           >
             <Plus size={18} />
             <span className="uppercase tracking-[0.1em] text-[11px]">

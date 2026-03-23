@@ -10,7 +10,7 @@ import React, {
 import { useSearchParams } from "react-router-dom";
 import Toolbar from "../components/overview/Toolbar";
 import DynamicContent from "../components/overview/DynamicContent";
-import { AppContext, } from "../context/AppContext";
+import { AppContext } from "../context/AppContext";
 import { useScroll } from "framer-motion";
 import useFunction from "../hooks/useFunction";
 import useFirestore from "../hooks/useFirestore";
@@ -40,7 +40,7 @@ export default function OverviewPage() {
   const scrollTriggeredRef = useRef(false);
 
   // 🔹 Custom Hook
-  const { paramsUrl } = useFunction();
+  const { paramsUrl, checkUniNessOnArr } = useFunction();
   const { getData, getCount } = useFirestore();
 
   // -------------------------
@@ -81,17 +81,20 @@ export default function OverviewPage() {
           setTotalWorkplace(count);
 
           // 3. Then Check count < 0 tahole Get Data
-          if (count > 0) {
+          if (status && count > 0) {
             const { status, data, lastOne, error } = await getData({
               collId: "workspace",
               whereQuery: [where("leadUid", "==", uid)],
               limitt: 10,
             });
-
+            let uniDat = checkUniNessOnArr({
+              newArr: data,
+              oldArr: workspaces,
+            });
             if (status) {
-              setImportedWorkplace(data.length);
-              setWorkspace(data);
-              if (count > data.length) {
+              setImportedWorkplace(uniDat.length);
+              setWorkspace(uniDat);
+              if (count > uniDat.length) {
                 setLastWorkspace(lastOne);
               } else {
                 setLastWorkspace(null);
@@ -278,22 +281,25 @@ export default function OverviewPage() {
         setWorkspacesGetting(true);
 
         try {
-          const { status, data, lastOne, error } = await getData({
-            collId: "workspace",
-            whereQuery: [where("leadUid", "==", currentUid)],
-            limitt: 11,
-            startAfterr: lastWorkspaces,
-          });
-          if (status) {
-            let newDataCount = importedWorkplace + data.length;
-            setImportedWorkplace(newDataCount);
-            setWorkspace(data);
-            if (totalWorkplace > newDataCount) {
-              setLastWorkspace(lastOne);
-            } else {
-              setLastWorkspace(null);
-            }
-          } else throw { code: error };
+          if (totalWorkplace > importedWorkplace) {
+            // 1. Then Check count > 0 tahole Get Data
+            const { status, data, lastOne, error } = await getData({
+              collId: "workspace",
+              whereQuery: [where("leadUid", "==", currentUid)],
+              limitt: 11,
+              startAfterr: lastWorkspaces,
+            });
+            if (status) {
+              let newDataCount = importedWorkplace + data.length;
+              setImportedWorkplace(newDataCount);
+              setWorkspace(data);
+              if (totalWorkplace > newDataCount) {
+                setLastWorkspace(lastOne);
+              } else {
+                setLastWorkspace(null);
+              }
+            } else throw { code: error };
+          } else throw { code: "No Workspace" };
         } catch (error) {
           console.log(error);
           setWorkspace([]);

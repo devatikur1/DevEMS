@@ -3,7 +3,7 @@ import React from "react";
 export default function HighlightText({ text, highlight }) {
   if (!highlight.trim()) {
     return (
-      <h3 className="text-textPrimary font-semibold text-[13px] lg:text-[15px] truncate">
+      <h3 className="group-hover:text-accent  text-textPrimary font-semibold text-[13px] lg:text-[15px] truncate transition-all duration-300">
         {text}
       </h3>
     );
@@ -16,7 +16,7 @@ export default function HighlightText({ text, highlight }) {
   
 
   return (
-    <h3 className="text-textPrimary font-semibold text-[13px] lg:text-[15px] truncate">
+    <h3 className="group-hover:text-accent text-textPrimary font-semibold text-[13px] lg:text-[15px] truncate  transition-all duration-300">
       {parts.map((part, index) =>
         regex.test(part) ? (
           <mark key={index} className="bg-warning/20 text-warning">
@@ -24,7 +24,7 @@ export default function HighlightText({ text, highlight }) {
           </mark>
         ) : (
           <span key={index}>{part}</span>
-        )
+        ),
       )}
     </h3>
   );

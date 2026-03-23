@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-throw-literal */
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AppContext, auth } from "./AppContext";
 import { onAuthStateChanged } from "firebase/auth";
 import useFunction from "../hooks/useFunction";
@@ -15,8 +15,15 @@ export default function AppContextProvider({ children }) {
     JSON.parse(localStorage.getItem("userDt")) || {},
   );
 
-  // 🔹 workspaces && Ref
+  // 🔹 overview
   const [workspaces, setWorkspace] = useState([]);
+
+  // 🔹 settings
+  const [theme, setTheme] = useState("dark");
+  const [accent, setAccent] = useState("sky-blue");
+  const [font, setFont] = useState("inter");
+
+  // 🔹 Ref
   const containerRef = useRef(null);
 
   // 🔹 custom hook
@@ -64,6 +71,18 @@ export default function AppContextProvider({ children }) {
     return () => unsubscribe();
   }, []);
 
+  // --------------------------
+  // ✅ Get Current User Setting
+  // --------------------------
+  useLayoutEffect(() => {
+    let { themeName, fontId, fontClass } = JSON.parse(localStorage.getItem("setting")) || {};
+    document.documentElement.classList.add(fontClass || "font1");
+    document.documentElement.dataset.id = fontId || "inter";
+    document.documentElement.classList.add(themeName || "dark");
+    setFont(fontId || "inter");
+    setTheme(theme);
+  }, []);
+
   // ---------------------
   // ✅ Value
   // ---------------------
@@ -79,6 +98,14 @@ export default function AppContextProvider({ children }) {
       setWorkspace,
     },
     containerRef,
+    settingsdt: {
+      theme,
+      setTheme,
+      accent,
+      setAccent,
+      font,
+      setFont,
+    },
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }

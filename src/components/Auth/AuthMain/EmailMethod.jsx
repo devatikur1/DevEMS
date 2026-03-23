@@ -189,7 +189,7 @@ export default function EmailMethod({
                 setSignUpPart(signUpPart + 1);
             }}
             disabled={isFormBtnDis}
-            className="mt-3 w-full text-textPrimary bg-accent font-medium py-3 rounded-xl shadow-lg border border-border active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-accent/60"
+            className="mt-3 w-full text-textPrimary bg-accent font-medium py-3 rounded-xl border border-border active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-accent/60"
           >
             {imgUploading || lodingitem === "email_auth" ? (
               <Loader2 className="animate-spin mx-auto" size={20} />
@@ -221,7 +221,7 @@ export default function EmailMethod({
               }
             }}
             disabled={lodingitem === "email_auth"}
-            className="mt-2 w-full text-textPrimary bg-surfaceSoft hover:bg-boxHover font-medium py-3 rounded-xl shadow-lg border border-border hover:border-hover active:scale-[0.98] transition-all disabled:opacity-55"
+            className="mt-2 w-full text-textPrimary bg-surfaceSoft hover:bg-boxHover font-medium py-3 rounded-xl border border-border hover:border-hover active:scale-[0.98] transition-all disabled:opacity-55"
           >
             Go back
           </button>

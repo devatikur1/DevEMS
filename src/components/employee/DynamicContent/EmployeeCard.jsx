@@ -20,7 +20,7 @@ export default function EmployeeCard({ emp, index, searchParams }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index > 15 ? 0 : index * 0.05 }}
       key={emp.uid}
-      className="group relative bg-surface border border-border rounded-2xl overflow-hidden hover:border-accent/40 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(59,130,246,0.08)] flex flex-col"
+      className="group relative bg-surface border border-border rounded-2xl overflow-hidden hover:border-accentHover/40 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(59,130,246,0.08)] flex flex-col"
     >
       {/* Card Header Background */}
       <div className="h-16 bg-gradient-to-r from-surfaceHard via-surface to-boxHover border-b border-border relative">

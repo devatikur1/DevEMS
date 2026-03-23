@@ -75,7 +75,7 @@ export default function RoleSelector({ setRole }) {
             </div>
 
             <div className="absolute right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-              <div className="w-3 h-3 rounded-full bg-textPrimary shadow-[0_0_10px_rgba(255,255,255,0.5)]" />
+              <div className="w-3 h-3 rounded-full bg-textPrimary" />
             </div>
           </motion.button>
         ))}

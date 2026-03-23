@@ -40,7 +40,7 @@ export default function UploadImg({ img, setImg }) {
             <img
               src={img?.url}
               alt="Avatar"
-              className="w-32 h-32 object-cover rounded-full border-2 border-accent/30 p-1 group-hover:border-accent group-hover:scale-[1.02] transition-all duration-500 shadow-lg shadow-accent/10"
+              className="w-32 h-32 object-cover rounded-full border-2 border-accent/30 p-1 group-hover:border-accentHover group-hover:scale-[1.02] transition-all duration-500 shadow-lg shadow-accent/10"
             />
 
             <label

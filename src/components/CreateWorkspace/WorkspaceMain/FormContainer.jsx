@@ -57,7 +57,7 @@ export default function FormContainer({
         <button
           disabled={!isStepValid() || props.isCreteing}
           type="submit"
-          className="relative group mt-3 w-full h-12 text-textPrimary bg-accent font-medium rounded-xl shadow-lg border border-border active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-accent/60 flex items-center justify-center gap-2 overflow-hidden"
+          className="relative group mt-3 w-full h-12 text-textPrimary bg-accent font-medium rounded-xl border border-border active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-accent/60 flex items-center justify-center gap-2 overflow-hidden"
         >
           {/* Shine Animation inside button */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shine duration-700" />
@@ -89,7 +89,7 @@ export default function FormContainer({
           <button
             type="button"
             onClick={prevStep}
-            className="mt-2 w-full h-12 text-textPrimary bg-surfaceSoft hover:bg-boxHover font-medium rounded-xl shadow-lg border border-border hover:border-hover active:scale-[0.98] transition-all flex items-center justify-center gap-2 group"
+            className="mt-2 w-full h-12 text-textPrimary bg-surfaceSoft hover:bg-boxHover font-medium rounded-xl border border-border hover:border-hover active:scale-[0.98] transition-all flex items-center justify-center gap-2 group"
           >
             <ArrowLeft
               size={18}
