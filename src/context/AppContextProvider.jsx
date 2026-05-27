@@ -71,16 +71,31 @@ export default function AppContextProvider({ children }) {
     return () => unsubscribe();
   }, []);
 
-  // --------------------------
+  // ------------------------------
   // ✅ Get Current User Setting
-  // --------------------------
+  // -------------------------------
   useLayoutEffect(() => {
-    let { themeName, fontId, fontClass } = JSON.parse(localStorage.getItem("setting")) || {};
-    document.documentElement.classList.add(fontClass || "font1");
-    document.documentElement.dataset.id = fontId || "inter";
-    document.documentElement.classList.add(themeName || "dark");
-    setFont(fontId || "inter");
-    setTheme(theme);
+    let themeId = localStorage.getItem("themeId") || "dark";
+    let accentId = localStorage.getItem("accentId") || "sky-blue";
+    let fontId = localStorage.getItem("fontId") || "inter";
+
+    const root = document.documentElement;
+
+    root.dataset.accentId = themeId;
+    root.classList.add(themeId);
+    localStorage.setItem("themeId", themeId);
+
+    root.dataset.accentId = accentId;
+    root.classList.add(accentId);
+    localStorage.setItem("accentId", accentId);
+
+    root.dataset.accentId = fontId;
+    root.classList.add(fontId);
+    localStorage.setItem("fontId", fontId);
+
+    setTheme(themeId);
+    setAccent(accentId);
+    setFont(fontId);
   }, []);
 
   // ---------------------

@@ -96,6 +96,7 @@ function useAuthProvider(setAuthMsg) {
                   type: "gen",
                   baseName: `@${user.email.split("@")[0].toLowerCase()}`,
                 });
+          let date = new Date();
 
           finalUserData = {
             uid: genEmailbaseUid(user.email),
@@ -104,15 +105,14 @@ function useAuthProvider(setAuthMsg) {
             photoURL: formData?.photoURL.trim() || user.photoURL || "",
             role,
             username: `@${username.replace(/@/gm, "")}`,
-            emailVerified: user.emailVerified,
-            createdAt: new Date(),
-            lastUpdated: new Date(),
+            createdAt: date,
+            lastUpdated: date,
             status: "online",
             description: "",
+            location: "",
             ...(role === "employee" && {
               position: "",
               department: "",
-              location: "",
               tasksCompleted: 0,
               joinedWS: 0,
               performance: 0,
@@ -127,7 +127,7 @@ function useAuthProvider(setAuthMsg) {
           await setData({
             collId: "username",
             docId: finalUserData?.username,
-            data: { email: user.email, uid: finalUserData?.uid },
+            data: { email: user.email },
           });
         }
 
@@ -173,7 +173,7 @@ function useAuthProvider(setAuthMsg) {
             type: "warn",
             text: "We’ve sent a password reset link to your email. Check your inbox — and don’t forget to look in Spam or Promotions.",
           });
-        } else  throw { code: "custom/user-not-found" };
+        } else throw { code: "custom/user-not-found" };
       } catch (error) {
         setAuthMsg({ status: true, text: getErrMsg(error), type: "err" });
       }

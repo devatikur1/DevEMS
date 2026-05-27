@@ -46,9 +46,8 @@ export default function LoginMethods({ providerSign, IsSignIn, role }) {
   return (
     <>
       {LOGIN_PROVIDERS.map(({ id, label, icon: Icon }) => (
-        <>
+        <React.Fragment key={id}>
           <motion.button
-            key={id}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{
@@ -99,7 +98,7 @@ export default function LoginMethods({ providerSign, IsSignIn, role }) {
               <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-textMuted to-transparent" />
             </div>
           )}
-        </>
+        </React.Fragment>
       ))}
     </>
   );

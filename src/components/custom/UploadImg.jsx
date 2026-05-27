@@ -1,8 +1,13 @@
 import { Pen, UploadCloud, AlertCircle } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
-
-export default function UploadImg({ img, setImg }) {
+export default function UploadImg({
+  img,
+  setImg,
+  isShow = true,
+  labelClass = "flex",
+  fileInputRef,
+}) {
   const [error, setError] = useState(null);
 
   // ---------------------
@@ -45,7 +50,7 @@ export default function UploadImg({ img, setImg }) {
 
             <label
               htmlFor="file"
-              className="absolute bottom-1 -right-1 flex justify-center items-center gap-1.5 rounded-full px-3 py-1 bg-surface border border-border text-[10px] font-bold uppercase tracking-wider text-textMuted cursor-pointer hover:bg-hover hover:text-textPrimary transition-all duration-300 shadow-xl"
+              className={`absolute bottom-1 -right-1 ${labelClass} justify-center items-center gap-1.5 rounded-full px-3 py-1 bg-surface border border-border text-[10px] font-bold uppercase tracking-wider text-textMuted cursor-pointer hover:bg-hover hover:text-textPrimary transition-all duration-300 shadow-xl`}
             >
               <Pen size={10} />
               <span>Edit</span>
@@ -78,7 +83,7 @@ export default function UploadImg({ img, setImg }) {
         </div>
       )}
 
-      {!error && !img.url && (
+      {!error && !img.url && isShow && (
         <p className="text-[10px] text-textMuted font-medium tracking-wide opacity-50">
           Max size: 32MB
         </p>
@@ -86,6 +91,7 @@ export default function UploadImg({ img, setImg }) {
 
       <input
         onChange={onChangeImage}
+        ref={fileInputRef}
         id="file"
         accept="image/*"
         className="hidden"

@@ -42,10 +42,7 @@ export default function CreateWorkspacePage() {
   // ----------------------------
   useEffect(() => {
     document.title = "DevEMS - Create Workspace";
-    if (!isLogged) {
-      navigate("/");
-    }
-    if (userDt.role === "employee") {
+    if (userDt.role === "employee" || !isLogged) {
       navigate("/u");
     }
   }, [isLogged, userDt]);

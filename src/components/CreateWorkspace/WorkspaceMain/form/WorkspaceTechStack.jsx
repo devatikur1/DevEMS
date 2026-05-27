@@ -183,7 +183,7 @@ export default function WorkspaceTechStack({ actTags }) {
           <div
             className={clsx(
               results.length > 0 ? "flex" : "hidden",
-              "max-h-56 overflow-y-auto flex flex-col px-2 custom-scrollbar relative",
+              "max-h-56 overflow-y-auto flex flex-col px-2 relative",
             )}
             ref={containerRef}
           >

@@ -170,7 +170,7 @@ export default function HomePage() {
             </div>
 
             <Link to="/u" className="inline-block pt-8 hp pointer-events-auto">
-              <button className="relative group overflow-hidden bg-bgSoft text-[0.8rem] md:text-[1rem] text-bg px-8 py-2 lg:px-10 lg:py-3 rounded-full font-bold transition-all hover:scale-105 active:scale-95">
+              <button className="relative group overflow-hidden bg-bgSoft text-[0.8rem] md:text-[1rem] text-textDark px-8 py-2 lg:px-10 lg:py-3 rounded-full font-bold transition-all hover:scale-105 active:scale-95">
                 <span className="relative z-10">Start Managing Now</span>
                 <div className="absolute inset-0 bg-accent translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
               </button>

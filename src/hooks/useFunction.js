@@ -33,13 +33,12 @@ export default function useFunction() {
         }
       }
       return username;
-    } else {
-      const usersDoc = await getDoc(doc(db, "username", username));
-      if (usersDoc.exists()) {
-        return false;
-      }
-      return true;
     }
+    const usersDoc = await getDoc(doc(db, "username", username));
+    if (usersDoc.exists()) {
+      return false;
+    }
+    return true;
   }
 
   // 🔹 Check Uniqueness (Finds items in oldArr NOT in newArr)
@@ -48,6 +47,18 @@ export default function useFunction() {
       (newItem) => !oldArr.some((oldItem) => oldItem.id === newItem.id),
     );
   }
+
+  // 🔹 Get Current Accent Color
+  function getCurrentAccent(id) {
+    if (id === "accent") {
+      return document.documentElement.dataset.accentColor;
+    } else if (id === "accentSoft") {
+      return document.documentElement.dataset.accentSoftColor;
+    } else if (id === "accentHover") {
+      return document.documentElement.dataset.accentHoverColor;
+    }
+  }
+
   // 🔹 Unique Uid (Gen/Find)
   function genEmailbaseUid(email) {
     const LId = "3c3f3o3b38373p3b";
@@ -227,14 +238,15 @@ export default function useFunction() {
   }
 
   return {
-    passValidation: passValidation,
-    paramsUrl: paramsUrl,
-    uniUsername: uniUsername,
-    getErrMsg: getErrMsg,
-    uploadImageFn: uploadImageFn,
-    genEmailbaseUid: genEmailbaseUid,
-    genWSID: genWSID,
-    getMemberLevel: getMemberLevel,
-    checkUniNessOnArr: checkUniNessOnArr,
+    passValidation,
+    paramsUrl,
+    uniUsername,
+    getErrMsg,
+    uploadImageFn,
+    genEmailbaseUid,
+    genWSID,
+    getMemberLevel,
+    checkUniNessOnArr,
+    getCurrentAccent,
   };
 }

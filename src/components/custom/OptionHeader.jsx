@@ -41,7 +41,7 @@ export default function OptionHeader({ navItems, isScrolled }) {
               to={item.path}
               onMouseEnter={() => setHoveredTab(item.name)}
               className={clsx(
-                "relative z-20 text-[0.85rem] px-3 pt-2 pb-3 transition-colors duration-300 h-full",
+                "relative z-20 text-xs md:text-[0.85rem] px-3 pt-2 pb-3 transition-colors duration-300 h-full",
                 isActive
                   ? "text-textPrimary"
                   : "text-textMuted hover:text-textPrimary",

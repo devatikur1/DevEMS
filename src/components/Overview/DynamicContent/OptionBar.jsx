@@ -74,14 +74,13 @@ export default function OptionBar({
           <button
             onClick={(e) => {
               navigator.clipboard
-                .writeText(optionBarDt.link)
+                .writeText(`${document.location.origin}${optionBarDt.link}`)
                 .then(() => {
                   e.target.innerText = "Copied!";
                 })
                 .catch((err) => {
                   console.log("Could not copy text: ", err);
-                   e.target.innerText = "Could not copy text!";
-                  
+                  e.target.innerText = "Could not copy text!";
                 });
               setTimeout(() => {
                 setShowOptionBar(false);

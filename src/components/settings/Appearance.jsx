@@ -1,7 +1,7 @@
 import React from "react";
 import { Sun, Moon, CircleCheckBig } from "lucide-react";
 import clsx from "clsx";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const THEME_OPTIONS = [
   {
@@ -21,42 +21,63 @@ const THEME_OPTIONS = [
 ];
 
 const ACCENT_COLOR_OPTIONS = [
-  { id: "sky-blue", label: "Sky Blue", hex: "#3b82f6" },
-  { id: "emerald-green", label: "Emerald Green", hex: "#10b981" },
-  { id: "royal-violet", label: "Royal Violet", hex: "#8b5cf6" },
-  { id: "rose-pink", label: "Rose Pink", hex: "#f43f5e" },
-  { id: "amber-gold", label: "Amber Gold", hex: "#f59e0b" },
+  {
+    id: "sky-blue",
+    accentColor: "#3b82f6",
+  },
+
+  {
+    id: "neon-purple",
+    accentColor: "#a855f7",
+  },
+
+  {
+    id: "cyan-neon",
+    accentColor: "#06b6d4",
+  },
+
+  {
+    id: "emerald-green",
+    accentColor: "#10b981",
+  },
+
+  {
+    id: "rose-pink",
+    accentColor: "#ec4899",
+  },
 ];
 
 const FONT_OPTIONS = [
-  { id: "inter", label: "Inter", fontClass: "font1" },
-  { id: "google-sans", label: "Google Sans", fontClass: "font2" },
-  { id: "montserrat", label: "Montserrat", fontClass: "font3" },
-  { id: "arimo", label: "Arimo", fontClass: "font4" },
+  { id: "inter" },
+  { id: "plus-jakarta-sans" },
+  { id: "manrope" },
+  { id: "general-sans" },
+  { id: "sora" },
+  { id: "outfit" },
 ];
 
 export default function Appearance({
   theme,
   accent,
   font,
-  setAccent,
+  handleAccentColor,
   handleThemeChange,
   handleFontChange,
 }) {
   return (
-    <div className="w-full max-w-4xl mx-auto p-6 space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="w-full max-w-4xl mx-auto md:pt-5 space-y-8 md:space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* 1. Select Theme Section */}
       <section>
-        <header className="mb-6">
-          <h2 className="text-lg font-semibold text-textPrimary mb-1">
+        <header className="mb-7 md:mb-6">
+          <h2 className="text-lg font-semibold text-textPrimary mb-1 text-center md:text-left">
             Select Theme
           </h2>
-          <p className="text-xs text-textMuted">
+          <p className="text-xs text-textMuted text-center md:text-left px-2 md:px-0">
             Personalize your workspace appearance
           </p>
         </header>
 
-        <div className="flex gap-4">
+        <div className="flex flex-col md:flex-row gap-4">
           {THEME_OPTIONS.map(({ id, label, icon: Icon, des, bg }) => {
             const isActive = theme === id;
             return (
@@ -97,23 +118,23 @@ export default function Appearance({
       </section>
 
       {/* 2. Accent Color Section */}
-      <section className="flex justify-between items-center py-4 border-t border-border/50">
+      <section className="flex flex-col md:flex-row gap-5 md:gap-0 justify-between items-center pt-8 pb-4 md:pt-9 md:pb-0 border-t border-border/50">
         <article>
-          <h2 className="text-md font-semibold text-textPrimary">
+          <h2 className="text-md font-semibold text-textPrimary text-center md:text-left">
             Accent color
           </h2>
-          <p className="text-[11px] text-textMuted">
+          <p className="text-[11px] text-textMuted text-center md:text-left">
             Choose your primary brand color
           </p>
         </article>
         <div className="flex items-center gap-3">
-          {ACCENT_COLOR_OPTIONS.map(({ id, label, hex }) => {
-            const isActive = accent === id;
+          {ACCENT_COLOR_OPTIONS.map((clr) => {
+            const isActive = accent === clr.id;
             return (
               <button
-                key={id}
-                title={label}
-                onClick={() => setAccent(id)}
+                key={clr.id}
+                title={clr.id}
+                onClick={() => handleAccentColor(clr.id)}
                 className="relative flex items-center justify-center w-7 h-7 group"
               >
                 {/* Outer Ring */}
@@ -122,11 +143,11 @@ export default function Appearance({
                     "absolute inset-0 rounded-full border-2 transition-all duration-300",
                     isActive ? "opacity-100 scale-110" : "opacity-0 scale-50",
                   )}
-                  style={{ borderColor: hex }}
+                  style={{ borderColor: clr.accentColor }}
                 />
                 {/* Inner Circle */}
                 <div
-                  style={{ backgroundColor: hex }}
+                  style={{ backgroundColor: clr.accentColor }}
                   className={clsx(
                     "w-5 h-5 rounded-full transition-transform duration-300 shadow-md",
                     isActive ? "scale-90" : "group-hover:scale-110",
@@ -139,26 +160,26 @@ export default function Appearance({
       </section>
 
       {/* 3. Font Style Section */}
-      <section className="flex justify-between items-center py-4 border-t border-border/50">
+      <section className="flex flex-col md:flex-row gap-5 md:gap-0 justify-between items-center pt-8 pb-6 md:pt-9 md:pb-4 border-t border-border/50">
         <article>
-          <h2 className="text-md font-semibold text-textPrimary">Font style</h2>
-          <p className="text-[11px] text-textMuted">
+          <h2 className="text-md font-semibold text-textPrimary text-center md:text-left">
+            Font style
+          </h2>
+          <p className="text-[11px] text-textMuted text-center md:text-left">
             Choose your preferred typography
           </p>
         </article>
         <div className="flex items-center gap-3">
-          {FONT_OPTIONS.map(({ id, label, fontClass }) => {
-            const isActive = font === id;
+          {FONT_OPTIONS.map((fnt) => {
+            const isActive = font === fnt.id;
             return (
               <button
-                key={id}
-                title={label}
-                onClick={() =>
-                  handleFontChange(id, fontClass, { id, label, fontClass })
-                }
+                key={fnt.id}
+                title={fnt.id}
+                onClick={() => handleFontChange(fnt.id)}
                 className={clsx(
                   "w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-200 border",
-                  fontClass,
+                  fnt.id,
                   isActive
                     ? "bg-accent text-textPrimary border-accent shadow-md scale-105"
                     : "bg-bg text-textMuted border-border hover:bg-secondary/40",

@@ -40,7 +40,7 @@ export default function OverviewPage() {
   const scrollTriggeredRef = useRef(false);
 
   // 🔹 Custom Hook
-  const { paramsUrl, checkUniNessOnArr } = useFunction();
+  const { paramsUrl, checkUniNessOnArr, genEmailbaseUid } = useFunction();
   const { getData, getCount } = useFirestore();
 
   // -------------------------
@@ -58,7 +58,7 @@ export default function OverviewPage() {
         try {
           // 1. Get User Uid
           let uid;
-          if (refarene === userDt?.username) {
+          if (refarene === userDt?.username || refarene === "") {
             uid = userDt?.uid;
           } else {
             const getDataa = await getData({
@@ -68,7 +68,7 @@ export default function OverviewPage() {
             if (getDataa.status && getDataa.data === null)
               throw { code: "No Workspace" };
             if (!getDataa.status) throw { code: "No Workspace" };
-            uid = getDataa.data?.uid;
+            uid = genEmailbaseUid(getDataa.data?.email);
           }
           setCurrentUid(uid);
 
@@ -87,14 +87,10 @@ export default function OverviewPage() {
               whereQuery: [where("leadUid", "==", uid)],
               limitt: 10,
             });
-            let uniDat = checkUniNessOnArr({
-              newArr: data,
-              oldArr: workspaces,
-            });
             if (status) {
-              setImportedWorkplace(uniDat.length);
-              setWorkspace(uniDat);
-              if (count > uniDat.length) {
+              setImportedWorkplace(data.length);
+              setWorkspace(data);
+              if (count > data.length) {
                 setLastWorkspace(lastOne);
               } else {
                 setLastWorkspace(null);
@@ -286,14 +282,18 @@ export default function OverviewPage() {
             const { status, data, lastOne, error } = await getData({
               collId: "workspace",
               whereQuery: [where("leadUid", "==", currentUid)],
-              limitt: 11,
-              startAfterr: lastWorkspaces,
+              limitt: 10,
             });
+
+            let uniDat = checkUniNessOnArr({
+              newArr: data,
+              oldArr: workspaces,
+            });
+
             if (status) {
-              let newDataCount = importedWorkplace + data.length;
-              setImportedWorkplace(newDataCount);
-              setWorkspace(data);
-              if (totalWorkplace > newDataCount) {
+              setImportedWorkplace(uniDat.length);
+              setWorkspace(uniDat);
+              if (totalWorkplace > (importedWorkplace + uniDat.length)) {
                 setLastWorkspace(lastOne);
               } else {
                 setLastWorkspace(null);

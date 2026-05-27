@@ -13,8 +13,9 @@ export default function Header({
   text = "DevEMS",
 }) {
   // 🔹 useContext context
-  const { authId } = useContext(AppContext);
+  const { authId, settingsdt } = useContext(AppContext);
   const { userDt } = authId;
+  const { theme } = settingsdt;
 
   // ---------------------
   // ✅ Render
@@ -27,15 +28,30 @@ export default function Header({
         <article>
           <Link to={link} className="min-w-4 min-h-4 md:min-w-5 md:min-h-5">
             {isLogo ? (
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 76 65"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M38 0L76 65H0L38 0Z" fill="white" />
-              </svg>
+              <>
+                {theme === "dark" ? (
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 76 65"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M38 0L76 65H0L38 0Z" fill="white" />
+                  </svg>
+                ) : (
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 76 65"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="fill-textPrimary"
+                  >
+                    <path d="M38 0L76 65H0L38 0Z" />
+                  </svg>
+                )}
+              </>
             ) : (
               <div className="flex justify-center items-start gap-1 group">
                 <ArrowLeft
@@ -55,7 +71,9 @@ export default function Header({
               {text}
             </h1>
           ) : (
-            <h1 className="flex-none truncate text-[0.95rem] font-medium">{text}</h1>
+            <h1 className="flex-none truncate text-[0.95rem] font-medium">
+              {text}
+            </h1>
           )}
         </article>
         <article className="cursor-pointer">

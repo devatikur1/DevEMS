@@ -1,9 +1,9 @@
-/* Google font */
-@import url("https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
-
+/* Google Fonts Import */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Plus+Jakarta+Sans:wght@200..800&family=Manrope:wght@200..800&family=Outfit:wght@100..900&family=Sora:wght@100..800&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "goey-toast/styles.css";
 
 /* 1. Define the font face */
 @font-face {
@@ -14,50 +14,48 @@
   font-display: swap;
 }
 
-
 /* ===== LIGHT THEME ===== */
 :root {
-  --bg: 248 250 252;
-  --bgSoft: 241 245 249;
+  --bg: 249 249 249;
+  --bgSoft: 0 0 0;
 
   --surface: 255 255 255;
-  --surfaceSoft: 249 250 251;
-  --surfaceHard: 243 244 246;
+  --surfaceSoft: 243 244 246;
+  --surfaceHard: 229 231 235;
 
-  --textPrimary: 15 23 42;
-  --textMuted: 100 116 139;
-  --textDark: 0 0 0;
+  --textPrimary: 17 24 39;
+  --textMuted: 107 114 128;
+  --textDark: 249 250 251;
 
-  --accent: 37 99 235;
-  --accentSoft: 59 130 246;
-  --accentHover: 29 78 216;
+  --accent: 59 130 246;
+  --accentSoft: 96 165 250;
+  --accentHover: 37 99 235;
 
-  --hover: 226 232 240;
-  --border: 229 231 235;
-  --boxHover: 241 245 249;
+  --hover: 229 231 235;
+  --border: 209 213 219;
+  --boxHover: 243 244 246;
 
-  --success: 22 163 74;
-  --successSoft: 220 252 231;
+  --success: 16 185 129;
+  --successSoft: 209 250 229;
 
   --warning: 245 158 11;
   --warningSoft: 254 243 199;
 
-  --error: 220 38 38;
+  --error: 239 68 68;
   --errorSoft: 254 226 226;
 
-  --info: 14 165 233;
+  --info: 56 189 248;
   --infoSoft: 224 242 254;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-  --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
+  --blue: 0 130 251;
+  --purple: 147 51 234;
+  --shadow: 0 0 0;
 }
 
 /* ===== DARK THEME ===== */
 .dark {
   --bg: 0 0 0;
-  --bgSoft: 10 10 10;
+  --bgSoft: 249 249 249;
 
   --surface: 10 10 10;
   --surfaceSoft: 17 17 17;
@@ -87,47 +85,101 @@
   --info: 56 189 248;
   --infoSoft: 11 42 58;
 
-  /* Dark shadow */
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.6);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.7);
-  --shadow-lg: 0 10px 30px rgba(0,0,0,0.9);
-
-  /* Glow */
-  --shadow-glow: 0 0 0 1px rgba(255,255,255,0.05);
+  --blue: 0 130 251;
+  --purple: 147 51 234;
+  --shadow: 0 0 0;
 }
 
 /* Fonts Mapping */
-html.font1 > * {
-  font-family: "CustomTriangleFont", sans-serif;
+html.inter > * {
+  font-family: "Inter", sans-serif;
 }
-html.font2 > * {
-  font-family: "Google Sans", sans-serif;
+
+html.plus-jakarta-sans > * {
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
-html.font3 > * {
- font-family: "Montserrat", sans-serif;
+
+html.manrope > * {
+  font-family: "Manrope", sans-serif;
 }
-html.font4 > * {
-  font-family: "Google Sans", sans-serif;
+
+html.outfit > * {
+  font-family: "Outfit", sans-serif;
 }
-html.font5 > * {
-  font-family: "Arimo", sans-serif;
+
+html.sora > * {
+  font-family: "Sora", sans-serif;
 }
 
 /* Helper Classes */
-.font1 {
-  font-family: "CustomTriangleFont", sans-serif;
+.inter {
+  font-family: "Inter", sans-serif;
 }
-.font2 {
-  font-family: "Google Sans", sans-serif;
+
+.plus-jakarta-sans {
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
-.font3 {
-  font-family: "Montserrat", sans-serif;
+
+.manrope {
+  font-family: "Manrope", sans-serif;
 }
-.font4 {
-  font-family: "Google Sans", sans-serif;
+
+.outfit {
+  font-family: "Outfit", sans-serif;
 }
-.font5 {
-  font-family: "Arimo", sans-serif;
+
+.sora {
+  font-family: "Sora", sans-serif;
+}
+
+/* 🌕 Light Accent Color Mapping */
+.light.neon-purple {
+  --accent: 147 51 234;
+  --accentSoft: 216 180 254;
+  --accentHover: 126 34 206;
+}
+
+.light.cyan-neon {
+  --accent: 8 145 178;
+  --accentSoft: 165 243 252;
+  --accentHover: 14 116 144;
+}
+
+.light.emerald-green {
+  --accent: 5 150 105;
+  --accentSoft: 167 243 208;
+  --accentHover: 4 120 87;
+}
+
+.light.rose-pink {
+  --accent: 219 39 119;
+  --accentSoft: 251 207 232;
+  --accentHover: 190 24 93;
+}
+
+/* 🌑 Dark Accent Color Mapping */
+.dark.neon-purple {
+  --accent: 168 85 247;
+  --accentSoft: 192 132 252;
+  --accentHover: 147 51 234;
+}
+
+.dark.cyan-neon {
+  --accent: 6 182 212;
+  --accentSoft: 103 232 249;
+  --accentHover: 8 145 178;
+}
+
+.dark.emerald-green {
+  --accent: 16 185 129;
+  --accentSoft: 52 211 153;
+  --accentHover: 5 150 105;
+}
+
+.dark.rose-pink {
+  --accent: 236 72 153;
+  --accentSoft: 244 114 182;
+  --accentHover: 219 39 119;
 }
 
 .outline-custom {
@@ -144,8 +196,8 @@ html.font5 > * {
 }
 
 ::selection {
-  color: #09090b;
-  background-color: #f9f9f9;
+  color: rgb(var(--bg));
+  background-color: rgb(var(--bgSoft));
 }
 
 @layer base {
@@ -157,24 +209,19 @@ html.font5 > * {
 
   /* Scrollbar-er background (Track) - apnar 'bg' color (#09090b) */
   ::-webkit-scrollbar-track {
-    background: #09090b;
+    background: rgb(var(--bg));
   }
 
   /* Scrollbar-er moving part (Thumb) - apnar 'border' color (#212123) */
   ::-webkit-scrollbar-thumb {
-    background: #1f1f1f;
-    border-radius: 10px;
-    border: 2px solid #212123; /* Ete scrollbar-er pashe ektu gap thakbe, dekhte shundor lage */
+    background: rgb(var(--bgSoft));
+    border-radius: 18px;
+    border: 2px solid rgb(var(--bgSoft)); /* Ete scrollbar-er pashe ektu gap thakbe, dekhte shundor lage */
   }
 
   /* Hover korle thumb-er color change - apnar 'hover' color (#27272a) */
   ::-webkit-scrollbar-thumb:hover {
-    background: #212123;
-  }
-
-  /* Scrollbar corner (jokhon horizontal o vertical duitoy thake) */
-  ::-webkit-scrollbar-corner {
-    background: #09090b;
+    cursor: grabbing;
   }
 
   .scrollVeiwNone::-webkit-scrollbar {

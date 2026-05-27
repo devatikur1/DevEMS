@@ -37,40 +37,36 @@ export default function AuthMain({ IsSignIn }) {
   return (
     <>
       {/* Auth Main Section */}
-      <AnimatePresence>
-        <motion.main
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          className="w-full flex flex-col items-center justify-center gap-5 select-none *:select-none"
-        >
-          <AnimatePresence>
-            {searchParams.get("role") === null ? (
-              <RoleSelector key={"role-section"} setRole={setRole} />
-            ) : searchParams.get("method") === "email" ? (
-              <EmailMethod
-                key={"email-method"}
-                IsSignIn={IsSignIn}
-                authMsg={authMsg}
-                setAuthMsg={setAuthMsg}
-                providerSign={providerSign}
-                role={role}
-              />
-            ) : (
-              <LoginMethods
-                key={"all-login-method"}
-                IsSignIn={IsSignIn}
-                role={role}
-                providerSign={providerSign}
-              />
-            )}
-          </AnimatePresence>
-        </motion.main>
-      </AnimatePresence>
+      <motion.main
+        key={`${searchParams.get("role")}-${searchParams.get("method")}`}
+        initial={{ opacity: 0, height: 0 }}
+        animate={{ opacity: 1, height: "auto" }}
+        exit={{ opacity: 0, height: 0 }}
+        className="w-full flex flex-col items-center justify-center gap-5 select-none *:select-none"
+      >
+        <AnimatePresence>
+          {searchParams.get("role") === null ? (
+            <RoleSelector setRole={setRole} />
+          ) : searchParams.get("method") === "email" ? (
+            <EmailMethod
+              IsSignIn={IsSignIn}
+              authMsg={authMsg}
+              setAuthMsg={setAuthMsg}
+              providerSign={providerSign}
+              role={role}
+            />
+          ) : (
+            <LoginMethods
+              IsSignIn={IsSignIn}
+              role={role}
+              providerSign={providerSign}
+            />
+          )}
+        </AnimatePresence>
+      </motion.main>
 
       {/* Auth Error Section */}
-      {searchParams.get("role") !== null &&
-        searchParams.get("method") !== "email" && <Msg msg={authMsg} />}
+      {(searchParams.get("role") !== null && searchParams.get("method") !== "email") && <Msg msg={authMsg} />}
     </>
   );
 }

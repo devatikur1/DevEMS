@@ -33,7 +33,7 @@ export default function FormInputs({
       id: "username",
       type: "text",
       label: "Username",
-      placeholder: "your_username",
+      placeholder: "johndoe",
       icon: User,
       pattern: "^[a-zA-Z0-9_]{3,20}$",
       title:
