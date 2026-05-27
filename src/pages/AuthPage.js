@@ -3,9 +3,9 @@ import { AppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
-import AuthHeader from "../components/auth/AuthHeader";
-import AuthMain from "../components/auth/AuthMain";
-import AuthFooter from "../components/auth/AuthFooter";
+import AuthHeader from "../components/Auth/AuthHeader";
+import AuthMain from "../components/Auth/AuthMain";
+import AuthFooter from "../components/Auth/AuthFooter";
 
 export default function AuthPage({ IsSignIn }) {
   // 🔹 useContext context
