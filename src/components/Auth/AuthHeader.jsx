@@ -22,7 +22,6 @@ export default function AuthHeader() {
           </Link>
         </div>
       </div>
-
       <p
         id="app-description"
         className="text-sm text-center text-textMuted font-medium"
