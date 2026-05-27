@@ -2,7 +2,6 @@ import React from "react";
 import {
   Mail,
   MapPin,
-  Phone,
   MoreVertical,
   ShieldCheck,
   Briefcase,

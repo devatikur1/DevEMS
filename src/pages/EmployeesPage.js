@@ -3,7 +3,6 @@
 import React, {
   useState,
   useEffect,
-  useMemo,
   useContext,
   useRef,
   useCallback,
@@ -19,52 +18,52 @@ import { where } from "firebase/firestore";
 import { useScroll } from "framer-motion";
 
 // 🔹 1. Updated Data Generator (Added Description)
-const generateEmployees = (count) => {
-  const names = [
-    "Atikur Rahman",
-    "John Doe",
-    "Sarah Connor",
-    "Ali Hasan",
-    "Nadia Islam",
-    "Fahim Shahriar",
-    "Emily Chen",
-    "Michael Scott",
-  ];
-  const roles = [
-    "Frontend Developer",
-    "Backend Engineer",
-    "UI/UX Designer",
-    "Project Manager",
-    "DevOps Engineer",
-    "QA Tester",
-  ];
-  const depts = ["Engineering", "Design", "Management", "Operations"];
-  const descriptions = [
-    "Passionate about crafting scalable frontend architectures and pixel-perfect UIs.",
-    "Specializes in robust backend systems and optimizing database queries for high performance.",
-    "Creative problem solver focused on delivering intuitive and accessible user experiences.",
-    "Experienced in leading agile teams and ensuring timely delivery of complex enterprise projects.",
-    "Dedicated to automating deployments, managing cloud infrastructure, and improving system reliability.",
-  ];
+// const generateEmployees = (count) => {
+//   const names = [
+//     "Atikur Rahman",
+//     "John Doe",
+//     "Sarah Connor",
+//     "Ali Hasan",
+//     "Nadia Islam",
+//     "Fahim Shahriar",
+//     "Emily Chen",
+//     "Michael Scott",
+//   ];
+//   const roles = [
+//     "Frontend Developer",
+//     "Backend Engineer",
+//     "UI/UX Designer",
+//     "Project Manager",
+//     "DevOps Engineer",
+//     "QA Tester",
+//   ];
+//   const depts = ["Engineering", "Design", "Management", "Operations"];
+//   const descriptions = [
+//     "Passionate about crafting scalable frontend architectures and pixel-perfect UIs.",
+//     "Specializes in robust backend systems and optimizing database queries for high performance.",
+//     "Creative problem solver focused on delivering intuitive and accessible user experiences.",
+//     "Experienced in leading agile teams and ensuring timely delivery of complex enterprise projects.",
+//     "Dedicated to automating deployments, managing cloud infrastructure, and improving system reliability.",
+//   ];
 
-  return Array.from({ length: count }).map((_, i) => ({
-    uid: `emp_${i + 1}`,
-    name: names[i % names.length] + (i > 7 ? ` ${i}` : ""),
-    email: `emp${i + 1}@dev-ems.com`,
-    photoURL: `https://api.dicebear.com/7.x/avataaars/svg?seed=Emp${i + 1}&backgroundColor=b6e3f4`,
-    role: i === 0 ? "admin" : "employee",
-    position: roles[i % roles.length],
-    department: depts[i % depts.length],
-    description: descriptions[i % descriptions.length], // ✅ Description Added
-    status: i % 7 === 0 ? "offline" : "active",
-    isOnline: i % 4 !== 0,
-    location: i % 2 === 0 ? "Dhaka, BD" : "Remote",
-    tasksCompleted: Math.floor(Math.random() * 150) + 10,
-    joinedWS: Math.floor(Math.random() * 15) + 1,
-    performance: Math.floor(Math.random() * 30) + 70,
-    requestStatus: i % 12 === 0 ? "pending" : "approved",
-  }));
-};
+//   return Array.from({ length: count }).map((_, i) => ({
+//     uid: `emp_${i + 1}`,
+//     name: names[i % names.length] + (i > 7 ? ` ${i}` : ""),
+//     email: `emp${i + 1}@dev-ems.com`,
+//     photoURL: `https://api.dicebear.com/7.x/avataaars/svg?seed=Emp${i + 1}&backgroundColor=b6e3f4`,
+//     role: i === 0 ? "admin" : "employee",
+//     position: roles[i % roles.length],
+//     department: depts[i % depts.length],
+//     description: descriptions[i % descriptions.length], // ✅ Description Added
+//     status: i % 7 === 0 ? "offline" : "active",
+//     isOnline: i % 4 !== 0,
+//     location: i % 2 === 0 ? "Dhaka, BD" : "Remote",
+//     tasksCompleted: Math.floor(Math.random() * 150) + 10,
+//     joinedWS: Math.floor(Math.random() * 15) + 1,
+//     performance: Math.floor(Math.random() * 30) + 70,
+//     requestStatus: i % 12 === 0 ? "pending" : "approved",
+//   }));
+// };
 
 const EmployeesPage = () => {
   // 🔹 useContext context
