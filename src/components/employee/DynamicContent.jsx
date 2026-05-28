@@ -1,7 +1,5 @@
 import React from "react";
-import clsx from "clsx";
-import { UserPlus, Plus, Users } from "lucide-react"; // Changed FolderPlus to Users
-import { useNavigate } from "react-router-dom";
+import { UserPlus, Plus } from "lucide-react"; // Changed FolderPlus to Users
 import EmployeeCard from "./DynamicContent/EmployeeCard";
 import CardLoading from "./DynamicContent/CardLoading";
 
@@ -11,7 +9,6 @@ export default function DynamicContent({
   employeesGetting,
   employeesData,
 }) {
-  const navigate = useNavigate();
 
   return (
     <section className="mt-8 mb-20 overflow-hidden">

@@ -1,8 +1,7 @@
 import { ListFilter, Search } from "lucide-react";
-import React, { useContext, useState } from "react";
-import { AppContext } from "../../context/AppContext";
+import React, { useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import SortQuickMenu from "./Toolbar/SortQuickMenu";
 
 export default function Toolbar({
