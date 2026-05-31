@@ -1,10 +1,10 @@
 import React from "react";
 import { Loader2, ArrowRight, ArrowLeft } from "lucide-react";
 import UploadImg from "../../custom/UploadImg";
-import WorkspaceName from "./Form/WorkspaceName";
-import CatMaxMemLimit from "./Form/CatMaxMemLimit";
-import WorkspaceDes from "./Form/WorkspaceDes";
-import WorkspaceTechStack from "./Form/WorkspaceTechStack";
+import WorkspaceName from "./form/WorkspaceName";
+import CatMaxMemLimit from "./form/CatMaxMemLimit";
+import WorkspaceDes from "./form/WorkspaceDes";
+import WorkspaceTechStack from "./form/WorkspaceTechStack";
 
 export default function FormContainer({
   totalSteps,
