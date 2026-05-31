@@ -4,7 +4,7 @@ import { Facebook, Loader2, Mail } from "lucide-react";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { useSearchParams } from "react-router-dom";
-import useFunction from "../../../hooks/useFunction";
+import useFunction from "../../../Hooks/useFunction";
 
 export default function LoginMethods({ providerSign, IsSignIn, role }) {
   // 🔹 Cutom Hook

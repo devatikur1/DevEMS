@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { AppContext } from "../../context/AppContext";
+import { AppContext } from "../../Context/AppContext";
 import { ArrowLeft } from "lucide-react";
 
 export default function Header({

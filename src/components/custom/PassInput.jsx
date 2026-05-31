@@ -1,6 +1,6 @@
 import { Eye, EyeOff } from "lucide-react";
 import React, { useState } from "react";
-import useFunction from "../../hooks/useFunction";
+import useFunction from "../../Hooks/useFunction";
 
 export default function PassInput({
   input,
@@ -28,8 +28,8 @@ export default function PassInput({
                 passStatus === "Strong"
                   ? "bg-success/10 text-success"
                   : passStatus === "Not Strong"
-                  ? "bg-error/10 text-error"
-                  : "bg-warning/10 text-warning"
+                    ? "bg-error/10 text-error"
+                    : "bg-warning/10 text-warning"
               }`}
             >
               {`Status: ${passStatus}`}

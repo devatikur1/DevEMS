@@ -4,8 +4,8 @@ import { Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
 import FormInputs from "./FormInputs";
-import Msg from "../../custom/Msg";
-import useFunction from "../../../hooks/useFunction";
+import Msg from "../../Custom/Msg";
+import useFunction from "../../../Hooks/useFunction";
 
 export default function EmailMethod({
   IsSignIn,

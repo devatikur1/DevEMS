@@ -8,12 +8,12 @@ import React, {
   useState,
 } from "react";
 import { useSearchParams } from "react-router-dom";
-import Toolbar from "../components/overview/Toolbar";
-import DynamicContent from "../components/overview/DynamicContent";
-import { AppContext } from "../context/AppContext";
+import Toolbar from "../Components/Overview/Toolbar";
+import DynamicContent from "../Components/Overview/DynamicContent";
+import { AppContext } from "../Context/AppContext";
 import { useScroll } from "framer-motion";
-import useFunction from "../hooks/useFunction";
-import useFirestore from "../hooks/useFirestore";
+import useFunction from "../Hooks/useFunction";
+import useFirestore from "../Hooks/useFirestore";
 import { where } from "firebase/firestore";
 
 export default function OverviewPage() {
@@ -293,7 +293,7 @@ export default function OverviewPage() {
             if (status) {
               setImportedWorkplace(uniDat.length);
               setWorkspace(uniDat);
-              if (totalWorkplace > (importedWorkplace + uniDat.length)) {
+              if (totalWorkplace > importedWorkplace + uniDat.length) {
                 setLastWorkspace(lastOne);
               } else {
                 setLastWorkspace(null);

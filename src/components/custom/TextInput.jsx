@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import useFunction from "../../hooks/useFunction";
+import useFunction from "../../Hooks/useFunction";
 
 export default function TextInput({ input, setText, text }) {
   const [usernameStatus, setUsernameStatus] = useState("Taken");
@@ -57,7 +57,10 @@ export default function TextInput({ input, setText, text }) {
                 clearTimeout(debounceTimerRef.current);
               }
               debounceTimerRef.current = setTimeout(async () => {
-                const status = await uniUsername({type: "find", baseName: `@${val}` });
+                const status = await uniUsername({
+                  type: "find",
+                  baseName: `@${val}`,
+                });
                 setUsernameStatus(status ? "Available " : "Taken");
               }, 800);
             } else {

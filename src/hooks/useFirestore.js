@@ -11,7 +11,7 @@ import {
   limit,
   startAfter,
 } from "firebase/firestore";
-import { db } from "../context/AppContext";
+import { db } from "../Context/AppContext";
 
 function useFirestore() {
   // 🔹 Set Data
@@ -33,7 +33,7 @@ function useFirestore() {
     collId,
     docId,
     whereQuery,
-    limitt=11,
+    limitt = 11,
     startAfterr,
   }) {
     try {

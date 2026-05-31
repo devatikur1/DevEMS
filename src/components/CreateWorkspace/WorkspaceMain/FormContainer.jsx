@@ -1,10 +1,10 @@
 import React from "react";
 import { Loader2, ArrowRight, ArrowLeft } from "lucide-react";
-import UploadImg from "../../custom/UploadImg";
-import WorkspaceName from "./form/WorkspaceName";
-import CatMaxMemLimit from "./form/CatMaxMemLimit";
-import WorkspaceDes from "./form/WorkspaceDes";
-import WorkspaceTechStack from "./form/WorkspaceTechStack";
+import UploadImg from "../../Custom/UploadImg";
+import WorkspaceName from "./Form/WorkspaceName";
+import CatMaxMemLimit from "./Form/CatMaxMemLimit";
+import WorkspaceDes from "./Form/WorkspaceDes";
+import WorkspaceTechStack from "./Form/WorkspaceTechStack";
 
 export default function FormContainer({
   totalSteps,
@@ -13,7 +13,8 @@ export default function FormContainer({
   props,
   isStepValid,
 }) {
-  const nextStep = () => setCurrentStep((prev) => Math.min(prev + 1, totalSteps));
+  const nextStep = () =>
+    setCurrentStep((prev) => Math.min(prev + 1, totalSteps));
   const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 1));
   return (
     <form
@@ -65,9 +66,7 @@ export default function FormContainer({
           {props.isCreteing ? (
             <>
               <Loader2 size={20} className="animate-spin" />
-              <span className="tracking-widest text-sm">
-                Creating...
-              </span>
+              <span className="tracking-widest text-sm">Creating...</span>
             </>
           ) : (
             <>
