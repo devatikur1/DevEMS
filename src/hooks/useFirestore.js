@@ -32,7 +32,7 @@ function useFirestore() {
   async function getData({
     collId,
     docId,
-    whereQuery,
+    whereQuery = [],
     limitt = 11,
     startAfterr,
   }) {
@@ -56,7 +56,7 @@ function useFirestore() {
       let queryConstraints = [];
 
       if (!docId) {
-        if (whereQuery.length) queryConstraints.push(...whereQuery);
+        if (whereQuery && whereQuery.length) queryConstraints.push(...whereQuery);
         if (limitt) queryConstraints.push(limit(limitt));
         if (startAfterr) queryConstraints.push(startAfter(startAfterr));
       }

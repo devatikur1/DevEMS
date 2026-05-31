@@ -57,9 +57,23 @@ export default function AppContextProvider({ children }) {
           localStorage.setItem("userDt", JSON.stringify(data));
           setIsLogged(true);
           setUserDt(data);
-        } else throw { code: "auth/user-not-found" };
+        } else if (docSnap.error) {
+          throw docSnap.error;
+        } else {
+          throw { code: "auth/user-not-found" };
+        }
       } catch (error) {
-        console.error("🔥 Error fetching user data:", error);
+        let errorMsg = "Unknown error";
+        if (error?.message) {
+          errorMsg = error.message;
+        } else if (error?.code) {
+          errorMsg = error.code;
+        } else if (typeof error === "string") {
+          errorMsg = error;
+        } else {
+          errorMsg = `Error: ${JSON.stringify(error)}`;
+        }
+        console.error("🔥 Error fetching user data:", errorMsg);
         localStorage.removeItem("isLogged");
         localStorage.removeItem("userDt");
         setIsLogged(false);
