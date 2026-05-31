@@ -11,7 +11,7 @@ import {
   limit,
   startAfter,
 } from "firebase/firestore";
-import { db } from "../Context/AppContext";
+import { db } from "../context/AppContext";
 
 function useFirestore() {
   // 🔹 Set Data

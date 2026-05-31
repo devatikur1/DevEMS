@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { LayoutGrid, LayoutList, ListFilter, Plus, Search } from "lucide-react";
 import React, { useContext, useState } from "react";
-import { AppContext } from "../../Context/AppContext";
+import { AppContext } from "../../context/AppContext";
 import { AnimatePresence } from "framer-motion";
 import SortQuickMenu from "./Toolbar/SortQuickMenu";
 import { useNavigate, useSearchParams } from "react-router-dom";

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import useFunction from "../../Hooks/useFunction";
+import useFunction from "../../hooks/useFunction";
 
 export default function TextInput({ input, setText, text }) {
   const [usernameStatus, setUsernameStatus] = useState("Taken");

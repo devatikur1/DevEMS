@@ -1,5 +1,5 @@
 import { doc, getDoc, where } from "firebase/firestore";
-import { db } from "../Context/AppContext";
+import { db } from "../context/AppContext";
 import useFirestore from "./useFirestore";
 
 export default function useFunction() {

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
 import FormInputs from "./FormInputs";
 import Msg from "../../Custom/Msg";
-import useFunction from "../../../Hooks/useFunction";
+import useFunction from "../../../hooks/useFunction";
 
 export default function EmailMethod({
   IsSignIn,

@@ -12,9 +12,9 @@ import PerformanceGauge from "./PerformanceGauge";
 import HighlightText from "./HighlightText";
 import { AnimatePresence } from "framer-motion";
 import OptionBar from "./OptionBar";
-import useFirestore from "../../../Hooks/useFirestore";
+import useFirestore from "../../../hooks/useFirestore";
 import { where } from "firebase/firestore";
-import useFunction from "../../../Hooks/useFunction";
+import useFunction from "../../../hooks/useFunction";
 
 export default function Placeholder({
   project,

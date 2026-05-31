@@ -8,12 +8,12 @@ import React, {
   useState,
 } from "react";
 import { useSearchParams } from "react-router-dom";
-import Toolbar from "../Components/Overview/Toolbar";
-import DynamicContent from "../Components/Overview/DynamicContent";
-import { AppContext } from "../Context/AppContext";
+import Toolbar from "../components/Overview/Toolbar";
+import DynamicContent from "../components/Overview/DynamicContent";
+import { AppContext } from "../context/AppContext";
 import { useScroll } from "framer-motion";
-import useFunction from "../Hooks/useFunction";
-import useFirestore from "../Hooks/useFirestore";
+import useFunction from "../hooks/useFunction";
+import useFirestore from "../hooks/useFirestore";
 import { where } from "firebase/firestore";
 
 export default function OverviewPage() {
@@ -26,7 +26,6 @@ export default function OverviewPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [workspaceData, setworkspaceData] = useState([]);
   const [showSortMenuBar, setShowSortMenuBar] = useState(false);
-  // const [wsDeleteBtnText, setWsDeleteBtnText] = useState("");
 
   // 🔹 Workplace-State
   const [currentUid, setCurrentUid] = useState("");

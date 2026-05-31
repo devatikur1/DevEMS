@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { DrawingTransformation } from "../Components/Home/DrawingTransformation";
+import { DrawingTransformation } from "../components/Home/DrawingTransformation";
 import {
   CalculatorIcon,
   ChartBarIcon,

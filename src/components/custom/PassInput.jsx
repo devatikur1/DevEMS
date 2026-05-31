@@ -1,6 +1,6 @@
 import { Eye, EyeOff } from "lucide-react";
 import React, { useState } from "react";
-import useFunction from "../../Hooks/useFunction";
+import useFunction from "../../hooks/useFunction";
 
 export default function PassInput({
   input,

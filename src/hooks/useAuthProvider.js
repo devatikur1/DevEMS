@@ -11,7 +11,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { useCallback, useContext, useState } from "react";
-import { AppContext, auth } from "../Context/AppContext";
+import { AppContext, auth } from "../context/AppContext";
 import useFirestore from "./useFirestore";
 import useFunction from "./useFunction";
 import { where } from "firebase/firestore";

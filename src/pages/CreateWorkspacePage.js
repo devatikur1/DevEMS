@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-throw-literal */
 import React, { useContext, useEffect, useState } from "react";
-import Header from "../Components/Custom/Header";
-import WorkspaceMain from "../Components/CreateWorkspace/WorkspaceMain";
-import { AppContext } from "../Context/AppContext";
+import Header from "../components/Custom/Header";
+import WorkspaceMain from "../components/CreateWorkspace/WorkspaceMain";
+import { AppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
-import useFunction from "../Hooks/useFunction";
-import useFirestore from "../Hooks/useFirestore";
+import useFunction from "../hooks/useFunction";
+import useFirestore from "../hooks/useFirestore";
 
 // -------------------
 // ✅ Main Fn

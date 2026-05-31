@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import RoleSelector from "./AuthMain/RoleSelector";
 import LoginMethods from "./AuthMain/LoginMethods";
 import EmailMethod from "./AuthMain/EmailMethod";
-import useAuthProvider from "../../Hooks/useAuthProvider";
+import useAuthProvider from "../../hooks/useAuthProvider";
 import Msg from "../Custom/Msg";
 
 export default function AuthMain({ IsSignIn }) {

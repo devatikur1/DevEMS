@@ -2,7 +2,7 @@ import { ShieldCheck, User } from "lucide-react";
 import React from "react";
 import { motion } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
-import useFunction from "../../../Hooks/useFunction";
+import useFunction from "../../../hooks/useFunction";
 
 export default function RoleSelector({ setRole }) {
   // 🔹 React-Router-Dom && State
