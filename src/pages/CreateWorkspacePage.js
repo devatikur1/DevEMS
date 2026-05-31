@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-throw-literal */
 import React, { useContext, useEffect, useState } from "react";
-import Header from "../components/Custom/Header";
+import Header from "../components/custom/Header";
 import WorkspaceMain from "../components/CreateWorkspace/WorkspaceMain";
 import { AppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";

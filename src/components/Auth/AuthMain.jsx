@@ -5,7 +5,7 @@ import RoleSelector from "./AuthMain/RoleSelector";
 import LoginMethods from "./AuthMain/LoginMethods";
 import EmailMethod from "./AuthMain/EmailMethod";
 import useAuthProvider from "../../hooks/useAuthProvider";
-import Msg from "../Custom/Msg";
+import Msg from "../custom/Msg";
 
 export default function AuthMain({ IsSignIn }) {
   // 🔹 React-Router-Dom && State
