@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import useFunction from "../../hooks/useFunction";
-import UploadImg from "../custom/UploadImg";
+import UploadImg from "../Custom/UploadImg";
 import { Loader2, LocateFixed } from "lucide-react";
 
 export default function Profile({

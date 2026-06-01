@@ -1,14 +1,14 @@
 /* eslint-disable no-throw-literal */
 import React, { useContext, useState, useEffect } from "react";
-import Header from "../components/settings/Header";
+import Header from "../components/Settings/Header";
 import { useSearchParams } from "react-router-dom";
 import useFunction from "../hooks/useFunction";
-import NavBar from "../components/settings/NavBar";
-import Appearance from "../components/settings/Appearance";
-import Profile from "../components/settings/Profile";
+import NavBar from "../components/Settings/NavBar";
+import Appearance from "../components/Settings/Appearance";
+import Profile from "../components/Settings/Profile";
 import { AppContext } from "../context/AppContext";
 import useFirestore from "../hooks/useFirestore";
-import NotFoundPage from "../components/settings/NotFoundPage";
+import NotFoundPage from "../components/Settings/NotFoundPage";
 import { gooeyToast, GooeyToaster } from "goey-toast";
 import { motion } from "framer-motion";
 

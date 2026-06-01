@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
-import Header from "../../components/custom/Header";
-import OptionHeader from "../../components/custom/OptionHeader";
+import Header from "../../components/Custom/Header";
+import OptionHeader from "../../components/Custom/OptionHeader";
 import { useScroll } from "framer-motion";
 
 export default function InLayout() {

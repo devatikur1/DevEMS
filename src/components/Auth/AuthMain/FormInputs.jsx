@@ -1,9 +1,9 @@
 import React from "react";
 import { KeyRound, Mail, User, IdCard } from "lucide-react";
-import EmailInput from "../../custom/EmailInput";
-import PassInput from "../../custom/PassInput";
-import TextInput from "../../custom/TextInput";
-import UploadImg from "../../custom/UploadImg";
+import EmailInput from "../../Custom/EmailInput";
+import PassInput from "../../Custom/PassInput";
+import TextInput from "../../Custom/TextInput";
+import UploadImg from "../../Custom/UploadImg";
 
 export default function FormInputs({
   IsSignIn,

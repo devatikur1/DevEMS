@@ -8,11 +8,11 @@ import React, {
   useCallback,
 } from "react";
 
-import Toolbar from "../components/employee/Toolbar";
+import Toolbar from "../components/Employee/Toolbar";
 import { useSearchParams } from "react-router-dom";
 import useFunction from "../hooks/useFunction";
 import { AppContext } from "../context/AppContext";
-import DynamicContent from "../components/employee/DynamicContent";
+import DynamicContent from "../components/Employee/DynamicContent";
 import useFirestore from "../hooks/useFirestore";
 import { where } from "firebase/firestore";
 import { useScroll } from "framer-motion";
