@@ -64,7 +64,7 @@ export default function TextInput({ input, setText, text }) {
                 setUsernameStatus(status ? "Available " : "Taken");
               }, 800);
             } else {
-              setText(e.target.value.trim());
+              setText(e.target.value);
             }
           }}
           className="w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 rounded-xl py-2.5 pl-12 pr-12 text-sm text-textPrimary placeholder:text-textMuted outline-none transition-all"

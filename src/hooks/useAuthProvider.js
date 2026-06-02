@@ -107,7 +107,6 @@ function useAuthProvider(setAuthMsg) {
             username: `@${username.replace(/@/gm, "")}`,
             createdAt: date,
             lastUpdated: date,
-            status: "online",
             description: "",
             location: "",
             ...(role === "employee" && {
@@ -118,6 +117,14 @@ function useAuthProvider(setAuthMsg) {
               performance: 0,
             }),
           };
+
+          await setData({
+            collId: "status",
+            docId: finalUserData?.uid,
+            data: {
+              lastSeen: date,
+            },
+          });
 
           await setData({
             collId: "users",

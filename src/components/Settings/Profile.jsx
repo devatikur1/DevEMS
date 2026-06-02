@@ -1,7 +1,13 @@
 import React, { useState, useRef } from "react";
 import useFunction from "../../hooks/useFunction";
 import UploadImg from "../Custom/UploadImg";
-import { Loader2, LocateFixed } from "lucide-react";
+import {
+  Check,
+  ChevronDown,
+  LayoutGrid,
+  Loader2,
+  LocateFixed,
+} from "lucide-react";
 
 export default function Profile({
   formData,
@@ -22,6 +28,16 @@ export default function Profile({
   const [isUploading, setIsUploading] = useState(false);
   const { uploadImageFn, uniUsername } = useFunction();
 
+  const dropdownRef1 = useRef(null);
+  const [isFocused1, setIsFocused1] = useState(false);
+  const [category1, setCategory1] = useState(false);
+  const [query1, setQuery1] = useState(false);
+
+  const dropdownRef2 = useRef(null);
+  const [isFocused1, setIsFocused1] = useState(false);
+  const [category2, setCategory2] = useState(false);
+  const [query2, setQuery2] = useState(false);
+
   const handleImageUpload = async (data) => {
     const url = data.url;
     const file = data.file;
@@ -35,6 +51,68 @@ export default function Profile({
       alert("Image upload failed. Please try again.");
     }
     setIsUploading(false);
+  };
+
+  const companyConfig = {
+    departments: [
+      "Engineering",
+      "Product",
+      "Design",
+      "Human Resources",
+      "Marketing",
+      "Sales",
+      "Finance",
+      "Operations",
+      "Customer Support",
+      "Legal",
+      "Research & Development",
+      "Security",
+      "Data & Analytics",
+      "IT",
+    ],
+
+    roles: [
+      "Frontend Developer",
+      "Backend Engineer",
+      "Full Stack Developer",
+      "Mobile App Developer",
+      "Software Engineer",
+      "Senior Software Engineer",
+      "Tech Lead",
+      "Engineering Manager",
+      "DevOps Engineer",
+      "Cloud Engineer",
+      "Site Reliability Engineer",
+      "QA Engineer",
+      "Automation Tester",
+      "UI Designer",
+      "UX Designer",
+      "Product Designer",
+      "Graphic Designer",
+      "Product Manager",
+      "Project Manager",
+      "Scrum Master",
+      "Business Analyst",
+      "HR Executive",
+      "HR Manager",
+      "Recruiter",
+      "Marketing Executive",
+      "Digital Marketing Specialist",
+      "Content Writer",
+      "SEO Specialist",
+      "Sales Executive",
+      "Sales Manager",
+      "Accountant",
+      "Finance Manager",
+      "Customer Support Executive",
+      "Support Manager",
+      "Data Analyst",
+      "Data Scientist",
+      "Machine Learning Engineer",
+      "Cybersecurity Specialist",
+      "System Administrator",
+      "Network Engineer",
+    ],
   };
 
   return (
@@ -225,6 +303,114 @@ export default function Profile({
                 <LocateFixed className="size-4 text-textMuted group-hover:text-accent transition-colors" />
               </button>
             </div>
+          </div>
+
+          <div className="col-span-full space-y-3">
+            <label className="text-sm font-semibold text-textMuted block mb-1">
+              Department
+            </label>
+
+            {/* <input
+              type="text"
+              name="department"
+              onChange={handleChange}
+              value={formData.department}
+              placeholder="e.g. Department"
+              className="w-full bg-surfaceSoft border border-border text-textPrimary focus:border-accent focus:ring-1 focus:ring-accent rounded-xl pl-4 pr-12 py-3 outline-none transition-all placeholder:text-textMuted/50"
+            /> */}
+            <div className="relative flex flex-col w-full" ref={dropdownRef1}>
+              <div className="relative flex items-center group">
+                <LayoutGrid
+                  size={18}
+                  className="absolute left-4 text-textMuted group-focus-within:text-accent transition-colors z-10"
+                />
+                <input
+                  type="text"
+                  placeholder="Search or select category..."
+                  value={isFocused1 ? query : category1 || ""}
+                  onChange={(e) => {
+                    setQuery1(e.target.value);
+                    if (!isFocused1) setIsFocused1(true);
+                  }}
+                  onFocus={() => {
+                    setIsFocused1(true);
+                    setQuery1("");
+                  }}
+                  className="w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 rounded-md pl-12 pr-10 py-3 text-[13px] text-textPrimary placeholder:text-textMuted outline-none transition-all cursor-pointer"
+                />
+                <ChevronDown
+                  size={16}
+                  className={`absolute right-4 text-textMuted pointer-events-none transition-transform z-10 ${
+                    isFocused1 ? "rotate-180" : ""
+                  }`}
+                />
+              </div>
+
+              {/* Dropdown Options */}
+              {isFocused1 && (
+                <div className="absolute top-[52px] left-0 w-full bg-surfaceSoft border border-border rounded-lg shadow-xl z-20 flex flex-col py-2 px-1.5 space-y-1">
+                  {companyConfig.departments.length > 0 ? (
+                    <div className="max-h-56 overflow-y-auto px-1.5">
+                      <div className="sticky top-0 z-10 bg-surfaceSoft text-[11px] font-medium text-textMuted uppercase tracking-wider px-2 py-1 mb-1 border-b border-border/50 pb-2">
+                        {query ? "Search Results" : "All Categories"}
+                      </div>
+                      <ul className="mt-1">
+                        {companyConfig.departments.sort().map((item) => (
+                          <li
+                            key={item}
+                            type="button"
+                            onClick={() => {
+                              setCategory(item);
+                              setIsFocused1(false);
+                              setQuery1("");
+                            }}
+                            className={`group relative flex items-center justify-between w-full px-3 py-2 rounded-md transition-colors cursor-pointer text-left ${
+                              category1 === item
+                                ? "bg-accent/10 border-accent/20"
+                                : "hover:bg-boxHover"
+                            }`}
+                          >
+                            <span
+                              className={`text-[13px] ${
+                                category1 === item
+                                  ? "text-accent font-medium"
+                                  : "text-textPrimary/65 group-hover:text-textPrimary"
+                              }`}
+                            >
+                              {item}
+                            </span>
+                            {category1 === item && (
+                              <span className="text-[10px] text-accent font-medium px-2 py-0.5 rounded-full bg-accent/20 border border-accent/30 flex items-center gap-1">
+                                <Check size={10} /> Selected
+                              </span>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : (
+                    <div className="px-3 py-4 text-center text-[13px] text-textMuted italic">
+                      No categories found.
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="col-span-full space-y-3">
+            <label className="text-sm font-semibold text-textMuted block mb-1">
+              Position
+            </label>
+
+            <input
+              type="text"
+              name="position"
+              onChange={handleChange}
+              value={formData.position}
+              placeholder="e.g. Position"
+              className="w-full bg-surfaceSoft border border-border text-textPrimary focus:border-accent focus:ring-1 focus:ring-accent rounded-xl pl-4 pr-12 py-3 outline-none transition-all placeholder:text-textMuted/50"
+            />
           </div>
 
           <div className="col-span-full space-y-3">

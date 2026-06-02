@@ -38,6 +38,8 @@ export default function SettingsPage() {
     photoURL: "",
     role: "",
     lastUpdated: "",
+    department: "",
+    position: "",
   });
 
   // -------------------------
@@ -55,6 +57,8 @@ export default function SettingsPage() {
         photoURL: userDt.photoURL || prev.photoURL,
         role: userDt.role || prev.role,
         lastUpdated: userDt.lastUpdated || prev.lastUpdated,
+        department: userDt.department || prev.department,
+        position: userDt.position || prev.position,
       }));
       console.log(userDt);
     }
@@ -69,7 +73,7 @@ export default function SettingsPage() {
       const currentValue = String(formData[key] || "").trim();
       const oldValue = String(userDt[key] || "").trim();
 
-      if (currentValue !== oldValue && key !== "photoURL") {
+      if (currentValue !== oldValue) {
         changed = true;
         break;
       }
@@ -158,9 +162,11 @@ export default function SettingsPage() {
         location: formData.location,
         photoURL: formData.photoURL,
         lastUpdated: date,
+        ...(userDt.role === "employee" && {
+          department: formData.department,
+          position: formData.position,
+        }),
       };
-
-      console.log(updatedData);
 
       const res = await setData({
         collId: "users",
