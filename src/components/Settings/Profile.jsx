@@ -2,12 +2,81 @@ import React, { useState, useRef } from "react";
 import useFunction from "../../hooks/useFunction";
 import UploadImg from "../Custom/UploadImg";
 import {
+  AtSign,
   Check,
   ChevronDown,
-  LayoutGrid,
+  Contact,
   Loader2,
   LocateFixed,
+  Mail,
+  Navigation,
+  Network,
+  Notebook,
+  ShieldCheck,
 } from "lucide-react";
+
+//🔹 Company Config
+const companyConfig = {
+  departments: [
+    "Engineering",
+    "Product",
+    "Design",
+    "Human Resources",
+    "Marketing",
+    "Sales",
+    "Finance",
+    "Operations",
+    "Customer Support",
+    "Legal",
+    "Research & Development",
+    "Security",
+    "Data & Analytics",
+    "IT",
+  ],
+
+  roles: [
+    "Frontend Developer",
+    "Backend Engineer",
+    "Full Stack Developer",
+    "Mobile App Developer",
+    "Software Engineer",
+    "Senior Software Engineer",
+    "Tech Lead",
+    "Engineering Manager",
+    "DevOps Engineer",
+    "Cloud Engineer",
+    "Site Reliability Engineer",
+    "QA Engineer",
+    "Automation Tester",
+    "UI Designer",
+    "UX Designer",
+    "Product Designer",
+    "Graphic Designer",
+    "Product Manager",
+    "Project Manager",
+    "Scrum Master",
+    "Business Analyst",
+    "HR Executive",
+    "HR Manager",
+    "Recruiter",
+    "Marketing Executive",
+    "Digital Marketing Specialist",
+    "Content Writer",
+    "SEO Specialist",
+    "Sales Executive",
+    "Sales Manager",
+    "Accountant",
+    "Finance Manager",
+    "Customer Support Executive",
+    "Support Manager",
+    "Data Analyst",
+    "Data Scientist",
+    "Machine Learning Engineer",
+    "Cybersecurity Specialist",
+    "System Administrator",
+    "Network Engineer",
+  ],
+};
 
 export default function Profile({
   formData,
@@ -23,21 +92,25 @@ export default function Profile({
   handleSave,
   isSaving,
 }) {
+  console.log(companyConfig);
+
   const fileInputRef = useRef(null);
   const debounceTimerRef = useRef(null);
   const [isUploading, setIsUploading] = useState(false);
   const { uploadImageFn, uniUsername } = useFunction();
 
   const dropdownRef1 = useRef(null);
+  const [departments, setDepartments] = useState(companyConfig.departments);
   const [isFocused1, setIsFocused1] = useState(false);
   const [category1, setCategory1] = useState(false);
   const [query1, setQuery1] = useState(false);
 
   const dropdownRef2 = useRef(null);
-  const [isFocused1, setIsFocused1] = useState(false);
+  const [isFocused2, setIsFocused2] = useState(false);
   const [category2, setCategory2] = useState(false);
   const [query2, setQuery2] = useState(false);
 
+  //🔹 Handle Image Upload
   const handleImageUpload = async (data) => {
     const url = data.url;
     const file = data.file;
@@ -51,68 +124,6 @@ export default function Profile({
       alert("Image upload failed. Please try again.");
     }
     setIsUploading(false);
-  };
-
-  const companyConfig = {
-    departments: [
-      "Engineering",
-      "Product",
-      "Design",
-      "Human Resources",
-      "Marketing",
-      "Sales",
-      "Finance",
-      "Operations",
-      "Customer Support",
-      "Legal",
-      "Research & Development",
-      "Security",
-      "Data & Analytics",
-      "IT",
-    ],
-
-    roles: [
-      "Frontend Developer",
-      "Backend Engineer",
-      "Full Stack Developer",
-      "Mobile App Developer",
-      "Software Engineer",
-      "Senior Software Engineer",
-      "Tech Lead",
-      "Engineering Manager",
-      "DevOps Engineer",
-      "Cloud Engineer",
-      "Site Reliability Engineer",
-      "QA Engineer",
-      "Automation Tester",
-      "UI Designer",
-      "UX Designer",
-      "Product Designer",
-      "Graphic Designer",
-      "Product Manager",
-      "Project Manager",
-      "Scrum Master",
-      "Business Analyst",
-      "HR Executive",
-      "HR Manager",
-      "Recruiter",
-      "Marketing Executive",
-      "Digital Marketing Specialist",
-      "Content Writer",
-      "SEO Specialist",
-      "Sales Executive",
-      "Sales Manager",
-      "Accountant",
-      "Finance Manager",
-      "Customer Support Executive",
-      "Support Manager",
-      "Data Analyst",
-      "Data Scientist",
-      "Machine Learning Engineer",
-      "Cybersecurity Specialist",
-      "System Administrator",
-      "Network Engineer",
-    ],
   };
 
   return (
@@ -166,7 +177,7 @@ export default function Profile({
           onSubmit={handleSave}
           className="px-3 md:px-0 grid grid-cols-1 md:grid-cols-2 gap-6"
         >
-          {/* Inputs */}
+          {/* Full Name */}
           <div className="space-y-3">
             <label
               htmlFor="name"
@@ -174,19 +185,32 @@ export default function Profile({
             >
               Full Name
             </label>
-            <input
-              id="name"
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full bg-surfaceSoft border border-border text-textPrimary focus:border-accent focus:ring-1 focus:ring-accent rounded-lg px-4 py-2.5 outline-none transition-all placeholder:text-textMuted/50"
-              placeholder="e.g. John Doe"
-            />
+
+            <div className="relative flex flex-col w-full">
+              <div className="relative flex items-center group">
+                <Contact
+                  size={18}
+                  className="absolute left-4 text-textMuted group-focus-within:text-accent transition-colors z-10"
+                />
+                <input
+                  id="name"
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 text-textPrimary rounded-lg pl-11 pr-4 py-2.5 outline-none transition-all placeholder:text-textMuted/50"
+                  placeholder="e.g. John Doe"
+                />
+              </div>
+            </div>
           </div>
 
+          {/* Username */}
           <div className="space-y-3">
-            <label className="flex justify-between items-center text-xs font-medium text-textMuted ml-1">
+            <label
+              htmlFor="username"
+              className="flex justify-between items-center text-xs font-medium text-textMuted ml-1"
+            >
               <span className="text-sm font-semibold text-textMuted">
                 Username
               </span>
@@ -204,48 +228,58 @@ export default function Profile({
               </span>
             </label>
 
-            <input
-              type="text"
-              name="username"
-              value={formData.username}
-              onChange={(e) => {
-                const val = e.target.value
-                  .toLowerCase()
-                  .replace(/\s+/g, "")
-                  .replace(/@+/g, "")
-                  .replace(/[^a-z0-9._]/g, "");
+            <div className="relative flex flex-col w-full">
+              <div className="relative flex items-center group">
+                <AtSign
+                  size={18}
+                  className="absolute left-4 text-textMuted group-focus-within:text-accent transition-colors z-10"
+                />
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  value={formData.username}
+                  onChange={(e) => {
+                    const val = e.target.value
+                      .toLowerCase()
+                      .replace(/\s+/g, "")
+                      .replace(/@+/g, "")
+                      .replace(/[^a-z0-9._]/g, "");
 
-                const username = `@${val}`;
+                    const username = `${val}`;
 
-                setFormData((prev) => ({
-                  ...prev,
-                  username,
-                }));
+                    setFormData((prev) => ({
+                      ...prev,
+                      username,
+                    }));
 
-                if (!val.trim()) {
-                  clearTimeout(debounceTimerRef.current);
-                  return setUsernameStatus("Not Valid");
-                }
+                    if (!val.trim()) {
+                      clearTimeout(debounceTimerRef.current);
+                      return setUsernameStatus("Not Valid");
+                    }
 
-                setUsernameStatus("Checking...");
+                    setUsernameStatus("Checking...");
 
-                clearTimeout(debounceTimerRef.current);
+                    clearTimeout(debounceTimerRef.current);
 
-                debounceTimerRef.current = setTimeout(async () => {
-                  const status = await uniUsername({
-                    type: "find",
-                    baseName: username,
-                  });
-                  let dstatus = username === LastUsername || status;
+                    debounceTimerRef.current = setTimeout(async () => {
+                      const status = await uniUsername({
+                        type: "find",
+                        baseName: username,
+                      });
+                      let dstatus = username === LastUsername || status;
 
-                  setUsernameStatus(dstatus ? "Available" : "Taken");
-                }, 800);
-              }}
-              className="w-full bg-surfaceSoft border border-border text-textPrimary focus:border-accent focus:ring-1 focus:ring-accent rounded-lg px-4 py-2.5 outline-none transition-all placeholder:text-textMuted/50"
-              placeholder="e.g. johndoe"
-            />
+                      setUsernameStatus(dstatus ? "Available" : "Taken");
+                    }, 800);
+                  }}
+                  className="w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 text-textPrimary rounded-lg pl-11 pr-4 py-2.5 outline-none transition-all placeholder:text-textMuted/50"
+                  placeholder="e.g. johndoe"
+                />
+              </div>
+            </div>
           </div>
 
+          {/*  Email Address */}
           <div className="space-y-3">
             <label
               disabled
@@ -253,81 +287,106 @@ export default function Profile({
             >
               Email Address
             </label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              className="w-full bg-surfaceSoft/50 border border-border/50 text-textMuted rounded-lg px-4 py-2.5 outline-none cursor-not-allowed select-none"
-              placeholder="e.g. name@company.com"
-              disabled
-            />
+            <div className="relative flex flex-col w-full" ref={dropdownRef1}>
+              <div className="relative flex items-center group">
+                <Mail
+                  size={18}
+                  className="absolute left-4 text-textMuted group-focus-within:text-accent transition-colors z-10"
+                />
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  className="w-full bg-surfaceSoft/50 border border-border/50 text-textMuted rounded-lg pl-11 pr-4 py-2.5 outline-none cursor-not-allowed select-none"
+                  placeholder="e.g. name@company.com"
+                  disabled
+                />
+              </div>
+            </div>
             <p className="text-xs text-textMuted mt-1 ml-2">
               The email change feature is currently unavailable.
             </p>
           </div>
 
+          {/*  Role */}
           <div className="space-y-3">
             <label className="text-sm font-semibold text-textMuted block mb-1">
-              Role (Department)
+              Role
             </label>
-            <input
-              type="text"
-              value={`${formData.role}`}
-              className="w-full bg-surfaceSoft/50 border border-border/50 text-textMuted rounded-lg px-4 py-2.5 outline-none cursor-not-allowed select-none capitalize"
-              disabled
-            />
-          </div>
-
-          <div className="col-span-full space-y-3">
-            <label className="text-sm font-semibold text-textMuted block mb-1">
-              Location
-            </label>
-
-            <div className="relative">
-              <input
-                type="text"
-                name="location"
-                onChange={handleChange}
-                value={formData.location}
-                placeholder="e.g. Location"
-                className="w-full bg-surfaceSoft border border-border text-textPrimary focus:border-accent focus:ring-1 focus:ring-accent rounded-xl pl-4 pr-12 py-3 outline-none transition-all placeholder:text-textMuted/50"
-              />
-
-              {/* Current Location Button */}
-              <button
-                type="button"
-                onClick={async () => await GetCurrentLocation()}
-                title="Set Current Location"
-                className="absolute right-3 top-1/2 -translate-y-1/2 size-9 rounded-lg flex items-center justify-center bg-surface hover:bg-boxHover border border-border hover:border-accent/30 transition-all duration-200 group"
-              >
-                <LocateFixed className="size-4 text-textMuted group-hover:text-accent transition-colors" />
-              </button>
-            </div>
-          </div>
-
-          <div className="col-span-full space-y-3">
-            <label className="text-sm font-semibold text-textMuted block mb-1">
-              Department
-            </label>
-
-            {/* <input
-              type="text"
-              name="department"
-              onChange={handleChange}
-              value={formData.department}
-              placeholder="e.g. Department"
-              className="w-full bg-surfaceSoft border border-border text-textPrimary focus:border-accent focus:ring-1 focus:ring-accent rounded-xl pl-4 pr-12 py-3 outline-none transition-all placeholder:text-textMuted/50"
-            /> */}
             <div className="relative flex flex-col w-full" ref={dropdownRef1}>
               <div className="relative flex items-center group">
-                <LayoutGrid
+                <ShieldCheck
                   size={18}
                   className="absolute left-4 text-textMuted group-focus-within:text-accent transition-colors z-10"
                 />
                 <input
                   type="text"
-                  placeholder="Search or select category..."
-                  value={isFocused1 ? query : category1 || ""}
+                  value={`${formData.role}`}
+                  className="w-full bg-surfaceSoft/50 border border-border/50 text-textMuted rounded-lg pl-10 pr-4 py-2.5 outline-none cursor-not-allowed select-none capitalize"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+
+          {/*  Location */}
+          <div className="col-span-full space-y-3">
+            <label
+              htmlFor="location"
+              className="text-sm font-semibold text-textMuted block mb-1"
+            >
+              Location
+            </label>
+
+            <div className="relative flex flex-col w-full">
+              <div className="relative flex items-center group">
+                <Navigation
+                  size={18}
+                  className="absolute left-4 text-textMuted group-focus-within:text-accent transition-colors z-10"
+                />
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  onChange={handleChange}
+                  value={formData.location}
+                  placeholder="e.g. Location"
+                  className="w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 text-textPrimary  rounded-lg pl-11 pr-11 py-2.5 outline-none transition-all placeholder:text-textMuted/50"
+                />
+
+                {/* Current Location Button */}
+                <button
+                  type="button"
+                  onClick={async () => await GetCurrentLocation()}
+                  title="Set Current Location"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 size-9 rounded-lg flex items-center justify-center bg-surface hover:bg-boxHover border border-border hover:border-accent/30 transition-all duration-200 group"
+                >
+                  <LocateFixed className="size-4 text-textMuted group-hover:text-accent transition-colors" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/*  Department */}
+          <div className="col-span-full space-y-3">
+            <label
+              htmlFor="department"
+              className="text-sm font-semibold text-textMuted block mb-1"
+            >
+              Department
+            </label>
+
+            <div className="relative flex flex-col w-full" ref={dropdownRef1}>
+              <div className="relative flex items-center group">
+                <Network
+                  size={18}
+                  className="absolute left-4 text-textMuted group-focus-within:text-accent transition-colors z-10"
+                />
+                <input
+                  id="department"
+                  type="text"
+                  placeholder="Search or select department..."
+                  value={isFocused1 ? query1 : category1 || ""}
                   onChange={(e) => {
                     setQuery1(e.target.value);
                     if (!isFocused1) setIsFocused1(true);
@@ -349,18 +408,18 @@ export default function Profile({
               {/* Dropdown Options */}
               {isFocused1 && (
                 <div className="absolute top-[52px] left-0 w-full bg-surfaceSoft border border-border rounded-lg shadow-xl z-20 flex flex-col py-2 px-1.5 space-y-1">
-                  {companyConfig.departments.length > 0 ? (
+                  {departments.length > 0 ? (
                     <div className="max-h-56 overflow-y-auto px-1.5">
                       <div className="sticky top-0 z-10 bg-surfaceSoft text-[11px] font-medium text-textMuted uppercase tracking-wider px-2 py-1 mb-1 border-b border-border/50 pb-2">
-                        {query ? "Search Results" : "All Categories"}
+                        {query1 ? "Search Results" : "All CDepartments"}
                       </div>
                       <ul className="mt-1">
-                        {companyConfig.departments.sort().map((item) => (
+                        {departments.sort().map((item) => (
                           <li
                             key={item}
                             type="button"
                             onClick={() => {
-                              setCategory(item);
+                              setCategory1(item);
                               setIsFocused1(false);
                               setQuery1("");
                             }}
@@ -390,7 +449,7 @@ export default function Profile({
                     </div>
                   ) : (
                     <div className="px-3 py-4 text-center text-[13px] text-textMuted italic">
-                      No categories found.
+                      No departments found.
                     </div>
                   )}
                 </div>
@@ -398,33 +457,52 @@ export default function Profile({
             </div>
           </div>
 
+          {/*  Position */}
           <div className="col-span-full space-y-3">
-            <label className="text-sm font-semibold text-textMuted block mb-1">
+            <label
+              htmlFor="position"
+              className="text-sm font-semibold text-textMuted block mb-1"
+            >
               Position
             </label>
 
             <input
+              id="position"
               type="text"
               name="position"
               onChange={handleChange}
               value={formData.position}
               placeholder="e.g. Position"
-              className="w-full bg-surfaceSoft border border-border text-textPrimary focus:border-accent focus:ring-1 focus:ring-accent rounded-xl pl-4 pr-12 py-3 outline-none transition-all placeholder:text-textMuted/50"
+              className="w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 text-textPrimary focus:border-accent focus:ring-1 focus:ring-accent rounded-xl pl-4 pr-12 py-3 outline-none transition-all placeholder:text-textMuted/50"
             />
           </div>
 
+          {/*   Short Bio */}
           <div className="col-span-full space-y-3">
-            <label className="text-sm font-semibold text-textMuted block mb-1">
+            <label
+              htmlFor="bio"
+              className="text-sm font-semibold text-textMuted block mb-1"
+            >
               Short Bio
             </label>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              rows={4}
-              className="w-full min-h-[150px] bg-surfaceSoft border border-border text-textPrimary focus:border-accent focus:ring-1 focus:ring-accent rounded-lg px-4 py-2.5 outline-none transition-all placeholder:text-textMuted/50 resize-y"
-              placeholder="Tell us a little about yourself..."
-            ></textarea>
+            <div className="relative flex flex-col w-full" ref={dropdownRef1}>
+              <div className="relative">
+                <Notebook
+                  size={18}
+                  className="absolute left-3 top-4 text-textMuted pointer-events-none"
+                />
+
+                <textarea
+                  id="bio"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  rows={5}
+                  placeholder="Tell us a little about yourself..."
+                  className="w-full min-h-[150px] bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 text-textPrimary focus:border-accent rounded-lg pl-10 pt-3 pr-4 pb-3 outline-none transition-all placeholder:text-textMuted/50 resize-y"
+                />
+              </div>
+            </div>
           </div>
 
           <div className="col-span-full flex justify-center items-center mt-12">
