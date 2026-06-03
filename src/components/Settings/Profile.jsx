@@ -101,7 +101,7 @@ export default function Profile({
   const dropdownRef1 = useRef(null);
   const [isFocused1, setIsFocused1] = useState(false);
   const [query1, setQuery1] = useState("");
-  
+
   const dropdownRef2 = useRef(null);
   const [isFocused2, setIsFocused2] = useState(false);
   const [query2, setQuery2] = useState("");
@@ -125,7 +125,10 @@ export default function Profile({
   // 🔹 Close dropdown if clicked outside
   useEffect(() => {
     function handleClickOutside(event) {
-      if (dropdownRef1.current && !dropdownRef1.current.contains(event.target)) {
+      if (
+        dropdownRef1.current &&
+        !dropdownRef1.current.contains(event.target)
+      ) {
         setIsFocused1(false);
       }
     }
@@ -135,7 +138,10 @@ export default function Profile({
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (dropdownRef2.current && !dropdownRef2.current.contains(event.target)) {
+      if (
+        dropdownRef2.current &&
+        !dropdownRef2.current.contains(event.target)
+      ) {
         setIsFocused2(false);
       }
     }
@@ -296,9 +302,10 @@ export default function Profile({
                         type: "find",
                         baseName: username,
                       });
-                      let dstatus = username === LastUsername || status;
 
-                      setUsernameStatus(dstatus ? "Available" : "Taken");
+                      const isAvailable = username === LastUsername || status;
+
+                      setUsernameStatus(isAvailable ? "Available" : "Taken");
                     }, 800);
                   }}
                   className="w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 text-textPrimary rounded-lg pl-11 pr-4 py-2.5 outline-none transition-all placeholder:text-textMuted/50"
