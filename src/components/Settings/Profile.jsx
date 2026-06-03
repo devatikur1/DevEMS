@@ -629,9 +629,9 @@ export default function Profile({
 
           <div className="col-span-full flex justify-center items-center mt-12">
             <button
-              disabled={!isChange || usernameStatus !== "Available" || isSaving}
+              disabled={!isChange && usernameStatus !== "Available" && isSaving}
               type={
-                isChange || usernameStatus === "Available" || !isSaving
+                isChange && usernameStatus === "Available" && !isSaving
                   ? "submit"
                   : "button"
               }
