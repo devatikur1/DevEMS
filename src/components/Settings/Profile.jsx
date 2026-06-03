@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import useFunction from "../../hooks/useFunction";
 import UploadImg from "../Custom/UploadImg";
 import {
@@ -6,6 +6,7 @@ import {
   Check,
   ChevronDown,
   Contact,
+  LayoutGrid,
   Loader2,
   LocateFixed,
   Mail,
@@ -92,23 +93,20 @@ export default function Profile({
   handleSave,
   isSaving,
 }) {
-  console.log(companyConfig);
-
   const fileInputRef = useRef(null);
   const debounceTimerRef = useRef(null);
   const [isUploading, setIsUploading] = useState(false);
   const { uploadImageFn, uniUsername } = useFunction();
 
-  const dropdownRef1 = useRef(null);
-  const [departments, setDepartments] = useState(companyConfig.departments);
-  const [isFocused1, setIsFocused1] = useState(false);
-  const [category1, setCategory1] = useState(false);
-  const [query1, setQuery1] = useState(false);
+  const dropdownRef = useRef(null);
 
-  const dropdownRef2 = useRef(null);
+  const [isFocused1, setIsFocused1] = useState(false);
+  const [category1, setCategory1] = useState("");
+  const [query1, setQuery1] = useState("");
+
   const [isFocused2, setIsFocused2] = useState(false);
-  const [category2, setCategory2] = useState(false);
-  const [query2, setQuery2] = useState(false);
+  const [category2, setCategory2] = useState("");
+  const [query2, setQuery2] = useState("");
 
   //🔹 Handle Image Upload
   const handleImageUpload = async (data) => {
@@ -125,6 +123,30 @@ export default function Profile({
     }
     setIsUploading(false);
   };
+
+  // 🔹 Close dropdown if clicked outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsFocused1(false);
+        setIsFocused2(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const filteredDepartments = useMemo(() => {
+    return companyConfig.departments.filter((dt) =>
+      dt.toLowerCase().includes(query1.toLowerCase()),
+    );
+  }, [query1]);
+
+  const filteredPositions = useMemo(() => {
+    return companyConfig.roles.filter((dt) =>
+      dt.toLowerCase().includes(query2.toLowerCase()),
+    );
+  }, [query2]);
 
   return (
     <div className="space-y-8 animate-in fade-in zoom-in duration-300">
@@ -287,7 +309,7 @@ export default function Profile({
             >
               Email Address
             </label>
-            <div className="relative flex flex-col w-full" ref={dropdownRef1}>
+            <div className="relative flex flex-col w-full">
               <div className="relative flex items-center group">
                 <Mail
                   size={18}
@@ -313,7 +335,7 @@ export default function Profile({
             <label className="text-sm font-semibold text-textMuted block mb-1">
               Role
             </label>
-            <div className="relative flex flex-col w-full" ref={dropdownRef1}>
+            <div className="relative flex flex-col w-full">
               <div className="relative flex items-center group">
                 <ShieldCheck
                   size={18}
@@ -376,7 +398,7 @@ export default function Profile({
               Department
             </label>
 
-            <div className="relative flex flex-col w-full" ref={dropdownRef1}>
+            <div className="relative flex flex-col w-full" ref={dropdownRef}>
               <div className="relative flex items-center group">
                 <Network
                   size={18}
@@ -408,13 +430,13 @@ export default function Profile({
               {/* Dropdown Options */}
               {isFocused1 && (
                 <div className="absolute top-[52px] left-0 w-full bg-surfaceSoft border border-border rounded-lg shadow-xl z-20 flex flex-col py-2 px-1.5 space-y-1">
-                  {departments.length > 0 ? (
+                  {filteredDepartments.length > 0 ? (
                     <div className="max-h-56 overflow-y-auto px-1.5">
                       <div className="sticky top-0 z-10 bg-surfaceSoft text-[11px] font-medium text-textMuted uppercase tracking-wider px-2 py-1 mb-1 border-b border-border/50 pb-2">
-                        {query1 ? "Search Results" : "All CDepartments"}
+                        {query1 ? "Search Results" : "All Departments"}
                       </div>
                       <ul className="mt-1">
-                        {departments.sort().map((item) => (
+                        {filteredDepartments.sort().map((item) => (
                           <li
                             key={item}
                             type="button"
@@ -466,15 +488,85 @@ export default function Profile({
               Position
             </label>
 
-            <input
-              id="position"
-              type="text"
-              name="position"
-              onChange={handleChange}
-              value={formData.position}
-              placeholder="e.g. Position"
-              className="w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 text-textPrimary focus:border-accent focus:ring-1 focus:ring-accent rounded-xl pl-4 pr-12 py-3 outline-none transition-all placeholder:text-textMuted/50"
-            />
+            <div className="relative flex flex-col w-full" ref={dropdownRef}>
+              <div className="relative flex items-center group">
+                <LayoutGrid
+                  size={18}
+                  className="absolute left-4 text-textMuted group-focus-within:text-accent transition-colors z-10"
+                />
+                <input
+                  id="position"
+                  type="text"
+                  placeholder="Search or select position..."
+                  value={isFocused2 ? query2 : category2 || ""}
+                  onChange={(e) => {
+                    setQuery2(e.target.value);
+                    if (!isFocused2) setIsFocused2(true);
+                  }}
+                  onFocus={() => {
+                    setIsFocused2(true);
+                    setQuery2("");
+                  }}
+                  className="w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 rounded-md pl-12 pr-10 py-3 text-[13px] text-textPrimary placeholder:text-textMuted outline-none transition-all cursor-pointer"
+                />
+                <ChevronDown
+                  size={16}
+                  className={`absolute right-4 text-textMuted pointer-events-none transition-transform z-10 ${
+                    isFocused2 ? "rotate-180" : ""
+                  }`}
+                />
+              </div>
+
+              {/* Dropdown Options */}
+              {isFocused2 && (
+                <div className="absolute top-[52px] left-0 w-full bg-surfaceSoft border border-border rounded-lg shadow-xl z-20 flex flex-col py-2 px-1.5 space-y-1">
+                  {filteredPositions.length > 0 ? (
+                    <div className="max-h-56 overflow-y-auto px-1.5">
+                      <div className="sticky top-0 z-10 bg-surfaceSoft text-[11px] font-medium text-textMuted uppercase tracking-wider px-2 py-1 mb-1 border-b border-border/50 pb-2">
+                        {query2 ? "Search Results" : "All Positions"}
+                      </div>
+                      <ul className="mt-1">
+                        {filteredPositions.sort().map((item) => (
+                          <li
+                            key={item}
+                            type="button"
+                            onClick={() => {
+                              setCategory2(item);
+                              setIsFocused2(false);
+                              setQuery2("");
+                            }}
+                            className={`group relative flex items-center justify-between w-full px-3 py-2 rounded-md transition-colors cursor-pointer text-left ${
+                              category2 === item
+                                ? "bg-accent/10 border-accent/20"
+                                : "hover:bg-boxHover"
+                            }`}
+                          >
+                            <span
+                              className={`text-[13px] ${
+                                category2 === item
+                                  ? "text-accent font-medium"
+                                  : "text-textPrimary/65 group-hover:text-textPrimary"
+                              }`}
+                            >
+                              {item}
+                            </span>
+                            {category2 === item && (
+                              <span className="text-[10px] text-accent font-medium px-2 py-0.5 rounded-full bg-accent/20 border border-accent/30 flex items-center gap-1">
+                                <Check size={10} /> Selected
+                              </span>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : (
+                    <div className="px-3 py-4 text-center text-[13px] text-textMuted italic">
+                      No positions found.
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
           {/*   Short Bio */}
@@ -485,7 +577,7 @@ export default function Profile({
             >
               Short Bio
             </label>
-            <div className="relative flex flex-col w-full" ref={dropdownRef1}>
+            <div className="relative flex flex-col w-full">
               <div className="relative">
                 <Notebook
                   size={18}
@@ -513,7 +605,7 @@ export default function Profile({
                   ? "submit"
                   : "button"
               }
-              className="w-72 bg-accent text-[0.8rem] md:text-[1rem] text-textPrimary px-8 py-3 lg:px-10 lg:py-3 rounded-xl font-bold transition-all hover:scale-105 active:scale-95 disabled:opacity-60 disabled:pointer-events-none"
+              className="w-72 bg-accent text-[0.8rem] md:text-[1rem] text-textPrimary px-8 py-3 lg:px-10 lg:py-3 rounded-md font-bold transition-all hover:scale-105 active:scale-95 disabled:opacity-60 disabled:pointer-events-none"
             >
               {isSaving ? (
                 <div className="w-full flex justify-center items-center">

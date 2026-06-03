@@ -92,9 +92,7 @@ export default function SettingsPage() {
 
   function GetCurrentLocation() {
     if (!navigator.geolocation) {
-      return gooeyToast.error("Unsupported Browser", {
-        description: "Your browser does not support location access.",
-      });
+      return gooeyToast.error("Unsupported Browser");
     }
 
     navigator.geolocation.getCurrentPosition(
@@ -104,8 +102,8 @@ export default function SettingsPage() {
 
           if (!latitude || !longitude) {
             throw {
-              code: "Location Error",
-              msg: "Failed to detect your current location.",
+              title: "Location Error",
+              message: "Failed to detect your current location.",
             };
           }
 
@@ -115,33 +113,35 @@ export default function SettingsPage() {
 
           if (!response.ok) {
             throw {
-              code: "API Error",
-              msg: "Failed to fetch your location details.",
+              title: "API Error",
+              message: "Failed to fetch your location details.",
             };
           }
 
           const data = await response.json();
 
-          let location = `${data.address.town || data.address.city || data.address.village || "Unknown Area"}, ${data.address.state || ""}, ${data.address.country || ""}`;
+          const location = `${data.address.town || data.address.city || data.address.village || "Unknown Area"}, ${data.address.state || ""}, ${data.address.country || ""}`;
 
           setFormData((prev) => ({
             ...prev,
             location,
           }));
-          gooeyToast.success("Location Synced", {
-            description: "We successfully updated your current location.",
-          });
+
+          gooeyToast.success("Location Synced");
         } catch (error) {
-          gooeyToast.error(error.code, {
-            description: error.msg,
+          gooeyToast.error(error.message || "Something went wrong", {
+            description: error.title || "Error",
           });
         }
       },
 
       () => {
-        gooeyToast.error("Permission Denied", {
-          description: "Please allow location access in your browser settings.",
-        });
+        gooeyToast.error(
+          "Please allow location access in your browser settings.",
+          {
+            description: "Permission Denied",
+          },
+        );
       },
     );
   }
