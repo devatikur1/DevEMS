@@ -50,7 +50,7 @@ export default function SettingsPage() {
       setFormData((prev) => ({
         ...prev,
         name: userDt.name || prev.name,
-        username: userDt.username || prev.username,
+        username: userDt.username.replace(/@/gi, "") || prev.username,
         email: userDt.email || prev.email,
         description: userDt.description || prev.description,
         location: userDt.location || prev.location,
@@ -157,7 +157,7 @@ export default function SettingsPage() {
       const updatedData = {
         ...userDt,
         name: formData.name,
-        username: formData.username,
+        username: `@${formData.username}`,
         description: formData.description,
         location: formData.location,
         photoURL: formData.photoURL,
