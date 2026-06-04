@@ -45,6 +45,15 @@ export default function SettingsPage() {
   // -------------------------
   // ✅ Initialize FormData
   // -------------------------
+useEffect(() => {
+  console.log({
+    isChange,
+    usernameStatus,
+    isSaving,
+    disabled: isSaving || !isChange || usernameStatus !== "Available",
+  });
+}, [isChange, usernameStatus, isSaving]);
+
   useEffect(() => {
     if (userDt && Object.keys(userDt).length > 0) {
       setFormData((prev) => ({
@@ -68,10 +77,15 @@ export default function SettingsPage() {
     let changed = false;
 
     for (const key in formData) {
-      if (!Object.hasOwn(formData, key)) continue;
-
       const currentValue = String(formData[key] || "").trim();
-      const oldValue = String(userDt[key] || "").trim();
+
+      let oldValue = userDt[key] || "";
+
+      if (key === "username") {
+        oldValue = String(oldValue).replace(/@/g, "");
+      }
+
+      oldValue = String(oldValue).trim();
 
       if (currentValue !== oldValue) {
         changed = true;
@@ -269,7 +283,7 @@ export default function SettingsPage() {
                   formData={formData}
                   setFormData={setFormData}
                   handleChange={handleChange}
-                  LastUsername={userDt.username}
+                  LastUsername={userDt.username.replace(/@/gi, "")}
                   usernameStatus={usernameStatus}
                   setUsernameStatus={setUsernameStatus}
                   GetCurrentLocation={GetCurrentLocation}

@@ -281,7 +281,7 @@ export default function Profile({
                       .replace(/@+/g, "")
                       .replace(/[^a-z0-9._]/g, "");
 
-                    const username = `${val}`;
+                    const username = val;
 
                     setFormData((prev) => ({
                       ...prev,
@@ -300,7 +300,7 @@ export default function Profile({
                     debounceTimerRef.current = setTimeout(async () => {
                       const status = await uniUsername({
                         type: "find",
-                        baseName: username,
+                        baseName: `@${username}`,
                       });
 
                       const isAvailable = username === LastUsername || status;
@@ -629,13 +629,9 @@ export default function Profile({
 
           <div className="col-span-full flex justify-center items-center mt-12">
             <button
-              disabled={!isChange && usernameStatus !== "Available" && isSaving}
-              type={
-                isChange && usernameStatus === "Available" && !isSaving
-                  ? "submit"
-                  : "button"
-              }
-              className="w-72 bg-accent text-[0.8rem] md:text-[1rem] text-textPrimary px-8 py-3 lg:px-10 lg:py-3 rounded-md font-bold transition-all hover:scale-105 active:scale-95 disabled:opacity-60 disabled:pointer-events-none"
+              type="submit"
+              disabled={isSaving || !isChange || usernameStatus !== "Available"}
+              className="w-72 bg-accent text-[0.8rem] md:text-[1rem] text-textPrimary px-8 py-3 lg:px-10 lg:py-3 rounded-md font-bold transition-all hover:scale-105 active:scale-95 disabled:opacity-55 disabled:pointer-events-none"
             >
               {isSaving ? (
                 <div className="w-full flex justify-center items-center">
