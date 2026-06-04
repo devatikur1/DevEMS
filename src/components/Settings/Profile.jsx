@@ -15,6 +15,7 @@ import {
   Notebook,
   ShieldCheck,
 } from "lucide-react";
+import { gooeyToast } from "goey-toast";
 
 //🔹 Company Config
 const companyConfig = {
@@ -116,8 +117,13 @@ export default function Profile({
     const res = await uploadImageFn(file);
     if (!res.isError) {
       setFormData((prev) => ({ ...prev, photoURL: res.url }));
+      gooeyToast.warning("Image uploaded. Click 'Update Profile' to save.", {
+        timing: {
+          displayDuration: 9000,
+        },
+      });
     } else {
-      alert("Image upload failed. Please try again.");
+      gooeyToast.error("Image upload failed. Please try again.");
     }
     setIsUploading(false);
   };
@@ -200,7 +206,7 @@ export default function Profile({
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploading}
-                className="text-sm font-semibold bg-surfaceSoft hover:bg-hover text-textPrimary px-4 py-2 rounded-lg transition-colors border border-border disabled:pointer-events-none disabled:opacity-50"
+                className="font-semibold bg-surfaceSoft hover:bg-hover text-[13px] text-textPrimary px-4 py-2 rounded-lg transition-colors border border-border disabled:pointer-events-none disabled:opacity-50"
               >
                 {isUploading ? "Uploading..." : "Upload New"}
               </button>
@@ -308,7 +314,7 @@ export default function Profile({
                       setUsernameStatus(isAvailable ? "Available" : "Taken");
                     }, 800);
                   }}
-                  className="w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 text-textPrimary rounded-lg pl-11 pr-4 py-2.5 outline-none transition-all placeholder:text-textMuted/50"
+                  className="w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 text-[13px] text-textPrimary rounded-lg pl-11 pr-4 py-2.5 outline-none transition-all placeholder:text-textMuted/50"
                   placeholder="e.g. johndoe"
                 />
               </div>
@@ -333,7 +339,7 @@ export default function Profile({
                   type="email"
                   name="email"
                   value={formData.email}
-                  className="w-full bg-surfaceSoft/50 border border-border/50 text-textMuted rounded-lg pl-11 pr-4 py-2.5 outline-none cursor-not-allowed select-none"
+                  className="w-full bg-surfaceSoft/50 border border-border/50 text-[13px] text-textMuted rounded-lg pl-11 pr-4 py-2.5 outline-none cursor-not-allowed select-none"
                   placeholder="e.g. name@company.com"
                   disabled
                 />
@@ -358,7 +364,7 @@ export default function Profile({
                 <input
                   type="text"
                   value={`${formData.role}`}
-                  className="w-full bg-surfaceSoft/50 border border-border/50 text-textMuted rounded-lg pl-10 pr-4 py-2.5 outline-none cursor-not-allowed select-none capitalize"
+                  className="w-full bg-surfaceSoft/50 border border-border/50 text-[13px] text-textMuted rounded-lg pl-10 pr-4 py-2.5 outline-none cursor-not-allowed select-none capitalize"
                   disabled
                 />
               </div>
@@ -387,7 +393,7 @@ export default function Profile({
                   onChange={handleChange}
                   value={formData.location}
                   placeholder="e.g. Location"
-                  className="w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 text-textPrimary  rounded-lg pl-11 pr-11 py-2.5 outline-none transition-all placeholder:text-textMuted/50"
+                  className="w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 text-[13px] text-textPrimary rounded-lg pl-11 pr-11 py-2.5 outline-none transition-all placeholder:text-textMuted/50"
                 />
 
                 {/* Current Location Button */}
@@ -621,7 +627,7 @@ export default function Profile({
                   onChange={handleChange}
                   rows={5}
                   placeholder="Tell us a little about yourself..."
-                  className="w-full min-h-[150px] bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 text-textPrimary focus:border-accent rounded-lg pl-10 pt-3 pr-4 pb-3 outline-none transition-all placeholder:text-textMuted/50 resize-y"
+                  className="w-full min-h-[150px] bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 text-[15px] text-textPrimary focus:border-accent rounded-lg pl-10 pt-3 pr-4 pb-3 outline-none transition-all placeholder:text-textMuted/50 resize-y"
                 />
               </div>
             </div>
