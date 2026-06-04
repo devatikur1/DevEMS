@@ -206,7 +206,7 @@ export default function Profile({
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploading}
-                className="font-semibold bg-surfaceSoft hover:bg-hover text-[13px] text-textPrimary px-4 py-2 rounded-lg transition-colors border border-border disabled:pointer-events-none disabled:opacity-50"
+                className="text-sm font-semibold bg-surfaceSoft hover:bg-hover text-textPrimary px-4 py-2 rounded-lg transition-colors border border-border disabled:pointer-events-none disabled:opacity-50"
               >
                 {isUploading ? "Uploading..." : "Upload New"}
               </button>
@@ -239,7 +239,7 @@ export default function Profile({
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 text-textPrimary rounded-lg pl-11 pr-4 py-2.5 outline-none transition-all placeholder:text-textMuted/50"
+                  className="w-full bg-surfaceSoft border border-border hover:border-hover focus:border-accent/50 text-[13px] text-textPrimary rounded-lg pl-11 pr-4 py-2.5 outline-none transition-all placeholder:text-textMuted/50"
                   placeholder="e.g. John Doe"
                 />
               </div>
