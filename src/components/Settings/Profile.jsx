@@ -401,7 +401,7 @@ export default function Profile({
                   type="button"
                   onClick={async () => await GetCurrentLocation()}
                   title="Set Current Location"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 size-9 rounded-lg flex items-center justify-center bg-surface hover:bg-boxHover border border-border hover:border-accent/30 transition-all duration-200 group"
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 size-9 rounded-lg flex items-center justify-center bg-surface hover:bg-boxHover border border-border hover:border-accent/30 transition-all duration-200 group"
                 >
                   <LocateFixed className="size-4 text-textMuted group-hover:text-accent transition-colors" />
                 </button>

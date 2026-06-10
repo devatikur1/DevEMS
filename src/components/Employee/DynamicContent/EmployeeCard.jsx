@@ -150,25 +150,6 @@ export default function EmployeeCard({ emp, index, searchParams }) {
           View <ChevronRight size={14} />
         </button>
       </div>
-
-      {/* Pending Overlay */}
-      {emp.requestStatus === "pending" && (
-        <div className="absolute inset-0 bg-surface/60 backdrop-blur-[2px] flex items-center justify-center z-20">
-          <div className="bg-surface border border-warning/30 px-4 py-3 rounded-xl shadow-lg flex flex-col items-center gap-3 w-3/4 max-w-[200px]">
-            <span className="text-xs font-semibold text-warning uppercase tracking-wider">
-              Pending
-            </span>
-            <div className="flex gap-2 w-full">
-              <button className="flex-1 text-[11px] font-medium bg-success/10 text-success border border-success/20 py-1.5 rounded hover:bg-success hover:text-bg transition-colors">
-                Accept
-              </button>
-              <button className="flex-1 text-[11px] font-medium bg-error/10 text-error border border-error/20 py-1.5 rounded hover:bg-error hover:text-white transition-colors">
-                Decline
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </motion.div>
   );
 }

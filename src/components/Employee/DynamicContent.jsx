@@ -28,7 +28,7 @@ export default function DynamicContent({
             />
           ))}
 
-        {employeesGetting &&
+        {!employeesGetting &&
           [...Array(10)].map((_, i) => <CardLoading key={i} />)}
       </ul>
 
